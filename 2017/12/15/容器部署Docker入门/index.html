@@ -1,0 +1,581 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  容器部署Docker入门 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		容器部署Docker入门
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/12/15 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/docker/">docker</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/docker/">docker</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		10683
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="1-Docker简介"><a href="#1-Docker简介" class="headerlink" title="1.Docker简介"></a>1.Docker简介</h1><h2 id="1-1虚拟化"><a href="#1-1虚拟化" class="headerlink" title="1.1虚拟化"></a>1.1虚拟化</h2><h3 id="1-1-1什么是虚拟化"><a href="#1-1-1什么是虚拟化" class="headerlink" title="1.1.1什么是虚拟化"></a>1.1.1什么是虚拟化</h3><p>在计算机中，虚拟化（英语：Virtualization）是一种资源管理技术，是将计算机的各种实体资源，如服务器、网络、内存及存储等，予以抽象、转换后呈现出来，打破实体结构间的不可切割的障碍，使用户可以比原本的组态更好的方式来应用这些资源。这些资源的新虚拟部份是不受现有资源的架设方式，地域或物理组态所限制。一般所指的虚拟化资源包括计算能力和资料存储。</p>
+<p>在实际的生产环境中，虚拟化技术主要用来解决高性能的物理硬件产能过剩和老的旧的硬件产能过低的重组重用，透明化底层物理硬件，从而最大化的利用物理硬件   对资源充分利用</p>
+<p>虚拟化技术种类很多，例如：软件虚拟化、硬件虚拟化、内存虚拟化、网络虚拟化(vip)、桌面虚拟化、服务虚拟化、虚拟机等等。</p>
+<h3 id="1-1-2虚拟化种类"><a href="#1-1-2虚拟化种类" class="headerlink" title="1.1.2虚拟化种类"></a>1.1.2虚拟化种类</h3><p>（1）全虚拟化架构</p>
+<p>虚拟机的监视器（hypervisor）是类似于用户的应用程序运行在主机的OS之上，如VMware的workstation，这种虚拟化产品提供了虚拟的硬件。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image3.png" alt="image3"></p>
+<p>（2）OS层虚拟化架构</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image4.png" alt="image4"> </p>
+<p>（3）硬件层虚拟化</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image5.png" alt="image5"></p>
+<p>硬件层的虚拟化具有高性能和隔离性，因为hypervisor直接在硬件上运行，有利于控制VM的OS访问硬件资源，使用这种解决方案的产品有VMware ESXi 和 Xen server</p>
+<p>Hypervisor是一种运行在物理服务器和操作系统之间的中间软件层,可允许多个操作系统和应用共享一套基础物理硬件，因此也可以看作是虚拟环境中的“元”操作系统，它可以协调访问服务器上的所有物理设备和虚拟机，也叫虚拟机监视器（Virtual Machine Monitor，VMM）。</p>
+<p>Hypervisor是所有虚拟化技术的核心。当服务器启动并执行Hypervisor时，它会给每一台虚拟机分配适量的内存、CPU、网络和磁盘，并加载所有虚拟机的客户操作系统。  宿主机</p>
+<p>Hypervisor是所有虚拟化技术的核心，软硬件架构和管理更高效、更灵活，硬件的效能能够更好地发挥出来。常见的产品有：VMware、KVM、Xen等等。Openstack</p>
+<h2 id="1-2什么是Docker"><a href="#1-2什么是Docker" class="headerlink" title="1.2什么是Docker"></a>1.2什么是Docker</h2><p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image6.png" alt="image6"></p>
+<h3 id="1-2-1容器技术"><a href="#1-2-1容器技术" class="headerlink" title="1.2.1容器技术"></a>1.2.1容器技术</h3><p>在计算机的世界中，容器拥有一段漫长且传奇的历史。容器与管理程序虚拟化（hypervisor virtualization，HV）有所不同，管理程序虚拟化通过中间层将一台或者多台独立的机器虚拟运行与物理硬件之上，而容器则是直接运行在操作系统内核之上的用户空间。因此，容器虚拟化也被称为“操作系统级虚拟化”，容器技术可以让多个独立的用户空间运行在同一台宿主机上。</p>
+<p>由于“客居”于操作系统，容器只能运行与底层宿主机相同或者相似的操作系统，这看起来并不是非常灵活。例如：可以在Ubuntu服务中运行Redhat Enterprise Linux，但无法再Ubuntu服务器上运行Microsoft Windows。</p>
+<p>相对于彻底隔离的管理程序虚拟化，容器被认为是不安全的。而反对这一观点的人则认为，由于虚拟容器所虚拟的是一个完整的操作系统，这无疑增大了攻击范围，而且还要考虑管理程序层潜在的暴露风险。</p>
+<p>尽管有诸多局限性，容器还是被广泛部署于各种各样的应用场合。在超大规模的多租户服务部署、轻量级沙盒以及对安全要求不太高的隔离环境中，容器技术非常流行。最常见的一个例子就是“权限隔离监牢”（chroot jail），它创建一个隔离的目录环境来运行进程。如果权限隔离监牢正在运行的进程被入侵者攻破，入侵者便会发现自己“身陷囹圄”，因为权限不足被困在容器所创建的目录中，无法对宿主机进一步破坏。</p>
+<p>最新的容器技术引入了OpenVZ、Solaris Zones以及Linux容器（LXC）。使用这些新技术，容器不在仅仅是一个单纯的运行环境。在自己的权限类内，容器更像是一个完整的宿主机。对Docker来说，它得益于现代Linux特性，如控件组（control group）、命名空间（namespace）技术，容器和宿主机之间的隔离更加彻底，容器有独立的网络和存储栈，还拥有自己的资源管理能力，使得同一台宿主机中的多个容器可以友好的共存。</p>
+<p>容器被认为是精益技术，因为容器需要的开销有限。和传统虚拟化以及半虚拟化相比，容器不需要模拟层（emulation layer）和管理层（hypervisor layer），而是使用操作系统的系统调用接口。这降低了运行单个容器所需的开销，也使得宿主机中可以运行更多的容器。</p>
+<p>尽管有着光辉的历史，容器仍未得到广泛的认可。一个很重要的原因就是容器技术的复杂性：容器本身就比较复杂，不易安装，管理和自动化也很困难。而Docker就是为了改变这一切而生的。</p>
+<h3 id="1-2-2容器与虚拟机比较"><a href="#1-2-2容器与虚拟机比较" class="headerlink" title="1.2.2容器与虚拟机比较"></a>1.2.2容器与虚拟机比较</h3><p>1.本质上的区别</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image7.png" alt="image7"></p>
+<p>2.使用上的区别</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image8.png" alt="image8"></p>
+<p>虚拟机已死，容器才是未来。</p>
+<h3 id="1-2-3-Docker特点"><a href="#1-2-3-Docker特点" class="headerlink" title="1.2.3 Docker特点"></a>1.2.3 Docker特点</h3><p>（1）上手快。</p>
+<p>用户只需要几分钟，就可以把自己的程序“Docker化”。Docker依赖于“写时复制”（copy-on-write）模型，使修改应用程序也非常迅速，可以说达到“随心所致，代码即改”的境界。</p>
+<p>​    随后，就可以创建容器来运行应用程序了。大多数Docker容器只需要不到1秒中即可启动。由于去除了管理程序的开销，Docker容器拥有很高的性能，同时同一台宿主机中也可以运行更多的容器，使用户尽可能的充分利用系统资源。</p>
+<p>（2）职责的逻辑分类</p>
+<p>使用Docker，开发人员只需要关心容器中运行的应用程序，而运维人员只需要关心如何管理容器。Docker设计的目的就是要加强开发人员写代码的开发环境与应用程序要部署的生产环境一致性。从而降低那种“开发时一切正常，肯定是运维的问题（测试环境都是正常的，上线后出了问题就归结为肯定是运维的问题）”</p>
+<p>（3）快速高效的开发生命周期**</p>
+<p>Docker的目标之一就是缩短代码从开发、测试到部署、上线运行的周期，让你的应用程序具备可移植性，易于构建，并易于协作。（通俗一点说，Docker就像一个盒子，里面可以装很多物件，如果需要这些物件的可以直接将该大盒子拿走，而不需要从该盒子中一件件的取。）</p>
+<p>（4）鼓励使用面向服务的架构**</p>
+<p>Docker还鼓励面向服务的体系结构和微服务架构。Docker推荐单个容器只运行一个应用程序或进程，这样就形成了一个分布式的应用程序模型，在这种模型下，应用程序或者服务都可以表示为一系列内部互联的容器，从而使分布式部署应用程序，扩展或调试应用程序都变得非常简单，同时也提高了程序的内省性。（当然，可以在一个容器中运行多个应用程序）</p>
+<h2 id="1-3-Docker组件"><a href="#1-3-Docker组件" class="headerlink" title="1.3 Docker组件"></a>1.3 Docker组件</h2><h3 id="1-3-1-Docker客户端和服务器"><a href="#1-3-1-Docker客户端和服务器" class="headerlink" title="1.3.1 Docker客户端和服务器"></a>1.3.1 Docker客户端和服务器</h3><p>Docker是一个客户端-服务器（C/S）架构程序。Docker客户端只需要向Docker服务器或者守护进程发出请求，服务器或者守护进程将完成所有工作并返回结果。Docker提供了一个命令行工具Docker以及一整套RESTful API。你可以在同一台宿主机上运行Docker守护进程和客户端，也可以从本地的Docker客户端连接到运行在另一台宿主机上的远程Docker守护进程。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image9.png" alt="image9"></p>
+<h3 id="1-3-2-Docker镜像"><a href="#1-3-2-Docker镜像" class="headerlink" title="1.3.2 Docker镜像"></a>1.3.2 Docker镜像</h3><p>镜像是构建Docker的基石。用户基于镜像来运行自己的容器。镜像也是Docker生命周期中的“构建”部分。镜像是基于联合文件系统的一种层式结构，由一系列指令一步一步构建出来。例如：</p>
+<p>添加一个文件；</p>
+<p>执行一个命令；</p>
+<p>打开一个窗口。</p>
+<p>也可以将镜像当作容器的“源代码”。镜像体积很小，非常“便携”，易于分享、存储和更新。</p>
+<h3 id="1-3-3-Registry（注册中心）"><a href="#1-3-3-Registry（注册中心）" class="headerlink" title="1.3.3 Registry（注册中心）"></a>1.3.3 Registry（注册中心）</h3><p>Docker用Registry来保存用户构建的镜像。Registry分为公共和私有两种。Docker公司运营公共的Registry叫做Docker Hub。用户可以在Docker Hub注册账号，分享并保存自己的镜像（说明：在Docker Hub下载镜像巨慢，可以自己构建私有的Registry）。</p>
+<h3 id="1-3-4-Docker容器"><a href="#1-3-4-Docker容器" class="headerlink" title="1.3.4 Docker容器"></a>1.3.4 Docker容器</h3><p>Docker可以帮助你构建和部署容器，你只需要把自己的应用程序或者服务打包放进容器即可。容器是基于镜像启动起来的，容器中可以运行一个或多个进程。我们可以认为，镜像是Docker生命周期中的构建或者打包阶段，而容器则是启动或者执行阶段。  容器基于镜像启动，一旦容器启动完成后，我们就可以登录到容器中安装自己需要的软件或者服务。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image10.png" alt="image10"></p>
+<p>所以Docker容器就是：</p>
+<p>一个镜像格式；</p>
+<p>一些列标准操作；</p>
+<p>一个执行环境。</p>
+<p>Docker借鉴了标准集装箱的概念。标准集装箱将货物运往世界各地，Docker将这个模型运用到自己的设计中，唯一不同的是：集装箱运输货物，而Docker运输软件。</p>
+<p>​    和集装箱一样，Docker在执行上述操作时，并不关心容器中到底装了什么，它不管是web服务器，还是数据库，或者是应用程序服务器什么的。所有的容器都按照相同的方式将内容“装载”进去。</p>
+<p>​    Docker也不关心你要把容器运到何方：我们可以在自己的笔记本中构建容器，上传到Registry，然后下载到一个物理的或者虚拟的服务器来测试，在把容器部署到具体的主机中。像标准集装箱一样，Docker容器方便替换，可以叠加，易于分发，并且尽量通用。</p>
+<p>​    使用Docker，我们可以快速的构建一个应用程序服务器、一个消息总线、一套实用工具、一个持续集成（CI）测试环境或者任意一种应用程序、服务或工具。我们可以在本地构建一个完整的测试环境，也可以为生产或开发快速复制一套复杂的应用程序栈。</p>
+<h1 id="2-Docker安装与启动"><a href="#2-Docker安装与启动" class="headerlink" title="2.Docker安装与启动"></a>2.Docker安装与启动</h1><h2 id="2-1安装环境说明"><a href="#2-1安装环境说明" class="headerlink" title="2.1安装环境说明"></a>2.1安装环境说明</h2><p>Docker官方建议在Ubuntu中安装，因为Docker是基于Ubuntu发布的，而且一般Docker出现的问题Ubuntu是最先更新或者打补丁的。在很多版本的CentOS中是不支持更新最新的一些补丁包的。</p>
+<p>​    由于我们学习的环境都使用的是CentOS，因此这里我们将Docker安装到CentOS上。注意：这里建议安装在CentOS7.x以上的版本，在CentOS6.x的版本中，安装前需要安装其他很多的环境而且Docker很多补丁不支持更新。</p>
+<h2 id="2-2在VMware-Workstation中安装CentOS7"><a href="#2-2在VMware-Workstation中安装CentOS7" class="headerlink" title="2.2在VMware Workstation中安装CentOS7"></a>2.2在VMware Workstation中安装CentOS7</h2><p>资料已经准备了安装好的镜像，直接挂载即可。</p>
+<p>挂载后，使用ip addr命令查看本地IP</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image11.png" alt="image11"></p>
+<h2 id="2-3安装Docker"><a href="#2-3安装Docker" class="headerlink" title="2.3安装Docker"></a>2.3安装Docker</h2><p>使用yum命令在线安装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install docker</span><br></pre></td></tr></table></figure>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image12.png" alt="image12"></p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image13.png" alt="image13"></p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image14.png" alt="image14"></p>
+<h2 id="2-4安装后查看Docker版本"><a href="#2-4安装后查看Docker版本" class="headerlink" title="2.4安装后查看Docker版本"></a>2.4安装后查看Docker版本</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image15.png" alt="image15"></p>
+<h2 id="2-5启动与停止Docker"><a href="#2-5启动与停止Docker" class="headerlink" title="2.5启动与停止Docker"></a>2.5启动与停止Docker</h2><p><strong>systemctl</strong>命令是系统服务管理器指令，它是 service 和 chkconfig 两个命令组合。</p>
+<ul>
+<li>启动docker：systemctl start docker</li>
+<li>停止docker：systemctl stop docker</li>
+<li>重启docker：systemctl restart docker</li>
+<li>查看docker状态：systemctl status docker</li>
+<li><p>开机启动：systemctl enable docker</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image16.png" alt="image16"></p>
+</li>
+<li><p>查看docker概要信息：docker info</p>
+</li>
+<li>查看docker帮助文档：docker –help</li>
+</ul>
+<h1 id="3-Docker镜像操作"><a href="#3-Docker镜像操作" class="headerlink" title="3.Docker镜像操作"></a>3.Docker镜像操作</h1><h2 id="3-1什么是Docker镜像"><a href="#3-1什么是Docker镜像" class="headerlink" title="3.1什么是Docker镜像"></a>3.1什么是Docker镜像</h2><p>Docker镜像是由文件系统叠加而成（是一种文件的存储形式）。最底端是一个文件引导系统，即bootfs，这很像典型的Linux/Unix的引导文件系统。Docker用户几乎永远不会和引导系统有什么交互。实际上，当一个容器启动后，它将会被移动到内存中，而引导文件系统则会被卸载，以留出更多的内存供磁盘镜像使用。Docker容器启动是需要的一些文件，而这些文件就可以称为Docker镜像。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image17.png" alt="image17"></p>
+<h2 id="3-2列出镜像"><a href="#3-2列出镜像" class="headerlink" title="3.2列出镜像"></a>3.2列出镜像</h2><p>列出docker下的所有镜像：docker images</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image18.png" alt="image18"></p>
+<ul>
+<li>REPOSITORY：镜像所在的仓库名称</li>
+<li>TAG：镜像标签</li>
+<li>IMAGE ID：镜像ID</li>
+<li>CREATED：镜像的创建日期（不是获取该镜像的日期）</li>
+<li>SIZE：镜像大小</li>
+<li><p>这些镜像都是存储在Docker宿主机的/var/lib/docker目录下</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image19.png" alt="image19"></p>
+</li>
+</ul>
+<p>为了区分同一个仓库下的不同镜像，Docker提供了一种称为标签（Tag）的功能。每个镜像在列出来时都带有一个标签，例如12.10、12.04等等。每个标签对组成特定镜像的一些镜像层进行标记（比如，标签12.04就是对所有Ubuntu12.04镜像层的标记）。这种机制使得同一个仓库中可以存储多个镜像。— 版本号</p>
+<p>​    我们在运行同一个仓库中的不同镜像时，可以通过在仓库名后面加上一个冒号和标签名来指定该仓库中的某一具体的镜像，例如docker run –name custom_container_name –i –t docker.io/ubunto:12.04 /bin/bash，表明从镜像Ubuntu:12.04启动一个容器，而这个镜像的操作系统就是Ubuntu:12.04。在构建容器时指定仓库的标签也是一个好习惯。</p>
+<h2 id="3-3搜索镜像"><a href="#3-3搜索镜像" class="headerlink" title="3.3搜索镜像"></a>3.3搜索镜像</h2><p>如果你需要从网络中查找需要的镜像，可以通过以下命令搜索</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search 镜像名称</span><br></pre></td></tr></table></figure>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image20.png" alt="image20"> </p>
+<ul>
+<li>NAME：仓库名称</li>
+<li>DESCRIPTION：镜像描述</li>
+<li>STARS：用户评价，反应一个镜像的受欢迎程度</li>
+<li>OFFICIAL：是否官方</li>
+</ul>
+<p>AUTOMATED：自动构建，表示该镜像由Docker Hub自动构建流程创建的</p>
+<h2 id="3-4拉取镜像"><a href="#3-4拉取镜像" class="headerlink" title="3.4拉取镜像"></a>3.4拉取镜像</h2><h3 id="3-4-1从Docker-Hub拉取"><a href="#3-4-1从Docker-Hub拉取" class="headerlink" title="3.4.1从Docker Hub拉取"></a>3.4.1从Docker Hub拉取</h3><p>Docker镜像首页，包括官方镜像和其它公开镜像。Docker Hub上最受欢迎的10大镜像（通过Docker registry API获取不了镜像被pull的个数，只能通过镜像的stars数量，来衡量镜像的流行度。毫无疑问，拥有最高stars数量的库都是官方库）。 </p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image21.png" alt="image21"></p>
+<p>国情的原因，国内下载 Docker HUB 官方的相关镜像比较慢，可以使用国内（docker.io）的一些镜像加速器，镜像保持和官方一致，关键是速度块，推荐使用。Mirror与Private Registry的区别：</p>
+<p>Private Registry（私有仓库）是开发者或者企业自建的镜像存储库，通常用来保存企业内部的 Docker 镜像，用于内部开发流程和产品的发布、版本控制。</p>
+<p>Mirror是一种代理中转服务，我们(比如daocloud)提供的Mirror服务，直接对接Docker Hub的官方Registry。Docker Hub 上有数以十万计的各类 Docker 镜像。</p>
+<p>在使用Private Registry时，需要在Docker Pull 或Dockerfile中直接键入Private Registry 的地址，通常这样会导致与 Private Registry 的绑定，缺乏灵活性。</p>
+<p>使用 Mirror 服务，只需要在 Docker 守护进程（Daemon）的配置文件中加入 Mirror 参数，即可在全局范围内透明的访问官方的 Docker Hub，避免了对 Dockerfile 镜像引用来源的修改。</p>
+<p>简单来说，Mirror类似CDN，本质是官方的cache；Private Registry类似私服，跟官方没什么关系。对用户来说，由于用户是要拖docker hub上的image，对应的是Mirror。yum/apt-get的Mirror又有点不一样，它其实是把官方的库文件整个拖到自己的服务器上做镜像，并定时与官方做同步；而Docker Mirror只会缓存曾经使用过的image。</p>
+<p>使用命令拉取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos:7</span><br></pre></td></tr></table></figure>
+<p>目前国内访问docker hub速度上有点尴尬，使用docker Mirror势在必行。现有国内提供docker镜像加速服务的商家有不少，下面重点ustc镜像。</p>
+<h3 id="3-4-2-ustc的镜像"><a href="#3-4-2-ustc的镜像" class="headerlink" title="3.4.2 ustc的镜像"></a>3.4.2 ustc的镜像</h3><p>ustc是老牌的linux镜像服务提供者了，还在遥远的ubuntu 5.04版本的时候就在用。ustc的docker镜像加速器速度很快。ustc docker mirror的优势之一就是不需要注册，是真正的公共服务。</p>
+<p><a href="https://lug.ustc.edu.cn/wiki/mirrors/help/docker" target="_blank" rel="noopener">https://lug.ustc.edu.cn/wiki/mirrors/help/docker</a></p>
+<p><strong>步骤：</strong></p>
+<p>（1）编辑该文件：vi /etc/docker/daemon.json  // 如果该文件不存在就手动创建；说明：在centos7.x下，通过vi。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image22.png" alt="image22"></p>
+<p>（2）在该文件中输入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;registry-mirrors&quot;: [&quot;https://docker.mirrors.ustc.edu.cn&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3）注意：一定要重启docker服务，如果重启docker后无法加速，可以重新启动OS</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image23.png" alt="image23"></p>
+<p>然后通过docker pull命令下载镜像：速度杠杠的。</p>
+<h3 id="3-5删除镜像"><a href="#3-5删除镜像" class="headerlink" title="3.5删除镜像"></a>3.5删除镜像</h3><ol>
+<li>docker rmi $IMAGE_ID：删除指定镜像</li>
+<li><p>docker rmi <code>docker images -q</code>：删除所有镜像</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image24.png" alt="image24"></p>
+</li>
+</ol>
+<h1 id="4-Docker容器操作"><a href="#4-Docker容器操作" class="headerlink" title="4.Docker容器操作"></a>4.Docker容器操作</h1><h2 id="4-1查看容器"><a href="#4-1查看容器" class="headerlink" title="4.1查看容器"></a>4.1查看容器</h2><ul>
+<li><p>查看正在运行容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有的容器（启动过的历史容器）：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps –a</span><br></pre></td></tr></table></figure>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image25.png" alt="image25"></p>
+<ul>
+<li>查看最后一次运行的容器：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps –l</span><br></pre></td></tr></table></figure>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image26.png" alt="image26"></p>
+<ul>
+<li>查看停止的容器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps -f status=exited</span><br></pre></td></tr></table></figure>
+<h2 id="4-2创建与启动容器"><a href="#4-2创建与启动容器" class="headerlink" title="4.2创建与启动容器"></a>4.2创建与启动容器</h2><ul>
+<li>创建容器常用的参数说明：</li>
+<li>创建容器命令：docker run</li>
+<li>-i：表示运行容器</li>
+<li>-t：表示容器启动后会进入其命令行。加入这两个参数后，容器创建就能登录进去。即分配一个伪终端。</li>
+<li>–name :为创建的容器命名。</li>
+<li>-v：表示目录映射关系（前者是宿主机目录，后者是映射到宿主机上的目录），可以使用多个－v做多个目录或文件映射。注意：最好做目录映射，在宿主机上做修改，然后共享到容器上。</li>
+<li>-d：在run后面加上-d参数,则会创建一个守护式容器在后台运行（这样创建容器后不会自动登录容器，如果只加-i -t两个参数，创建后就会自动进去容器）。</li>
+<li>-p：表示端口映射，前者是宿主机端口，后者是容器内的映射端口。可以使用多个－p做多个端口映射</li>
+</ul>
+<h3 id="4-1-1交互式容器"><a href="#4-1-1交互式容器" class="headerlink" title="4.1.1交互式容器"></a>4.1.1交互式容器</h3><p>创建一个交互式容器并取名为mycentos</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=mycentos centos:7 /bin/bash</span><br></pre></td></tr></table></figure>
+<p>这时我们通过ps命令查看，发现可以看到启动的容器，状态为启动状态</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image27.png" alt="image27"></p>
+<p>使用exit命令 退出当前容器</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image28.png" alt="image28"></p>
+<p>然后用ps -a 命令查看发现该容器也随之停止：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image29.png" alt="image29"></p>
+<h3 id="4-1-2守护式容器"><a href="#4-1-2守护式容器" class="headerlink" title="4.1.2守护式容器"></a>4.1.2守护式容器</h3><p>创建一个守护式容器：如果对于一个需要长期运行的容器来说，我们可以创建一个守护式容器。命令如下（容器名称不能重复）：</p>
+<ul>
+<li>登录守护式容器方式：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name=mycentos2 centos:7</span><br></pre></td></tr></table></figure>
+<p>docker exec -it container_name (或者 container_id)  /bin/bash（exit退出时，容器不会停止）</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image30.png" alt="image30"></p>
+<h2 id="4-3停止与启动容器"><a href="#4-3停止与启动容器" class="headerlink" title="4.3停止与启动容器"></a>4.3停止与启动容器</h2><ul>
+<li><p>停止正在运行的容器：docker stop $CONTAINER_NAME/ID</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image31.png" alt="image31"></p>
+</li>
+<li><p>启动已运行过的容器：docker start $CONTAINER_NAME/ID</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image32.png" alt="image32"></p>
+</li>
+</ul>
+<h2 id="4-4文件拷贝"><a href="#4-4文件拷贝" class="headerlink" title="4.4文件拷贝"></a>4.4文件拷贝</h2><p>如果我们需要将文件拷贝到容器内可以使用cp命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 需要拷贝的文件或目录 容器名称:容器目录</span><br></pre></td></tr></table></figure>
+<p>也可以将文件从容器内拷贝出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 容器名称:容器目录 需要拷贝的文件或目录</span><br></pre></td></tr></table></figure>
+<h2 id="4-5目录挂载"><a href="#4-5目录挂载" class="headerlink" title="4.5目录挂载"></a>4.5目录挂载</h2><p>我们可以在创建容器的时候，将宿主机的目录与容器内的目录进行映射，这样我们就可以通过修改宿主机某个目录的文件从而去影响容器。</p>
+<p>创建容器 添加-v参数 后边为   宿主机目录:容器目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di -v /usr/local/myhtml:/usr/local/myhtml --name=mycentos2 centos:7</span><br></pre></td></tr></table></figure>
+<p>如果你共享的是多级的目录，可能会出现权限不足的提示。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image33.png" alt="image33"></p>
+<p>这是因为CentOS7中的安全模块selinux把权限禁掉了，我们需要添加参数  –privileged=true  来解决挂载的目录没有权限的问题</p>
+<h2 id="4-6查看容器IP地址"><a href="#4-6查看容器IP地址" class="headerlink" title="4.6查看容器IP地址"></a>4.6查看容器IP地址</h2><p>我们可以通过以下命令查看容器运行的各种数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect mycentos2</span><br></pre></td></tr></table></figure>
+<p>也可以直接执行下面的命令直接输出IP地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format=&apos;&#123;&#123;.NetworkSettings.IPAddress&#125;&#125;&apos; mycentos2</span><br></pre></td></tr></table></figure>
+<h2 id="4-7删除容器"><a href="#4-7删除容器" class="headerlink" title="4.7删除容器"></a>4.7删除容器</h2><ul>
+<li><p>删除指定的容器：docker rm $CONTAINER_ID/NAME</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image34.png" alt="image34"></p>
+</li>
+</ul>
+<p>注意，只能删除停止的容器</p>
+<ul>
+<li><p>删除所有容器：docker rm <code>docker ps -a -q</code></p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image35.png" alt="image35"></p>
+</li>
+</ul>
+<h1 id="5-部署应用"><a href="#5-部署应用" class="headerlink" title="5.部署应用"></a>5.部署应用</h1><h2 id="5-1-MySQL部署"><a href="#5-1-MySQL部署" class="headerlink" title="5.1 MySQL部署"></a>5.1 MySQL部署</h2><h3 id="5-1-1拉取MySQL镜像"><a href="#5-1-1拉取MySQL镜像" class="headerlink" title="5.1.1拉取MySQL镜像"></a>5.1.1拉取MySQL镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql</span><br></pre></td></tr></table></figure>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image36.png" alt="image36"></p>
+<p>查看镜像</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image37.png" alt="image37"></p>
+<h3 id="5-1-2创建MySQL容器"><a href="#5-1-2创建MySQL容器" class="headerlink" title="5.1.2创建MySQL容器"></a>5.1.2创建MySQL容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name pinyougou_mysql -p 33306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql</span><br></pre></td></tr></table></figure>
+<p>-p 代表端口映射，格式为  宿主机映射端口:容器运行端口</p>
+<p>-e 代表添加环境变量  MYSQL_ROOT_PASSWORD是root用户的登陆密码</p>
+<h3 id="5-1-3进入MySQL容器-登陆MySQL"><a href="#5-1-3进入MySQL容器-登陆MySQL" class="headerlink" title="5.1.3进入MySQL容器,登陆MySQL"></a>5.1.3进入MySQL容器,登陆MySQL</h3><p>进入mysql容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it pinyougou_mysql /bin/bash</span><br></pre></td></tr></table></figure>
+<p>登陆mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<h3 id="5-1-4远程登陆MySQL"><a href="#5-1-4远程登陆MySQL" class="headerlink" title="5.1.4远程登陆MySQL"></a>5.1.4远程登陆MySQL</h3><p>我们在我们本机的电脑上去连接虚拟机Centos中的Docker容器，这里192.168.247.130是虚拟机操作系统的IP</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image38.png" alt="image38"></p>
+<h3 id="5-1-5查看容器IP地址"><a href="#5-1-5查看容器IP地址" class="headerlink" title="5.1.5查看容器IP地址"></a>5.1.5查看容器IP地址</h3><p>我们可以通过以下命令查看容器运行的各种数据</p>
+<p>运行效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect pinyougou_mysql</span><br></pre></td></tr></table></figure>
+<p>我们可以看到我们的数据库服务器的IP是172.17.0.2 </p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image40.png" alt="image40"></p>
+<h2 id="5-2-tomcat部署"><a href="#5-2-tomcat部署" class="headerlink" title="5.2 tomcat部署"></a>5.2 tomcat部署</h2><h3 id="5-2-1拉取tomcat镜像"><a href="#5-2-1拉取tomcat镜像" class="headerlink" title="5.2.1拉取tomcat镜像"></a>5.2.1拉取tomcat镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull tomcat:7-jre7</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-2创建tomca容器"><a href="#5-2-2创建tomca容器" class="headerlink" title="5.2.2创建tomca容器"></a>5.2.2创建tomca容器</h3><p>创建容器用于部署单点登录系统（CAS）  -p表示地址映射</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name=pinyougou_tomcat -p 9000:8080 </span><br><span class="line">-v /usr/local/myhtml:/usr/local/tomcat/webapps --privileged=true tomcat:7-jre7</span><br></pre></td></tr></table></figure>
+<h3 id="5-2-3部署web应用"><a href="#5-2-3部署web应用" class="headerlink" title="5.2.3部署web应用"></a>5.2.3部署web应用</h3><p>（1）修改cas系统的配置文件，修改数据库连接的url </p>
+<p>测试：地址栏输入：<a href="http://192.168.247.135:9000/cas/login" target="_blank" rel="noopener">http://192.168.247.135:9000/cas/login</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"</span><br><span class="line">		p:driverClass=<span class="string">"com.mysql.jdbc.Driver"</span></span><br><span class="line">		p:jdbcUrl=<span class="string">"jdbc:mysql://172.17.0.6:3306/pinyougoudb?characterEncoding=utf8"</span></span><br><span class="line">		p:user=<span class="string">"root"</span></span><br><span class="line">		p:password=<span class="string">"123456"</span> /&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="5-3-Nginx部署"><a href="#5-3-Nginx部署" class="headerlink" title="5.3 Nginx部署"></a>5.3 Nginx部署</h2><h3 id="5-3-1拉取Nginx镜像"><a href="#5-3-1拉取Nginx镜像" class="headerlink" title="5.3.1拉取Nginx镜像"></a>5.3.1拉取Nginx镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull nginx</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-2创建Nginx容器"><a href="#5-3-2创建Nginx容器" class="headerlink" title="5.3.2创建Nginx容器"></a>5.3.2创建Nginx容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name=pinyougou_nginx -p 80:80  nginx/bin/bash</span><br></pre></td></tr></table></figure>
+<h3 id="5-3-3测试Nginx"><a href="#5-3-3测试Nginx" class="headerlink" title="5.3.3测试Nginx"></a>5.3.3测试Nginx</h3><p>浏览器地址栏输入： <a href="http://192.168.247.135" target="_blank" rel="noopener">http://192.168.247.135</a> </p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/docker/image42.png" alt="image42"></p>
+<h3 id="5-3-4配置反向代理"><a href="#5-3-4配置反向代理" class="headerlink" title="5.3.4配置反向代理"></a>5.3.4配置反向代理</h3><p>官方的nginx镜像,nginx配置文件nginx.conf 在/etc/nginx/目录下。</p>
+<p>在容器内编辑配置文件不方便，我们可以先将配置文件从容器内拷贝到宿主机，编辑修改后再拷贝回去。</p>
+<p>（1）从容器拷贝配置文件到宿主机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp pinyougou_nginx:/etc/nginx/nginx.conf nginx.conf</span><br></pre></td></tr></table></figure>
+<p>（2）编辑nginx.conf，添加反向代理配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">upstream tomcat-cas &#123;</span><br><span class="line">	server <span class="number">172.17</span><span class="number">.0</span><span class="number">.7</span>:<span class="number">8080</span>;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">	listen <span class="number">80</span>;</span><br><span class="line">	server_name passport.pinyougou.com;</span><br><span class="line">	location / &#123;</span><br><span class="line">		proxy_pass http://tomcat-cas;</span><br><span class="line">		index index.html index.htm;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3）将修改后的配置文件拷贝到容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp nginx.conf  pinyougou_nginx:/etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>（4）重新启动容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart pinyougou_nginx</span><br></pre></td></tr></table></figure>
+<p>（5）设置域名指向</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.247.135 passport.pinyougou.com</span><br></pre></td></tr></table></figure>
+<p>浏览器测试：<a href="http://passport.pinyougou.com/cas/login" target="_blank" rel="noopener">http://passport.pinyougou.com/cas/login</a></p>
+<h2 id="5-4-Redis部署"><a href="#5-4-Redis部署" class="headerlink" title="5.4 Redis部署"></a>5.4 Redis部署</h2><h3 id="5-4-1拉取Redis镜像"><a href="#5-4-1拉取Redis镜像" class="headerlink" title="5.4.1拉取Redis镜像"></a>5.4.1拉取Redis镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull redis</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-2创建Redis容器"><a href="#5-4-2创建Redis容器" class="headerlink" title="5.4.2创建Redis容器"></a>5.4.2创建Redis容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -di --name=pinyougou_redis -p 6379:6379 redis</span><br></pre></td></tr></table></figure>
+<h3 id="5-4-3客户端测试"><a href="#5-4-3客户端测试" class="headerlink" title="5.4.3客户端测试"></a>5.4.3客户端测试</h3><p>在你的本地电脑命令提示符下，用window版本redis测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 192.168.247.135</span><br></pre></td></tr></table></figure>
+<h1 id="6-备份与迁移"><a href="#6-备份与迁移" class="headerlink" title="6.备份与迁移"></a>6.备份与迁移</h1><h2 id="6-1容器保存为镜像"><a href="#6-1容器保存为镜像" class="headerlink" title="6.1容器保存为镜像"></a>6.1容器保存为镜像</h2><p>我们可以通过以下命令将容器保存为镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit pinyougou_nginx mynginx</span><br></pre></td></tr></table></figure>
+<p>pinyougou_nginx是容器名称</p>
+<p>mynginx是新的镜像名称</p>
+<p>此镜像的内容就是你当前容器的内容，接下来你可以用此镜像再次运行新的容器</p>
+<h2 id="6-2镜像备份"><a href="#6-2镜像备份" class="headerlink" title="6.2镜像备份"></a>6.2镜像备份</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker  save -o mynginx.tar mynginx</span><br></pre></td></tr></table></figure>
+<p>-o 输出到的文件</p>
+<p>执行后，运行ls命令即可看到打成的tar包</p>
+<h2 id="6-3镜像恢复与迁移"><a href="#6-3镜像恢复与迁移" class="headerlink" title="6.3镜像恢复与迁移"></a>6.3镜像恢复与迁移</h2><p>首先我们先删除掉mynginx镜像</p>
+<p>然后执行此命令进行恢复</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i mynginx.tar</span><br></pre></td></tr></table></figure>
+<p>-i 输入的文件</p>
+<p>执行后再次查看镜像，可以看到镜像已经恢复</p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/12/21/Hadoop web页面和spark web页面不能访问/">          
+
+            <span title="Hadoop web页面和spark web页面不能访问">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/12/14/Spring Boot应用启动器/">         
+
+           <span title="Spring Boot应用启动器">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

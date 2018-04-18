@@ -1,0 +1,355 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Redis使用 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		Redis使用
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/05 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/redis/">redis</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/redis/">redis</a> <a class="tag-link" href="/tags/命令/">命令</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		6313
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="1、Redis五种数据类型"><a href="#1、Redis五种数据类型" class="headerlink" title="1、Redis五种数据类型"></a>1、Redis五种数据类型</h1><pre><code>1、字符串（String）
+2、哈希（hash）
+3、字符串列表（list）
+4、字符串集合（set）
+5、有序字符串集合（sorted set）
+</code></pre><h1 id="2、字符串类型"><a href="#2、字符串类型" class="headerlink" title="2、字符串类型"></a>2、字符串类型</h1><h2 id="2-1、赋值"><a href="#2-1、赋值" class="headerlink" title="2.1、赋值"></a>2.1、赋值</h2><p>set key value：设定key持有指定的字符串value，如果该key存在则进行覆盖操作。总是返回”OK”<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/set%20key%20value.png" alt="set key value"></p>
+<h2 id="2-2、取值"><a href="#2-2、取值" class="headerlink" title="2.2、取值"></a>2.2、取值</h2><p>get key：获取key的value。如果与该key关联的value不是String类型，redis将返回错误信息，因为get命令只能用于获取String value；如果该key不存在，返回(nil)。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/get%20key.png" alt="get key"><br>getset key value：先获取该key的值，然后在设置该key的值。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/getset%20key%20value.png" alt="getset key value"></p>
+<h2 id="2-3、删除"><a href="#2-3、删除" class="headerlink" title="2.3、删除"></a>2.3、删除</h2><p>del key ：删除指定key<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/del%20key.png" alt="del key"></p>
+<h2 id="2-4、数值增减"><a href="#2-4、数值增减" class="headerlink" title="2.4、数值增减"></a>2.4、数值增减</h2><p>incr key：将指定的key的value原子性的递增1.如果该key不存在，其初始值为0，在incr之后其值为1。如果value的值不能转成整型，如hello，该操作将执行失败并返回相应的错误信息。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/incr%20key.png" alt="incr key"><br>decr key：将指定的key的value原子性的递减1.如果该key不存在，其初始值为0，在incr之后其值为-1。如果value的值不能转成整型，如hello，该操作将执行失败并返回相应的错误信息。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/decr%20key.png" alt="decr key"></p>
+<h2 id="2-5、扩展命令"><a href="#2-5、扩展命令" class="headerlink" title="2.5、扩展命令"></a>2.5、扩展命令</h2><p>incrby key increment：将指定的key的value原子性增加increment，如果该key不存在，器初始值为0，在incrby之后，该值为increment。如果该值不能转成整型，如hello则失败并返回错误信息<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/incrby%20key%20increment.png" alt="incrby key increment"><br>decrby key decrement：将指定的key的value原子性减少decrement，如果该key不存在，器初始值为0，在decrby之后，该值为decrement。如果该值不能转成整型，如hello则失败并返回错误信息<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/decrby%20key%20decrement.png" alt="decrby key decrement"><br>append key value：拼凑字符串。如果该key存在，则在原有的value后追加该值；如果该key不存在，则重新创建一个key/value<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/append%20key%20value.png" alt="append key value"></p>
+<h1 id="3、hash数据类型"><a href="#3、hash数据类型" class="headerlink" title="3、hash数据类型"></a>3、hash数据类型</h1><h2 id="3-1、概述"><a href="#3-1、概述" class="headerlink" title="3.1、概述"></a>3.1、概述</h2><p>   Redis中的Hash类型可以看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。</p>
+<h2 id="3-2、存值"><a href="#3-2、存值" class="headerlink" title="3.2、存值"></a>3.2、存值</h2><p>hset key field value<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hset%20key%20field%20value.png" alt="hset key field value"><br>hmset key field value field value<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hmset%20key%20field%20value%20field%20value.png" alt="hmset key field value field value"></p>
+<h2 id="3-3、取值"><a href="#3-3、取值" class="headerlink" title="3.3、取值"></a>3.3、取值</h2><p>hget key field：返回指定的key中的field的值<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hget%20key%20field.png" alt="hget key field"><br>hmget key fileds：获取key中的多个filed的值<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hmget%20key%20fileds.png" alt="hmget key fileds"><br>hgetall key：获取key中的所有filed-vaule<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hgetall%20key.png" alt="hgetall key"></p>
+<h2 id="3-4、删除"><a href="#3-4、删除" class="headerlink" title="3.4、删除"></a>3.4、删除</h2><p>hdel key field [field … ] ：可以删除一个或多个字段，返回值是被删除的字段个数<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hdel%20key%20field%20%5Bfield%20%E2%80%A6%20%5D1.png" alt="hdel key field [field … ]1"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hdel%20key%20field%20%5Bfield%20%E2%80%A6%20%5D2.png" alt="hdel key field [field … ]2"><br>del key ：删除整个内容<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/del%20key%20.png" alt="del key"></p>
+<h2 id="3-5、增加数字"><a href="#3-5、增加数字" class="headerlink" title="3.5、增加数字"></a>3.5、增加数字</h2><p>hincrby key field value：为某个key的某个属性增加值<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hincrby%20key%20field%20value.png" alt="hincrby key field value"></p>
+<h2 id="3-6、自学命令"><a href="#3-6、自学命令" class="headerlink" title="3.6、自学命令"></a>3.6、自学命令</h2><p>hexists key field：判断指定的key中的filed是否存在<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hexists%20key%20field.png" alt="hexists key field"><br>hlen key：获取key所包含的field的数量<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hlen%20key.png" alt="hlen key"><br>hkeys key ：获得所有的key<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hkeys%20key.png" alt="hkeys key"><br>hvals key：获得所有的value<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/hvals%20key.png" alt="hvals key"></p>
+<h1 id="4、list类型"><a href="#4、list类型" class="headerlink" title="4、list类型"></a>4、list类型</h1><h2 id="4-1、概述"><a href="#4-1、概述" class="headerlink" title="4.1、概述"></a>4.1、概述</h2><p>在Redis中，List类型是按照插入顺序排序的字符串链表。和数据结构中的普通链表一样，我们可以在其头部(left)和尾部(right)添加新的元素。在插入时，如果该键并不存在，Redis将为该键创建一个新的链表。与此相反，如果链表中所有的元素均被移除，那么该键也将会被从数据库中删除。List中可以包含的最大元素数量是4294967295。<br>    从元素插入和删除的效率视角来看，如果我们是在链表的两头插入或删除元素，这将会是非常高效的操作，即使链表中已经存储了百万条记录，该操作也可以在常量时间内完成。然而需要说明的是，如果元素插入或删除操作是作用于链表中间，那将会是非常低效的。相信对于有良好数据结构基础的开发者而言，这一点并不难理解。<br>  1、ArrayList使用数组方式存储数据，所以根据索引查询数据速度快，而新增或者删除元素时需要设计到位移操作，所以比较慢。<br>  2、LinkedList使用双向链接方式存储数据，每个元素都记录前后元素的指针，所以插入、删除数据时只是更改前后元素的指针指向即可，速度非常快，然后通过下标查询元素时需要从头开始索引，所以比较慢。<br>  3、双向链表中添加数据<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image39.png" alt="image39"><br>  4、双向链表中删除数据<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image40.png" alt="image40"></p>
+<h2 id="4-2、常用命令"><a href="#4-2、常用命令" class="headerlink" title="4.2、常用命令"></a>4.2、常用命令</h2><h3 id="4-2-1、两端添加"><a href="#4-2-1、两端添加" class="headerlink" title="4.2.1、两端添加"></a>4.2.1、两端添加</h3><p>lpush key values[value1 value2…]：在指定的key所关联的list的头部插入所有的values，如果该key不存在，该命令在插入的之前创建一个与该key关联的空链表，之后再向该链表的头部插入数据。插入成功，返回元素的个数。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lpush%20key%20values%5Bvalue1%20value2%E2%80%A6%5D.png" alt="lpush key values"><br>rpush key values[value1、value2…]：在该list的尾部添加元素。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/rpush%20key%20values%5Bvalue1%E3%80%81value2%E2%80%A6%5D.png" alt="rpush key values"></p>
+<h3 id="4-2-2、查看列表"><a href="#4-2-2、查看列表" class="headerlink" title="4.2.2、查看列表"></a>4.2.2、查看列表</h3><p>lrange key start end：获取链表中从start到end的元素的值，start、end从0开始计数；也可为负数，若为-1则表示链表尾部的元素，-2则表示倒数第二个，依次类推…<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrange%20key%20start%20end1.png" alt="lrange key start end1"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrange%20key%20start%20end2.png" alt="lrange key start end2"></p>
+<h3 id="4-2-3、两端弹出"><a href="#4-2-3、两端弹出" class="headerlink" title="4.2.3、两端弹出"></a>4.2.3、两端弹出</h3><p>lpop key：返回并弹出指定的key关联的链表中的第一个元素，即头部元素。如果该key不存在，返回nil；若key存在，则返回链表的头部元素。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lpop%20key.png" alt="lpop key"><br>rpop key：从尾部弹出元素。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/rpop%20key.png" alt="rpop key"></p>
+<h3 id="4-2-4、获取列表中元素的个数"><a href="#4-2-4、获取列表中元素的个数" class="headerlink" title="4.2.4、获取列表中元素的个数"></a>4.2.4、获取列表中元素的个数</h3><p>llen key：返回指定的key关联的链表中的元素的数量。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/llen%20key.png" alt="llen key"></p>
+<h3 id="4-2-5、扩展命令"><a href="#4-2-5、扩展命令" class="headerlink" title="4.2.5、扩展命令"></a>4.2.5、扩展命令</h3><p>lpushx key value：仅当参数中指定的key存在时，向关联的list的头部插入value。如果不存在，将不进行插入<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lpushx%20key%20value.png" alt="lpushx key value"><br>rpushx key value：在该list的尾部添加元素<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/rpushx%20key%20value.png" alt="rpushx key value"><br>lrem key count value：删除count个值为value的元素，如果count大于0，从头向尾遍历并删除count个值为value的元素，如果count小于0，则从尾向头遍历并删除。如果count等于0，则删除链表中所有等于value的元素。<br>0)初始化数据<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrem%20key%20count%20value.png" alt="lrem key count value"><br> 1) 从头删除，2个数字“3”<br>lrem mylist3 2 3<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrem%20mylist3%202%203.png" alt="lrem mylist3 2 3"><br>2) 从尾删除，2个数字“1”<br>lrem mylist3 -2 1<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrem%20mylist3%20-2%201.png" alt="lrem mylist3 -2 1"><br>3) 删除所有数字“2”<br>lrem mylist3 0 2<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lrem%20mylist3%200%202.png" alt="lrem mylist3 0 2"><br>lset key index value：设置链表中的index的脚标的元素值，0代表链表的头元素，-1代表链表的尾元素。操作链表的脚标不存在则抛异常。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/lset%20key%20index%20value.png" alt="lset key index value"><br>linsert key before|after pivot value：在pivot元素前或者后插入value这个元素。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/linsert%20key%20before%7Cafter%20pivot%20value.png" alt="linsert key before|after pivot value"><br>rpoplpush resource destination：将链表中的尾部元素弹出并添加到头部。[循环操作]<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/rpoplpush%20resource%20destination.png" alt="rpoplpush resource destination"><br>1) 将mylist5右端弹出，压入到mylist6左边。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/mylist5.png" alt="mylist5"><br>2) 将mylist6右端数据弹出，压入到左端<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/mylist6.png" alt="mylist6"></p>
+<h2 id="4-3、使用场景"><a href="#4-3、使用场景" class="headerlink" title="4.3、使用场景"></a>4.3、使用场景</h2><p>rpoplpush的使用场景：<br>Redis链表经常会被用于消息队列的服务，以完成多程序之间的消息交换。假设一个应用程序正在执行LPUSH操作向链表中添加新的元素，我们通常将这样的程序称之为”生产者(Producer)”，而另外一个应用程序正在执行RPOP操作从链表中取出元素，我们称这样的程序为”消费者(Consumer)”。如果此时，消费者程序在取出消息元素后立刻崩溃，由于该消息已经被取出且没有被正常处理，那么我们就可以认为该消息已经丢失，由此可能会导致业务数据丢失，或业务状态的不一致等现象的发生。然而通过使用RPOPLPUSH命令，消费者程序在从主消息队列中取出消息之后再将其插入到备份队列中，直到消费者程序完成正常的处理逻辑后再将该消息从备份队列中删除。同时我们还可以提供一个守护进程，当发现备份队列中的消息过期时，可以重新将其再放回到主消息队列中，以便其它的消费者程序继续处理。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/rpoplpush%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF.png" alt="rpoplpush的使用场景"></p>
+<h1 id="5、存储set"><a href="#5、存储set" class="headerlink" title="5、存储set"></a>5、存储set</h1><h2 id="5-1、概述"><a href="#5-1、概述" class="headerlink" title="5.1、概述"></a>5.1、概述</h2><pre><code>在Redis中，我们可以将Set类型看作为没有排序的字符集合，和List类型一样，我们也可以在该类型的数据值上执行添加、删除或判断某一元素是否存在等操作。需要说明的是，这些操作的时间复杂度为O(1)，即常量时间内完成次操作。Set可包含的最大元素数量是4294967295。
+和List类型不同的是，Set集合中不允许出现重复的元素，这一点和C++标准库中的set容器是完全相同的。换句话说，如果多次添加相同元素，Set中将仅保留该元素的一份拷贝。和List类型相比，Set类型在功能上还存在着一个非常重要的特性，即在服务器端完成多个Sets之间的聚合计算操作，如unions、intersections和differences。由于这些操作均在服务端完成，因此效率极高，而且也节省了大量的网络IO开销。
+</code></pre><h2 id="5-2、常用命令"><a href="#5-2、常用命令" class="headerlink" title="5.2、常用命令"></a>5.2、常用命令</h2><h3 id="5-2-1、添加-删除元素"><a href="#5-2-1、添加-删除元素" class="headerlink" title="5.2.1、添加/删除元素"></a>5.2.1、添加/删除元素</h3><p>sadd key values[value1、value2…]：向set中添加数据，如果该key的值已有则不会重复添加<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sadd%20key%20values.png" alt="sadd key values"><br>srem key members[member1、member2…]：删除set中指定的成员<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/srem%20key%20members.png" alt="srem key members"></p>
+<h3 id="5-2-2、获得集合中的元素"><a href="#5-2-2、获得集合中的元素" class="headerlink" title="5.2.2、获得集合中的元素"></a>5.2.2、获得集合中的元素</h3><p>smembers key：获取set中所有的成员<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/smembers%20key.png" alt="smembers key"><br>sismember key member：判断参数中指定的成员是否在该set中，1表示存在，0表示不存在或者该key本身就不存在。（无论集合中有多少元素都可以极速的返回结果）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sismember%20key%20member.png" alt="sismember key member"></p>
+<h3 id="5-2-3、集合的差集运算-A-B"><a href="#5-2-3、集合的差集运算-A-B" class="headerlink" title="5.2.3、集合的差集运算 A-B"></a>5.2.3、集合的差集运算 A-B</h3><p>sdiff key1 key2…：返回key1与key2中相差的成员，而且与key的顺序有关。即返回差集。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sdiff%20key1%20key2_1.png" alt="sdiff key1 key2_1">（属于A并且不属于B的元素构成的集合）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sdiff%20key1%20key2_2.png" alt="sdiff key1 key2_2"></p>
+<h3 id="5-2-4、集合的交集运算-A-∩-B"><a href="#5-2-4、集合的交集运算-A-∩-B" class="headerlink" title="5.2.4、集合的交集运算 A ∩ B"></a>5.2.4、集合的交集运算 A ∩ B</h3><p>sinter key1 key2 key3…：返回交集。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sinter%20key1%20key2%20key3.png" alt="sinter key1 key2 key3">（属于A且属于B的元素构成的集合）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image67.png" alt="image67"></p>
+<h3 id="5-2-5、集合的并集运算-A-∪-B"><a href="#5-2-5、集合的并集运算-A-∪-B" class="headerlink" title="5.2.5、集合的并集运算 A ∪ B"></a>5.2.5、集合的并集运算 A ∪ B</h3><p>sunion key1 key2 key3…：返回并集<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sunion%20key1%20key2%20key3_1.png" alt="sunion key1 key2 key3_1">（属于A或者属于B的元素构成的集合）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sunion%20key1%20key2%20key3_2.png" alt="sunion key1 key2 key3_2"></p>
+<h3 id="5-2-6、扩展命令"><a href="#5-2-6、扩展命令" class="headerlink" title="5.2.6、扩展命令"></a>5.2.6、扩展命令</h3><p>scard key：获取set中成员的数量<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/scard%20key.png" alt="scard key"><br>srandmember key：随机返回set中的一个成员<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/srandmember%20key.png" alt="srandmember key"><br>sdiffstore destination key1 key2…：将key1、key2相差的成员存储在destination上<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sdiffstore%20destination%20key1%20key2.png" alt="sdiffstore destination key1 key2"><br>sinterstore destination key[key…]：将返回的交集存储在destination上<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sinterstore%20destination%20key.png" alt="sinterstore destination key"><br>sunionstore destination key[key…]：将返回的并集存储在destination上<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/sunionstore%20destination%20key.png" alt="sunionstore destination key"></p>
+<h2 id="5-3、使用场景"><a href="#5-3、使用场景" class="headerlink" title="5.3、使用场景"></a>5.3、使用场景</h2><p>  1、可以使用Redis的Set数据类型跟踪一些唯一性数据，比如访问某一博客的唯一IP地址信息。对于此场景，我们仅需在每次访问该博客时将访问者的IP存入Redis中，Set数据类型会自动保证IP地址的唯一性。<br>  2、充分利用Set类型的服务端聚合操作方便、高效的特性，可以用于维护数据对象之间的关联关系。比如所有购买某一电子设备的客户ID被存储在一个指定的Set中，而购买另外一种电子产品的客户ID被存储在另外一个Set中，如果此时我们想获取有哪些客户同时购买了这两种商品时，Set的intersections命令就可以充分发挥它的方便和效率的优势了。</p>
+<h1 id="6、存储sortedset"><a href="#6、存储sortedset" class="headerlink" title="6、存储sortedset"></a>6、存储sortedset</h1><h2 id="6-1、概述"><a href="#6-1、概述" class="headerlink" title="6.1、概述"></a>6.1、概述</h2><p>  Sorted-Set和Set类型极为相似，它们都是字符串的集合，都不允许重复的成员出现在一个Set中。它们之间的主要差别是Sorted-Set中的每一个成员都会有一个分数(score)与之关联，Redis正是通过分数来为集合中的成员进行从小到大的排序。然而需要额外指出的是，尽管Sorted-Set中的成员必须是唯一的，但是分数(score)却是可以重复的。<br>  在Sorted-Set中添加、删除或更新一个成员都是非常快速的操作，其时间复杂度为集合中成员数量的对数。由于Sorted-Set中的成员在集合中的位置是有序的，因此，即便是访问位于集合中部的成员也仍然是非常高效的。事实上，Redis所具有的这一特征在很多其它类型的数据库中是很难实现的，换句话说，在该点上要想达到和Redis同样的高效，在其它数据库中进行建模是非常困难的。<br>    例如：游戏排名、微博热点话题等使用场景。</p>
+<h2 id="6-2、常用命令"><a href="#6-2、常用命令" class="headerlink" title="6.2、常用命令"></a>6.2、常用命令</h2><h3 id="6-2-1、添加元素"><a href="#6-2-1、添加元素" class="headerlink" title="6.2.1、添加元素"></a>6.2.1、添加元素</h3><p>zadd key score member score2 member2 … ：将所有成员以及该成员的分数存放到sorted-set中。如果该元素已经存在则会用新的分数替换原有的分数。返回值是新加入到集合中的元素个数，不包含之前已经存在的元素<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image75.png" alt="image75"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image76.png" alt="image76"></p>
+<h3 id="6-2-2、获得元素"><a href="#6-2-2、获得元素" class="headerlink" title="6.2.2、获得元素"></a>6.2.2、获得元素</h3><p>zscore key member：返回指定成员的分数<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image77.png" alt="image77"><br>zcard key：获取集合中的成员数量<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image78.png" alt="image78"></p>
+<h3 id="6-2-3、删除元素"><a href="#6-2-3、删除元素" class="headerlink" title="6.2.3、删除元素"></a>6.2.3、删除元素</h3><p>zrem key member[member…]：移除集合中指定的成员，可以指定多个成员。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image79.png" alt="image79"></p>
+<h3 id="6-2-4、范围查询"><a href="#6-2-4、范围查询" class="headerlink" title="6.2.4、范围查询"></a>6.2.4、范围查询</h3><p>zrange key start end [withscores]：获取集合中脚标为start-end的成员，[withscores]参数表明返回的成员包含其分数<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image80.png" alt="image80"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image81.png" alt="image81"><br>zrevrange key start stop [withscores]：照元素分数从大到小的顺序返回索引从start到stop之间的所有元素（包含两端的元素）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image82.png" alt="image82"><br>zremrangebyrank key start stop: 按照排名范围删除元素<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image83.png" alt="image83"><br>zremrangebyscore key min max：按照分数范围删除元素<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image84.png" alt="image84"></p>
+<h3 id="6-2-5、扩展命令"><a href="#6-2-5、扩展命令" class="headerlink" title="6.2.5、扩展命令"></a>6.2.5、扩展命令</h3><p>zrangebyscore key min max [withscores] [limit offset count]：返回分数在[min,max]的成员并按照分数从低到高排序。[withscores]：显示分数；[limit offset count]：offset，表明从脚标为offset的元素开始并返回count个成员。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image85.png" alt="image85"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image86.png" alt="image86"><br>zincrby key increment member：设置指定成员的增加的分数。返回值是更改后的分数。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image87.png" alt="image87"><br>zcount key min max：获取分数在[min,max]之间的成员<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image88.png" alt="image88"><br>zrank key member：返回成员在集合中的排名。（从小到大）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image89.png" alt="image89"><br>zrevrank key member：返回成员在集合中的排名。（从大到小）<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image90.png" alt="image90"></p>
+<h2 id="6-3、使用场景"><a href="#6-3、使用场景" class="headerlink" title="6.3、使用场景"></a>6.3、使用场景</h2><p>  1、可以用于一个大型在线游戏的积分排行榜。每当玩家的分数发生变化时，可以执行ZADD命令更新玩家的分数，此后再通过ZRANGE命令获取积分TOPTEN的用户信息。当然我们也可以利用ZRANK命令通过username来获取玩家的排行信息。最后我们将组合使用ZRANGE和ZRANK命令快速的获取和某个玩家积分相近的其他用户的信息。<br>  2、Sorted-Set类型还可用于构建索引数据。</p>
+<h1 id="7、keys的通用操作"><a href="#7、keys的通用操作" class="headerlink" title="7、keys的通用操作"></a>7、keys的通用操作</h1><p>keys pattern：获取所有与pattern匹配的key，返回所有与该key匹配的keys。*表示任意一个或多个字符，?表示任意一个字符<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image91.png" alt="image91"><br>del key1 key2…：删除指定的key<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image92.png" alt="image92"><br>exists key：判断该key是否存在，1代表存在，0代表不存在<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image93.png" alt="image93"><br>rename key newkey：为当前的key重命名<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image94.png" alt="image94"><br>expire key ：设置过期时间，单位：秒<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image95.png" alt="image95"><br>ttl key：获取该key所剩的超时时间，如果没有设置超时，返回-1。如果返回-2表示超时不存在。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image96.png" alt="image96"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image97.png" alt="image97"><br>type key：获取指定key的类型。该命令将以字符串的格式返回。    返回的字符串为string、list、set、hash和zset，如果key不存在返回none。<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/no-sql/redis%E4%BD%BF%E7%94%A8/image98.png" alt="image98"></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/25/IDEA快捷键/">          
+
+            <span title="IDEA快捷键">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/04/12/安装 Ruby, Rails 运行环境/">         
+
+           <span title="安装 Ruby, Rails 运行环境">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

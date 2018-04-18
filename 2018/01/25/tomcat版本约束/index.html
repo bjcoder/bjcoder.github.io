@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Tomcat版本约束 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		tomcat版本约束
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2018/01/25 	
+		</time>
+		
+						
+
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		593
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="tomcat版本约束"><a href="#tomcat版本约束" class="headerlink" title="tomcat版本约束"></a>tomcat版本约束</h1><table>
+<thead>
+<tr>
+<th>Servlet约束</th>
+<th>JSP约束</th>
+<th>EL约束</th>
+<th style="text-align:center">WebSocket约束</th>
+<th style="text-align:center">JASPIC约束</th>
+<th style="text-align:center">Apache Tomcat版本</th>
+<th style="text-align:center">Tomcat最新发布的版本</th>
+<th style="text-align:center">支持的Java版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.0</td>
+<td>2.3</td>
+<td>3.0.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">9.0.x</td>
+<td style="text-align:center">9.0.2(测试版)</td>
+<td style="text-align:center">8 and later</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>2.3</td>
+<td>3.0.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">8.5.x</td>
+<td style="text-align:center">8.5.24</td>
+<td style="text-align:center">7 and later</td>
+</tr>
+<tr>
+<td>3.1</td>
+<td>2.3</td>
+<td>3.0.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">8.0.x(已废弃)</td>
+<td style="text-align:center">8.0.48(已废弃)</td>
+<td style="text-align:center">7 and later</td>
+</tr>
+<tr>
+<td>3.0</td>
+<td>2.2</td>
+<td>2.2.</td>
+<td style="text-align:center">1.1.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">7.0.x</td>
+<td style="text-align:center">7.0.82</td>
+<td style="text-align:center">6 and later(7 and later for WebSocket)</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>2.1</td>
+<td>2.1.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">6.0.x(已归档)</td>
+<td style="text-align:center">6.0.53(已归档)</td>
+<td style="text-align:center">5 and later</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>2.0</td>
+<td>N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">5.5.x(已归档)</td>
+<td style="text-align:center">5.5.36(已归档)</td>
+<td style="text-align:center">1.4 and later</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>1.2</td>
+<td>N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">4.1.x(已归档)</td>
+<td style="text-align:center">4.1.40(已归档)</td>
+<td style="text-align:center">1.3 and later</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>1.1</td>
+<td>N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">N/A.</td>
+<td style="text-align:center">3.3.x(已归档)</td>
+<td style="text-align:center">3.3.2(已归档)</td>
+<td style="text-align:center">1.1 and later</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️所有已废弃，已归档和测试版的tomcat不建议下载      </p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2018/02/01/Hive配置/">          
+
+            <span title="Hive配置">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2018/01/08/机器学习和深入学习资料转载/">         
+
+           <span title="机器学习和深入学习资料转载">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Hive配置 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		Hive配置
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2018/02/01 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/集群搭建/">集群搭建</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		3528
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h1><p>安装hive前提是要先安装hadoop集群，并且hive只需要再hadoop的namenode节点集群里安装即可(需要再所有namenode上安装)，可以不在datanode节点的机器上安装。另外还需要说明的是，虽然修改配置文件并不需要你已经把hadoop跑起来，但是本文中用到了hadoop命令，在执行这些命令前你必须确保hadoop是在正常跑着的，而且启动hive的前提也是需要hadoop在正常跑着，所以建议你先将hadoop跑起来在按照本文操作。</p>
+<h1 id="1下载hive"><a href="#1下载hive" class="headerlink" title="1下载hive"></a>1下载hive</h1><p>下载地址：<a href="http://mirror.bit.edu.cn/apache/hive/" target="_blank" rel="noopener">Hive下载</a><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/hive%E4%B8%8B%E8%BD%BD.png" alt="hive下载"><br>apache-hive-2.1.1-bin.tar.gz</p>
+<h1 id="2安装"><a href="#2安装" class="headerlink" title="2安装"></a>2安装</h1><h2 id="2-1上载和解压缩"><a href="#2-1上载和解压缩" class="headerlink" title="2.1上载和解压缩"></a>2.1上载和解压缩</h2><p> 在~目录下新建一个名为hive的目录，将apache-hive-2.1.1-bin.tar.gz拷贝上去<br> 执行进入目录的命令：cd ~/hive<br> 执行解压缩的命令：tar -zxvf  apache-hive-2.1.1-bin.tar.gz</p>
+<h2 id="2-2配置环境变量"><a href="#2-2配置环境变量" class="headerlink" title="2.2配置环境变量"></a>2.2配置环境变量</h2><p> 编辑/etc/profile文件，增加hive相关的环境变量配置</p>
+<h1 id="Hive-environment"><a href="#Hive-environment" class="headerlink" title="Hive environment"></a>Hive environment</h1><p> export HIVE_HOME=/home/parallels/hive/apache-hive-2.1.1-bin<br> export PATH=$HIVE_HOME/bin:$HIVE_HOME/conf:$PATH</p>
+<p> profile文件编辑完成后，执行下面命令，让配置生效，命令是: source  /etc/profile</p>
+<h2 id="2-3对hive进行配置"><a href="#2-3对hive进行配置" class="headerlink" title="2.3对hive进行配置"></a>2.3对hive进行配置</h2><h3 id="2-3-1-hive-site-xml相关的配置"><a href="#2-3-1-hive-site-xml相关的配置" class="headerlink" title="2.3.1 hive-site.xml相关的配置"></a>2.3.1 hive-site.xml相关的配置</h3><h4 id="2-3-1-1新建hive-site-xml文件"><a href="#2-3-1-1新建hive-site-xml文件" class="headerlink" title="2.3.1.1新建hive-site.xml文件"></a>2.3.1.1新建hive-site.xml文件</h4><p> 进入到apache-hive-2.1.1-bin/conf目录，命令是：<br> 将hive-default.xml.template文件复制一份，并且改名为hive-site.xml，命令是：<br> cp hive-default.xml.template   hive-site.xml</p>
+<h4 id="2-3-1-2使用hadoop新建hdfs目录"><a href="#2-3-1-2使用hadoop新建hdfs目录" class="headerlink" title="2.3.1.2使用hadoop新建hdfs目录"></a>2.3.1.2使用hadoop新建hdfs目录</h4><pre><code>因为在hive-site.xml中有这样的配置：
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;</span><br><span class="line">&lt;value&gt;/user/hive/warehouse&lt;/value&gt;</span><br><span class="line"> &lt;name&gt;hive.exec.scratchdir&lt;/name&gt;</span><br><span class="line">&lt;value&gt;/tmp/hive&lt;/value&gt;</span><br></pre></td></tr></table></figure>
+<p>  所以要让hadoop新建/user/hive/warehouse目录，执行命令：<br> $HADOOP_HOME/bin/hadoop fs -mkdir -p /user/hive/warehouse<br>  给刚才新建的目录赋予读写权限，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -chmod   777   /user/hive/warehouse<br>  让hadoop新建/tmp/hive/目录，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -mkdir  -p   /tmp/hive/<br> 给刚才新建的目录赋予读写权限，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -chmod  777   /tmp/hive</p>
+<h4 id="2-3-1-3检查hdfs目录是否创建成功"><a href="#2-3-1-3检查hdfs目录是否创建成功" class="headerlink" title="2.3.1.3检查hdfs目录是否创建成功"></a>2.3.1.3检查hdfs目录是否创建成功</h4><p> 检查/user/hive/warehouse目录是否创建成功，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -ls   /user/hive/<br> 检查/tmp/hive是否创建成功，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -ls   /tmp/</p>
+<h4 id="2-3-1-4修改hive-site-xml中的临时目录"><a href="#2-3-1-4修改hive-site-xml中的临时目录" class="headerlink" title="2.3.1.4修改hive-site.xml中的临时目录"></a>2.3.1.4修改hive-site.xml中的临时目录</h4><p> 将hive-site.xml文件中的${system:java.io.tmpdir}替换为hive的临时目录，例如我替换为~/hive/tmp，该目录如果不存在则要自己手工创建，并且赋予读写权限。<br>可以用命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -n <span class="string">"$&#123;system:java.io.tmpdir&#125;"</span> hive-site.xml</span><br></pre></td></tr></table></figure><br>来查找字段所在行数，然后替换<br>如：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;value&gt;$&#123;system:java.io.tmpdir&#125;/$&#123;system:user.name&#125;&lt;/value&gt;</span><br></pre></td></tr></table></figure><br>  被我替换为了<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;value&gt;/home/parallels/hive/apache-hive-2.1.1-bin/tmp&lt;/value&gt;  </span><br></pre></td></tr></table></figure>    </p>
+<h4 id="2-3-1-5修改hive-site-xml数据库相关的配置"><a href="#2-3-1-5修改hive-site-xml数据库相关的配置" class="headerlink" title="2.3.1.5修改hive-site.xml数据库相关的配置"></a>2.3.1.5修改hive-site.xml数据库相关的配置</h4><p> 搜索javax.jdo.option.ConnectionURL，将该name对应的value修改为MySQL的地址，例如我修改后是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;jdbc:mysql:<span class="comment">//master:3306/hive?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionDriverName，将该name对应的value修改为MySQL驱动类路径，例如我的修改后是：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt; </span><br><span class="line">  &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; </span><br><span class="line">  &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;      </span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionUserName，将对应的value修改为MySQL数据库登录名：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">&lt;value&gt;root&lt;/value&gt;</span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionPassword，将对应的value修改为MySQL数据库的登录密码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">&lt;value&gt;root&lt;/value&gt;</span><br></pre></td></tr></table></figure><br> 搜索hive.metastore.schema.verification，将对应的value修改为false：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;hive.metastore.schema.verification&lt;/name&gt;</span><br><span class="line">&lt;value&gt;false&lt;/value&gt;</span><br></pre></td></tr></table></figure> </p>
+<h4 id="2-3-1-6将MySQL驱动包上载到lib目录"><a href="#2-3-1-6将MySQL驱动包上载到lib目录" class="headerlink" title="2.3.1.6将MySQL驱动包上载到lib目录"></a>2.3.1.6将MySQL驱动包上载到lib目录</h4><p> 将MySQL驱动包上载到Hive的lib目录下，例如我是上载到apache-hive-2.1.1-bin/lib目录下。<br> 2.3.2新建hive-env.sh文件并进行修改<br> 进入到hive/apache-hive-2.1.1-bin/conf目录，命令是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/conf</span><br></pre></td></tr></table></figure><br> 将hive-env.sh.template文件复制一份，并且改名为hive-env.sh，命令是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp hive-env.sh.template hive-env.sh</span><br></pre></td></tr></table></figure><br> 打开hive-env.sh配置并且添加以下内容：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span>  HADOOP_HOME=/home/parallels/hadoop/hadoop<span class="number">-2.8</span><span class="number">.2</span></span><br><span class="line"><span class="keyword">export</span>  HIVE_CONF_DIR=/home/parallels/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/conf</span><br><span class="line"><span class="keyword">export</span>  HIVE_AUX_JARS_PATH=/home/parallels/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/lib</span><br></pre></td></tr></table></figure> </p>
+<h1 id="3启动和测试"><a href="#3启动和测试" class="headerlink" title="3启动和测试"></a>3启动和测试</h1><h2 id="3-1对MySQL数据库进行初始化"><a href="#3-1对MySQL数据库进行初始化" class="headerlink" title="3.1对MySQL数据库进行初始化"></a>3.1对MySQL数据库进行初始化</h2><p> 进入到hive的bin目录 执行命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/bin</span><br></pre></td></tr></table></figure><br> 对数据库进行初始化，执行命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schematool -initSchema  -dbType  mysql</span><br></pre></td></tr></table></figure><br> 执行成功后，hive数据库里已经有一堆表创建好了</p>
+<h2 id="3-2启动hive"><a href="#3-2启动hive" class="headerlink" title="3.2启动hive"></a>3.2启动hive</h2><p> 进入到hive的bin目录执行命令：<br> cd  ~/hive/apache-hive-2.1.1-bin/bin<br> 执行hive脚本进行启动，执行命令：<br> ./hive</p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2018/02/02/使用spark-sql操作hive中的表/">          
+
+            <span title="使用spark-sql操作hive中的表">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2018/01/25/tomcat版本约束/">         
+
+           <span title="tomcat版本约束">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

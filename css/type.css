@@ -1,0 +1,86 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 300;
+  line-height: 1.25;
+  color: #404040;
+  word-spacing: 0.5px;
+}
+h1 {
+  font-size: 1.5rem;
+  margin: 50px 0 40px 0;
+}
+h2 {
+  margin: 40px 0 0 0;
+  font-size: 1.25rem;
+}
+h3 {
+  margin: 40px 0 0 0;
+  font-size: 1.125rem;
+}
+h4,
+h5,
+h6 {
+  font-size: 1rem;
+}
+p {
+  font-weight: 300;
+  letter-spacing: 0.4px;
+  word-spacing: 0.5px;
+  color: #000;
+  margin: 28px 0;
+  line-height: 1.8;
+  font-size: 0.9rem;
+}
+strong {
+  font-weight: 400;
+}
+blockquote {
+  display: block;
+  letter-spacing: 0.4px;
+  font-size: 1rem;
+  padding: 0 12px;
+  margin: 40px 0;
+}
+blockquote p {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid $sub-clr;
+}
+hr {
+  margin: 1em 0;
+  opacity: 0.2;
+  border: 0.2px solid $gray;
+}
+ul,
+ol {
+  margin-left: 22px;
+  padding-left: 0px;
+}
+ul p,
+ol p {
+  margin: 0;
+}
+li {
+  font-size: 0.825rem;
+  margin: 8px 0;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 14px;
+  margin: 28px 0;
+}
+th {
+  font-size: 0.9rem;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 0.4em 1em;
+  font-weight: 300;
+  margin: 28px 0;
+}

@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Hadoop编译 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		hadoop编译
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/12/11 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/Hadoop/">Hadoop</a> <a class="tag-link" href="/tags/集群搭建/">集群搭建</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		2204
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <p>一、说明</p>
+<p>官网下的Hadoop jar包是通用版，实际生产环境下有可能出现一些问题，因此我们需要重新编译hadoop的jar包，使其适应生产环境</p>
+<p>二、安装JDK</p>
+<p>　   JDK的安装百度一下有很多文章，我使用的是 jdk-7u71-linux-x64.tar.gz。在oracle的官网上也能够下载。jdk的安装在linux下就是一个加压缩的过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> cd  /root</span><br><span class="line"></span><br><span class="line"> tar -zxvf jdk-7u71-linux-x64.tar.gz</span><br><span class="line"></span><br><span class="line"> 配置环境变量：vim /etc/profile</span><br><span class="line"></span><br><span class="line"> 输入命令进入编辑模式：i</span><br><span class="line"></span><br><span class="line">在文件最后添加：export JAVA_HOME=/root/jdk1.7.0_71</span><br><span class="line"></span><br><span class="line"> export PATH=.:PATH:JAVA_HOME/bin</span><br><span class="line"></span><br><span class="line">保存退出（按下Esc，输入冒号，输入wq回车）</span><br><span class="line"></span><br><span class="line"> 使环境变量生效：source  /etc/profile</span><br><span class="line"></span><br><span class="line"> 检测安装是否成功：</span><br><span class="line"></span><br><span class="line"> java  -version</span><br><span class="line"></span><br><span class="line"> javac  -version</span><br></pre></td></tr></table></figure>
+<p>三、安装maven</p>
+<p>​    这个和安装jdk是一样的，安装成后同样需要配置环境变量　</p>
+<p>链接:<a href="https://pan.baidu.com/s/1wjOj9qxGqoU_dUS2-hFFKg" target="_blank" rel="noopener">https://pan.baidu.com/s/1wjOj9qxGqoU_dUS2-hFFKg</a>  密码:0n6b</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export MAVEN_HOME=/usr/mvn/apache-maven-3.2.5</span><br><span class="line"></span><br><span class="line">export PATH=.:PATH:JAVA_HOME/bin:$MAVEN_HOME/bin</span><br></pre></td></tr></table></figure>
+<p>​    同样，输入命令使配置文件生效　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<p>​    检测是否安装成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn  -version</span><br></pre></td></tr></table></figure>
+<p>​    能够看到关于maven的一些信息，包括所使用的jdk</p>
+<p>四、安装protobuf　　</p>
+<p>​    这一步比较关键，protobuf最好是提前下载然后上传上去。安装protobuf前，需要安装一些其他的东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum  install  gcc    安装c++</span><br><span class="line"></span><br><span class="line">yum  install  gcc-c++          然后会两次提示输入 y（yes/no）</span><br><span class="line"></span><br><span class="line">yum install  make          可能会提示因为make已经是最新版本，而不会安装，这个无所谓，反正是最新版本，就不安装了</span><br></pre></td></tr></table></figure>
+<p>  接下来便是安装protobuf，同样是一个解压缩的过程</p>
+<p>链接:<a href="https://pan.baidu.com/s/12PT2s-cs-3rO2xevl9QiTA" target="_blank" rel="noopener">https://pan.baidu.com/s/12PT2s-cs-3rO2xevl9QiTA</a>  密码:po5j</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd  /root</span><br><span class="line"></span><br><span class="line">tar -zxvf protobuf-2.5.0.tar.gz</span><br></pre></td></tr></table></figure>
+<p>​    然后进入到安装目录中，以此输入一下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd  /protobuf-2.5.0</span><br><span class="line"></span><br><span class="line"> ./ configure</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">make  install</span><br></pre></td></tr></table></figure>
+<p>   我在进行上面第二个命令，对configure进行预编译时报错，查看异常后，是c++没有安装成功，便再一次执行了：yum install  gcc-c++ 命令，OK<br>   make  命令执行的时间比较长，最后一个命令的执行安装，如果出现错误，重新来过即可</p>
+<p>   测试   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc  --version</span><br></pre></td></tr></table></figure>
+<p>五、安装CMake</p>
+<p>　   CMake 需要2.6以上的版本，在安装的时候会提示输入 y/N，同时由于安装这个组件是需要联网的，故根据网速不同，安装的进度也不一样　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum  install  cmake     </span><br><span class="line">yum  install  openssl-devel</span><br><span class="line">yum  install  ncurses-devel</span><br></pre></td></tr></table></figure>
+<p>六、ant安装</p>
+<p>链接:<a href="https://pan.baidu.com/s/1wulCv25ix1lWztjnG8SJtw" target="_blank" rel="noopener">https://pan.baidu.com/s/1wulCv25ix1lWztjnG8SJtw</a>  密码:fal7</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf  apache-ant-1.9.4-bin.tar.gz</span><br></pre></td></tr></table></figure>
+<p>​    配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export ANT_HOME=/root/apache-ant-1.9.4</span><br><span class="line">export PATH=.:PATH:JAVA_HOME/bin:MAVEN_HOME/bin:ANT_HOME/bin</span><br></pre></td></tr></table></figure>
+<p>​    生效以及测试　　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">ant  -version</span><br></pre></td></tr></table></figure>
+<p>七、编译hadoop</p>
+<p>  1、解压hadoop源码包　　</p>
+<p><a href="https://pan.baidu.com/s/1vR5ZPZ9xtmOnqbCqKOa8Sg" target="_blank" rel="noopener">Hadoop-2.7.4源码</a>        提取密码:971h</p>
+<p> tar -zxvf hadoop-2.5.2-src.tar.gz</p>
+<p>​    进入文件夹里面，里面有一个文件BUILDINT.txt，打开即可看见里面关于编译hadoop的一些环境要求　　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /root/hadoop-2.5.2-src/</span><br><span class="line"></span><br><span class="line">cd hadoop-2.5.2-src</span><br></pre></td></tr></table></figure>
+<p>​    2、编译hadoop<br>​       进入解压后的原文件中，即上面查看BUILDING.txt文件目录，然后输入一下命令即可　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mvn package -Pdist,native -DskipTests -Dtar</span><br><span class="line"></span><br><span class="line">        或者是下面的命令　</span><br><span class="line"></span><br><span class="line">mvn  package -DeskipTests -Pdist,native</span><br></pre></td></tr></table></figure>
+<p>​    3、等带编译结果</p>
+<p>​    　　编译完成后会有提示，SUCCESS / FAILURE。如下</p>
+<p>　　　 <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/image2.png" alt="image2"></p>
+<p>　　　　如果编译失败，向上滚动，变能够查看什么地方出错了。</p>
+<p>​    4、查看编译结果　</p>
+<p>　　   同样在刚刚进行编译的那个目录下，有一个 hadoop-dist文件夹，进入里面的target文件夹，然后就可以看到编译成功64位的hadoop文件，解压后的在 hadoop-2.5.2 这个文件夹中，同时还生成了一个压缩包：hadoop-2.5.2-tar.gz 这个压缩包可以拷贝到别的机器上进行安装 </p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/12/14/Hadoop集群的搭建/">          
+
+            <span title="Hadoop集群的搭建">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/25/IDEA快捷键/">         
+
+           <span title="IDEA快捷键">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

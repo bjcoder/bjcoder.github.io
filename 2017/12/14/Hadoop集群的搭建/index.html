@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Hadoop集群的搭建 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		Hadoop集群的搭建
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/12/14 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/Hadoop/">Hadoop</a> <a class="tag-link" href="/tags/集群搭建/">集群搭建</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		7210
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="1-系统环境说明："><a href="#1-系统环境说明：" class="headerlink" title="1,系统环境说明："></a>1,系统环境说明：</h1><p>我这边给出我的集群环境是由一台主节点master和2台从节点slave组成：<br>master 10.211.55.8<br>slave1 10.211.55.4<br>slave2 10.211.55.10<br>3个节点上均是CentOS7.0系统(CentOS7.0的防火墙为firewall，如果想使用iptables防火墙可以先关闭firewall，再安装iptables)</p>
+<h1 id="2-虚拟机设置"><a href="#2-虚拟机设置" class="headerlink" title="2,虚拟机设置"></a>2,虚拟机设置</h1><p>　　这里用的是 Parallels Desktop,虚拟CentOS7环境。<br>  <img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%8E%AF%E5%A2%831.png" alt="虚拟机环境1"></p>
+<p>点击‘+’可以添加虚拟机<br>  <img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/%E4%B8%8B%E8%BD%BD%E8%99%9A%E6%8B%9F%E6%9C%BA.png" alt="下载虚拟机"><br>这里可以下载各个版本的虚拟机镜像，如果有虚拟机镜像可以直接添加</p>
+<h1 id="3-环境安装"><a href="#3-环境安装" class="headerlink" title="3,环境安装"></a>3,环境安装</h1><p>安装完成镜像后，克隆两台虚拟机，<br> <img src="URL
+http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/%E7%8E%AF%E5%A2%831.png" alt="环境1"><br>使用ssh查看IP地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure><br> <img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/%E7%8E%AF%E5%A2%831.png" alt="IP查询"></p>
+<h1 id="4-配置host"><a href="#4-配置host" class="headerlink" title="4,配置host"></a>4,配置host</h1><p>通过下列命令打开hosts文件，修改hosts配置,3台机器都需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure><br>加入下列代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10.211.55.4 slave1</span><br><span class="line">10.211.55.8 master</span><br><span class="line">10.211.55.10 slave2</span><br></pre></td></tr></table></figure></p>
+<h1 id="5-SSH无密码验证配置"><a href="#5-SSH无密码验证配置" class="headerlink" title="5,SSH无密码验证配置"></a>5,SSH无密码验证配置</h1><p>　　每台机器可以生成自己的一对公司钥，私钥自己保存。将本机作为服务器，要通过无密钥SSH访问本机的机器作为客户端，首先将服务器的公钥放到客户端，客户端将此公钥放到authorized_keys中，可以将authorized_keys认为是公钥的字典文件，因为可以放多个服务器的公钥进去，即可实现无密钥SSH访问。<br>　　Hadoop运行过程中，需要管理远端Hadoop守护进程，在Hadoop启动以后，NameNode是通过SSH（Secure Shell）来启动和停止各个DataNode上的各种守护进程的。这就必须在节点之间执行指令的时候是不需要输入密码的形式，故我们需要配置SSH运用无密码公钥认证的形式，这样NameNode使用SSH无密码登录并启动DataName进程，同样原理，DataNode上也能使用SSH无密码登录到NameNode。<br>在各节点上生成各自SSH秘钥对（这里秘钥类型为rsa，也可以设置为安全性更高的dsa），以master为例。<br>创建秘钥文件使用下列命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/ssh%E5%85%8D%E5%AF%86%E9%92%A5%E7%99%BB%E9%99%861.png" alt="ssh免密钥登陆1"><br>参数说明参考：<a href="http://killer-jok.iteye.com/blog/1853451" target="_blank" rel="noopener">http://killer-jok.iteye.com/blog/1853451</a><br>在本机上生成authorized_keys，并验证能否对本机进行SSH无密码登陆<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/ssh%E5%85%8D%E5%AF%86%E9%92%A5%E7%99%BB%E9%99%862.png" alt="ssh免密钥登陆2"><br>在其余所有节点都生成自己的authorized_keys之后，通过ssh-copy-id命令拷贝各自的公钥到其他节点，公钥会加入到对方机器的authorized_keys文件中，可以将authorized_keys认为是公钥的字典文件，因为可以放多个服务器的公钥进去，即可实现无密钥SSH访问。下面以slave1节点为例，将master节点的公钥复制到slave1节点中并加入到授权的key中，并验证是否配置成功。<br>在slave1中生成秘钥文件<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/ssh%E5%85%8D%E5%AF%86%E9%92%A5%E7%99%BB%E9%99%863.png" alt="ssh免密钥登陆3"><br>将master节点的公钥复制到slave1节点中并测试连接<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/ssh%E5%85%8D%E5%AF%86%E9%92%A5%E7%99%BB%E9%99%864.png" alt="ssh免密钥登陆4"><br>在slave中使用 more 查看完成公钥复制后的文件<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/ssh%E5%85%8D%E5%AF%86%E9%92%A5%E7%99%BB%E9%99%865.png" alt="ssh免密钥登陆5"></p>
+<h1 id="6-安装jdk环境设置"><a href="#6-安装jdk环境设置" class="headerlink" title="6,安装jdk环境设置"></a>6,安装jdk环境设置</h1><p>先下载jdk1.8<br>把jdk1.8.0_144.tar.gz放到Linux桌面<br> 在usr下创建一个java文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/</span><br><span class="line">midir java</span><br><span class="line">mv jdk1.8.0_144.tar.gz /usr/java/</span><br><span class="line">tar -zvxf jdk1.8.0_144.tar.gz</span><br><span class="line">rm jdk1.8.0_144.tar.gz </span><br></pre></td></tr></table></figure><br>配置jdk环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/profile </span><br></pre></td></tr></table></figure><br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># set java environment</span></span><br><span class="line"><span class="keyword">export</span> JAVA_HOME=/usr/java/jdk1<span class="number">.8</span><span class="number">.0</span>_144</span><br><span class="line"><span class="keyword">export</span> <span class="built_in">CLASSPATH</span>=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line"><span class="keyword">export</span> PATH=$JAVA_HOME/bin:$PATH:$JAVA_HOME/jre/bin</span><br></pre></td></tr></table></figure><br>保存退出后，执行下列命令 让更改及时生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure><br>然后，执行下列命令验证安装成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/javaversion.png" alt="javaversion"><br>如果显示的版本与我们安装的版本一致，即安装成功<br>7,安装hadoop环境设置<br>下载hadoop,我下的是hadoop-2.8.2.tar.gz然后把包放到桌面，创建hadoop文件夹（最好不要在根目录创建,我开始的时候把hadoop安装到root下，一直报环境错误），把hadoop-2.8.2.tar.gz移到hadoop文件夹解压<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/hadoop</span><br><span class="line">mv hadoop-2.8.2.tar.gz ~/hadoop/</span><br><span class="line">tar -zvxf hadoop-2.8.2.tar.gz</span><br><span class="line">rm hadoop-2.8.2.tar.gz</span><br></pre></td></tr></table></figure><br>配置hadoop环境变量，还是修改刚刚配置jdk环境变量的文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/profile </span><br></pre></td></tr></table></figure><br>在尾部，加入下面内容：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># set hadoop path</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> HADOOP_HOME=/home/parallels/hadoop/hadoop<span class="number">-2.8</span><span class="number">.2</span></span><br><span class="line"><span class="keyword">export</span> PATH=$&#123;HADOOP_HOME&#125;/bin:$&#123;HADOOP_HOME&#125;/sbin:$PATH</span><br></pre></td></tr></table></figure><br>保存退出后，执行下列命令 让更改及时生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure><br>然后，执行下列命令验证安装成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop version</span><br></pre></td></tr></table></figure><br>正常会显示版本信息<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hadoopversion.png" alt="hadoopversion"><br>配置 ~/hadoop/etc/hadoop下的hadoop-env.sh、yarn-env.sh、mapred-env.sh<br>使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/parallels/hadoop/hadoop-2.8.2/etc/hadoop/hadoop-env.sh</span><br></pre></td></tr></table></figure><br>修改JAVA_HOME<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/mapred-env1.png" alt="hadoop-env1"></p>
+<p>使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/parallels/hadoop/hadoop-2.8.2/etc/hadoop/yard-env.sh</span><br></pre></td></tr></table></figure><br>修改JAVA_HOME<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/yard-env1.png" alt="yard-env1"></p>
+<p>使用命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/parallels/hadoop/hadoop-2.8.2/etc/hadoop/mapred-env.sh</span><br></pre></td></tr></table></figure><br>修改JAVA_HOME<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/mapred-env1.png" alt="mapred-env1"><br>配置系统目录：Hadoop程序存放目录为/home/hadoop/，可以将程序和数据目录分开，可以更加方便的进行配置的同步,具体目录的配置如下所示：<br>l  在每个节点上创建程序存储目录/home/parallels/hadoop/hadoop-2.8.2/hadoop/，用来存放Hadoop程序文件。<br>l  在每个节点上创建数据存储目录/home/parallels/hadoop/hadoop-2.8.2/hadoop/hdfs，用来存放集群数据。<br>l  在主节点node上创建目录/home/parallels/hadoop/hadoop-2.8.2/hadoop/hdfs/name，用来存放文件系统元数据。<br>l  在每个从节点上创建目录/home/parallels/hadoop/hadoop-2.8.2/hadoop/hdfs/data，用来存放真正的数据。<br>l  所有节点上的日志目录为/home/parallels/hadoop/hadoop-2.8.2/hadoop/logs。<br>l  所有节点上的临时目录为/home/parallels/hadoop/hadoop-2.8.2/hadoop/tmp。<br>执行命令mkdir -p  /home/parallels/hadoop/hadoop-2.8.2/hadoop/logs，为还没有的目录创建，后面以此类推</p>
+<h1 id="8-修改hadoop配置文件"><a href="#8-修改hadoop配置文件" class="headerlink" title="8, 修改hadoop配置文件"></a>8, 修改hadoop配置文件</h1><p>Hadoop2.8.2配置文件在hadoop/etc/hadoop目录下，配置文件也被分成了4个主要的配置文件需要配置其中包含：core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-site.xml。core-site.xml和hdfs-site.xml是站在HDFS角度上配置文件；core-site.xml和mapred-site.xml是站在MapReduce角度上配置文件。</p>
+<p>core-site.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">                &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs:<span class="comment">//master:9000&lt;/value&gt;</span></span><br><span class="line">        　　　　 &lt;description&gt; 设定 namenode 的 主机名 及 端口 &lt;/description&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">                &lt;name&gt;io.file.buffer.size&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;131072&lt;/value&gt;</span><br><span class="line">        &lt;description&gt; 设置缓存大小 &lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;file:/home/parallels/hadoop/hadoop-2.8.2/tmp&lt;/value&gt;</span><br><span class="line">               &lt;description&gt; 存放临时文件的目录 &lt;/description&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>hdfs-site.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/parallels/hadoop/hadoop-2.8.2/hdfs/name&lt;/value&gt;</span><br><span class="line">        &lt;description&gt; namenode 用来持续存放命名空间和交换日志的本地文件系统路径 &lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/parallels/hadoop/hadoop-2.8.2/hdfs/data&lt;/value&gt;</span><br><span class="line">        &lt;description&gt; DataNode 在本地存放块文件的目录列表，用逗号分隔 &lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;3&lt;/value&gt;</span><br><span class="line">        &lt;description&gt; 设定 HDFS 存储文件的副本个数，默认为3 &lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>mapred-site.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">                &lt;final&gt;true&lt;/final&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobtracker.http.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;master:50030&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">            &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;master:10020&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">            &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">            &lt;value&gt;master:19888&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapred.job.tracker&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;http:<span class="comment">//master:9001&lt;/value&gt;</span></span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<p>yarn-site.xml<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;                                                                </span><br><span class="line">&lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8032&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8030&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">            &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt;</span><br><span class="line">             &lt;value&gt;master:8031&lt;/value&gt;</span><br><span class="line">      &lt;/property&gt;</span><br><span class="line">      &lt;property&gt;</span><br><span class="line">              &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8033&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">       &lt;property&gt;</span><br><span class="line">               &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">               &lt;value&gt;master:8088&lt;/value&gt;</span><br><span class="line">       &lt;/property&gt;</span><br><span class="line">&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line"></span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p>
+<h1 id="9-设置hadoop集群"><a href="#9-设置hadoop集群" class="headerlink" title="9,设置hadoop集群"></a>9,设置hadoop集群</h1><p>   master上配置好的hadoop所在文件夹/home/parallels/hadoop/hadoop-2.8.2复制到所有的Slave的<br>/home/parallels/hadoop/hadoop-2.8.2/目录下<br>从master到slave1复制配置Hadoop的文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp –r /home/parallels/hadoop/hadoop-2.8.2 root@slave1:/home/parallels/hadoop/</span><br></pre></td></tr></table></figure><br>复制完成后在master上配置节点信息（其余节点不需要），使用下列命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /home/parallels/hadoop/hadoop-2.8.2/etc/hadoop/slaves</span><br></pre></td></tr></table></figure><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hadoop-slave.png" alt="hadoop-slave"></p>
+<h1 id="10-格式化HDFS文件系统"><a href="#10-格式化HDFS文件系统" class="headerlink" title="10,格式化HDFS文件系统"></a>10,格式化HDFS文件系统</h1><p>输入命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /home/parallels/hadoop/hadoop-2.8.2/</span><br><span class="line">hadoop namenode -format</span><br></pre></td></tr></table></figure><br>如果不出错大致会显示如下信息：<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hadoop-format.png" alt="hadoop-format"><br>次数如产生错误，基本都是配置文件的问题，诸如不识别中文，配置文件中指定的路径不存在，等等，请认真检查配置文件</p>
+<h1 id="11-启动hadoop服务"><a href="#11-启动hadoop服务" class="headerlink" title="11,启动hadoop服务"></a>11,启动hadoop服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /home/parallels/hadoop/hadoop-2.8.2/sbin</span><br><span class="line">./start-all.sh</span><br></pre></td></tr></table></figure>
+<p>启动后如果没异常，使用jps查看服务<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/jps1.png" alt="jps1"><br>如果没问题，去浏览器查看web页面<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hadoop-web.png" alt="hadoop-web"></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/12/14/Spring Boot 配置文件application/">          
+
+            <span title="Spring Boot配置文件application">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/12/11/hadoop编译/">         
+
+           <span title="hadoop编译">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

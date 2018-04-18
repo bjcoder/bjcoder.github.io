@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  mongoDB文档数据库 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		mongoDB文档数据库
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2016/10/05 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/数据库/">数据库</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/mongoDB/">mongoDB</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		15463
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="1-MongoDB简介"><a href="#1-MongoDB简介" class="headerlink" title="1.MongoDB简介"></a>1.MongoDB简介</h1><h2 id="1-1什么是MongoDB"><a href="#1-1什么是MongoDB" class="headerlink" title="1.1什么是MongoDB"></a>1.1什么是MongoDB</h2><p>​        MongoDB 是一个跨平台的，面向文档的数据库，是当前 NoSQL 数据库产品中最热门的一种。它介于关系数据库和非关系数据库之间，是非关系数据库当中功能最丰富，最像关系数据库的产品。它支持的数据结构非常松散，是类似JSON  的 BSON 格式，因此可以存储比较复杂的数据类型。</p>
+<p>MongoDB 的官方网站地址是：<a href="http://www.mongodb.org/" target="_blank" rel="noopener">http://www.mongodb.org/</a></p>
+<h2 id="1-2-MongoDB特点"><a href="#1-2-MongoDB特点" class="headerlink" title="1.2 MongoDB特点"></a>1.2 MongoDB特点</h2><p>​       MongoDB 最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。它是一个面向集合的,模式自由的文档型数据库。</p>
+<p>具体特点总结如下：</p>
+<p>（1）面向集合存储，易于存储对象类型的数据</p>
+<p>（2）模式自由</p>
+<p>（3）支持动态查询</p>
+<p>（4）支持完全索引，包含内部对象</p>
+<p>（5）支持复制和故障恢复</p>
+<p>（6）使用高效的二进制数据存储，包括大型对象（如视频等）</p>
+<p>（7）自动处理碎片，以支持云计算层次的扩展性</p>
+<p>（8）支持 Python，PHP，Ruby，Java，C，C#，Javascript，Perl 及 C++语言的驱动程序，社区中也提供了对 Erlang 及.NET 等平台的驱动程序</p>
+<p>（9） 文件存储格式为 BSON（一种 JSON 的扩展）</p>
+<h2 id="1-3-MongoDB体系结构"><a href="#1-3-MongoDB体系结构" class="headerlink" title="1.3 MongoDB体系结构"></a>1.3 MongoDB体系结构</h2><p>MongoDB 的逻辑结构是一种层次结构。主要由：</p>
+<p>文档(document)、集合(collection)、数据库(database)这三部分组成的。逻辑结构是面向用户</p>
+<p>的，用户使用 MongoDB 开发应用程序使用的就是逻辑结构。</p>
+<p>（1）MongoDB 的文档（document），相当于关系数据库中的一行记录。</p>
+<p>（2）多个文档组成一个集合（collection），相当于关系数据库的表。</p>
+<p>（3）多个集合（collection），逻辑上组织在一起，就是数据库（database）。</p>
+<p>（4）一个 MongoDB 实例支持多个数据库（database）。</p>
+<p>文档(document)、集合(collection)、数据库(database)的层次结构如下图:</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image4.png" alt="image4"></p>
+<p>下表是MongoDB与MySQL数据库逻辑结构概念的对比</p>
+<table>
+<thead>
+<tr>
+<th>MongoDb</th>
+<th>关系型数据库Mysql</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据库(databases)</td>
+<td>数据库(databases)</td>
+</tr>
+<tr>
+<td>集合(collections)</td>
+<td>表(table)</td>
+</tr>
+<tr>
+<td>文档(document)</td>
+<td>行(row)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="2-基本增删改查操作"><a href="#2-基本增删改查操作" class="headerlink" title="2.基本增删改查操作"></a>2.基本增删改查操作</h1><h2 id="2-1选择或创建数据库"><a href="#2-1选择或创建数据库" class="headerlink" title="2.1选择或创建数据库"></a>2.1选择或创建数据库</h2><p>使用use 数据库名称即可选择数据库，如果该数据库不存在会自动创建</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image12.png" alt="image12"></p>
+<h2 id="2-2插入文档"><a href="#2-2插入文档" class="headerlink" title="2.2插入文档"></a>2.2插入文档</h2><p>文档相当于关系数据库中的记录</p>
+<p>首先我们定义一个文档变量，格式为变量名称={}; 例如：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image13.png" alt="image13"></p>
+<p>接下来就是将这个变量存入MongoDB </p>
+<p>格式为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.集合名称.save(变量);</span><br></pre></td></tr></table></figure>
+<p>这里的集合就相当于关系数据库中的表。例如：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image14.png" alt="image14"></p>
+<p>这样就在student集合中存入文档。如果这个student集合不存在，就会自动创建。</p>
+<p>当然，你也可以不用定义变量，直接把变量值放入save方法中也是可以地。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image15.png" alt="image15"></p>
+<p>为了方便后期测试，我们再多加点数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.student.save(&#123;name:<span class="string">"沙和尚"</span>,sex:<span class="string">"男"</span>,age:<span class="number">25</span>,address:<span class="string">"流沙河路11号"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"唐僧"</span>,sex:<span class="string">"男"</span>,age:<span class="number">35</span>,address:<span class="string">"东土大唐"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"白骨精"</span>,sex:<span class="string">"女"</span>,age:<span class="number">18</span>,address:<span class="string">"白骨洞"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"白龙马"</span>,sex:<span class="string">"男"</span>,age:<span class="number">20</span>,address:<span class="string">"西海"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"哪吒"</span>,sex:<span class="string">"男"</span>,age:<span class="number">15</span>,address:<span class="string">"莲花湾小区"</span>&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="2-3查询集合"><a href="#2-3查询集合" class="headerlink" title="2.3查询集合"></a>2.3查询集合</h2><p>我们要查询某集合的所有文档，使用find()方法。语法格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.集合名称.find();</span><br></pre></td></tr></table></figure>
+<p>例如，我们要查询student集合中的所有文档：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image16.png" alt="image16"> </p>
+<p>这里你会发现每条文档会有一个叫_id的字段，这个相当于我们原来关系数据库中表的主键，当你在插入文档记录时没有指定该字段，MongDB会自动创建，其类型是ObjectID类型。</p>
+<p>如果我们在插入文档记录时指定该字段也可以，其类型可以使ObjectID类型，也可以是MongoDB支持的任意类型. 例如：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image17.png" alt="image17"></p>
+<p>我们再次查询</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image18.png" alt="image18"></p>
+<p>如果我想按一定条件来查询，比如我想查询性别为“女”的记录，怎么办？很简单！</p>
+<p>只要在find()中添加参数即可，参数也是json格式，如下： </p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image19.png" alt="image19"></p>
+<p>为了避免游标可能带来的开销，MongoDB还提供了一个叫findOne()的方法，用来返回结果集的第一条记录。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image20.png" alt="image20"></p>
+<p>性别为男的有很多条，这里只返回了第一条记录。</p>
+<p>当我们需要返回查询结果的前几条记录时，可以使用limit方法，例如：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image21.png" alt="image21"></p>
+<h2 id="2-4修改文档"><a href="#2-4修改文档" class="headerlink" title="2.4修改文档"></a>2.4修改文档</h2><p>我们要想修改记录，可以使用update方法 .</p>
+<p>例如：我向将姓名为孙悟空的学员文档中的age字段值改为31，执行下列语句，看会发生什么？</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image22.png" alt="image22"></p>
+<p>再次查询：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image23.png" alt="image23"></p>
+<p>哦，悲剧了~~ 原来的孙悟空的文档只剩下_id 和age两个字段了。</p>
+<p>那如何保留其它字段值呢？</p>
+<p>我们需要使用MongoDB提供的修改器$set 来实现，请看下列代码。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image24.png" alt="image24"></p>
+<p>再次查询，会发现“猪八戒”文档中原有的其它字段还保留下来，而更新age字段也成功了。</p>
+<h2 id="2-5删除文档"><a href="#2-5删除文档" class="headerlink" title="2.5删除文档"></a>2.5删除文档</h2><p>删除文档使用remove()方法，格式为：</p>
+<p>请慎用remove({}), 它会一条不剩地把你的集合所有文档删的干干净净。</p>
+<p>我们现在演示一下，删除name为“哪吒”的记录：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image25.png" alt="image25"></p>
+<p>再次查询，会发现哪吒的文档不见了。</p>
+<h1 id="3-高级查询"><a href="#3-高级查询" class="headerlink" title="3.高级查询"></a>3.高级查询</h1><h2 id="3-1模糊查询"><a href="#3-1模糊查询" class="headerlink" title="3.1模糊查询"></a>3.1模糊查询</h2><p>MongoDB的模糊查询是通过正则表达式的方式实现的。格式为：</p>
+<p>  /模糊查询字符串/</p>
+<p>例如，我要查询student集合中address字段中含有“洞”的所有文档，代码如下：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image26.png" alt="image26"></p>
+<p>如果要查询name字段中以“白”开头的，代码如下：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image27.png" alt="image27"></p>
+<h2 id="3-2-Null值处理"><a href="#3-2-Null值处理" class="headerlink" title="3.2 Null值处理"></a>3.2 Null值处理</h2><p>如果我们想找出集合中某字段值为空的文档，如何查询呢？其实和我们之前的条件查询是一样的，条件值写为null就可以了。</p>
+<p>我们现在集合中的文档都是没有空值的，为了方便测试，现在我们将数据做些修改：</p>
+<p>将“唐僧”的address改为空</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image28.png" alt="image28"> </p>
+<p>再次查询：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image29.png" alt="image29"></p>
+<p>我们会发现不仅会显示“唐僧”这条文档，之前因为修改导致address字段丢失的那条记录也出现了。也就是说，这种查询会查询出该字段为null的以及不存在该字段的文档记录。</p>
+<h2 id="3-3大于小于"><a href="#3-3大于小于" class="headerlink" title="3.3大于小于"></a>3.3大于小于</h2><p>&lt;, &lt;=, &gt;, &gt;= 这个操作符也是很常用的，格式如下</p>
+<p>db.collection.find({ “field” : { $gt: value } } ); // 大于: field &gt; value</p>
+<p>db.collection.find({ “field” : { $lt: value } } ); // 小于: field &lt; value</p>
+<p>db.collection.find({ “field” : { $gte: value } } ); // 大于等于: field &gt;= value</p>
+<p>db.collection.find({ “field” : { $lte: value } } ); // 小于等于: field &lt;= value</p>
+<p>示例：查询年龄大于等于20岁的学员记录</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image30.png" alt="image30"></p>
+<h2 id="3-4不等于"><a href="#3-4不等于" class="headerlink" title="3.4不等于"></a>3.4不等于</h2><p>不等于使用$ne操作符。</p>
+<p>示例：查询sex字段不为“男”的文档</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image31.png" alt="image31"> </p>
+<h2 id="3-5判断字段是否存在"><a href="#3-5判断字段是否存在" class="headerlink" title="3.5判断字段是否存在"></a>3.5判断字段是否存在</h2><p>判断字段是否存在使用$exists操作符。</p>
+<p>示例：查询所有含有address字符的文档。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image32.png" alt="image3"></p>
+<p>示例：查询所有不含有address字符的文档。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image33.png" alt="image33"></p>
+<h2 id="3-6包含与不包含"><a href="#3-6包含与不包含" class="headerlink" title="3.6包含与不包含"></a>3.6包含与不包含</h2><p>包含使用$in操作符。</p>
+<p>示例：查询student集合中age字段包含20,25,30的文档</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image34.png" alt="image34"></p>
+<p>示例：查询student集合中age字段不包含20,25,30的文档</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image35.png" alt="image35"></p>
+<h2 id="3-7统计记录条数"><a href="#3-7统计记录条数" class="headerlink" title="3.7统计记录条数"></a>3.7统计记录条数</h2><p>统计记录条件使用count()方法。</p>
+<p>示例：查询student集合的文档条数。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image36.png" alt="image36"></p>
+<p>示例：查询student集合中age字段小于等于20的文档条数。</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image37.png" alt="image37"> </p>
+<h2 id="3-8条件连接–并且"><a href="#3-8条件连接–并且" class="headerlink" title="3.8条件连接–并且"></a>3.8条件连接–并且</h2><p>我们如果需要查询同时满足两个以上条件，需要使用$and操作符将条件进行关联。（相当于SQL的and）</p>
+<p>格式为：$and:[ {  },{  },{   } ]</p>
+<p>示例：查询student集合中age大于等于20 并且age小于30的文档</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image38.png" alt="image38"></p>
+<h2 id="3-9-条件连接–或者"><a href="#3-9-条件连接–或者" class="headerlink" title="3.9 条件连接–或者"></a>3.9 条件连接–或者</h2><p>如果两个以上条件之间是或者的关系，我们使用$or操作符进行关联，与前面$and的使用方式相同</p>
+<p>格式为：$or:[ {  },{  },{   } ]</p>
+<p>示例：查询student集合中sex为女，或者年龄小于20的文档记录</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image39.png" alt="image39"></p>
+<h1 id="4-java连接MongoDB"><a href="#4-java连接MongoDB" class="headerlink" title="4.java连接MongoDB"></a>4.java连接MongoDB</h1><h2 id="4-1查询文档"><a href="#4-1查询文档" class="headerlink" title="4.1查询文档"></a>4.1查询文档</h2><h2 id="4-1-1查询全部记录"><a href="#4-1-1查询全部记录" class="headerlink" title="4.1.1查询全部记录"></a>4.1.1查询全部记录</h2><p>（1）创建maven工程mongoDBDemo ，引入依赖。 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.mongodb&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;3.4.1&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">  &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>（2）编写代码，遍历student集合所有数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();<span class="comment">//创建连接对象</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);<span class="comment">//获取数据库		</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);<span class="comment">//获取集合</span></span><br><span class="line">		</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find();<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="keyword">for</span>( Document doc: list)&#123;<span class="comment">//遍历集合中的文档输出数据</span></span><br><span class="line">	System.out.println(<span class="string">"name:"</span>+ doc.getString(<span class="string">"name"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"sex:"</span>+ doc.getString(<span class="string">"sex"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"age:"</span>+ doc.getDouble(<span class="string">"age"</span>) );<span class="comment">//默认为浮点型</span></span><br><span class="line">	System.out.println(<span class="string">"address:"</span>+ doc.getString(<span class="string">"address"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"--------------------------"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MongoDB的数字类型默认使用64位浮点型数值。{“x”：3.14}或{“x”：3}。对于整型值，可以使用NumberInt（4字节符号整数），{“x”:NumberInt(“3”)}  或NumberLong（8字节符号整数）{“x”:NumberLong(“3”)}</p>
+<h2 id="4-1-2匹配查询"><a href="#4-1-2匹配查询" class="headerlink" title="4.1.2匹配查询"></a>4.1.2匹配查询</h2><p>MongoDB使用BasicDBObject类型封装查询条件，构造方法的参数为key 和value .</p>
+<p>示例：查询student集合中name为猪八戒的文档</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构建查询条件</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"猪八戒"</span>);		</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-1-3模糊查询"><a href="#4-1-3模糊查询" class="headerlink" title="4.1.3模糊查询"></a>4.1.3模糊查询</h2><p>构建模糊查询条件是通过正则表达式的方式来实现的</p>
+<p>（1）完全匹配Pattern pattern = Pattern.compile(“^name$”);</p>
+<p>（2）右匹配Pattern pattern = Pattern.compile(“^.*name$”);</p>
+<p>（3）左匹配Pattern pattern = Pattern.compile(“^name.*$”);</p>
+<p>（4）模糊匹配Pattern pattern = Pattern.compile(“^.<em>name.</em>$”);</p>
+<p>示例：模糊查询student集合中address 中含有洞的文档记录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模糊查询：like %洞%</span></span><br><span class="line">Pattern queryPattern = Pattern.compile(<span class="string">"^.*洞.*$"</span>);</span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"address"</span>, queryPattern);	</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-1-4大于小于"><a href="#4-1-4大于小于" class="headerlink" title="4.1.4大于小于"></a>4.1.4大于小于</h2><p>在MongoDB提示符下条件json字符串为{ age: { $lt :20 } } ，对应的java代码也是BasicDBObject 的嵌套。</p>
+<p>示例：查询student集合中age小于20的文档记录 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询年龄小于20的		</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lt"</span>,<span class="number">20</span>));</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-1-5条件连接–并且"><a href="#4-1-5条件连接–并且" class="headerlink" title="4.1.5条件连接–并且"></a>4.1.5条件连接–并且</h2><p>示例：查询年龄大于等于20并且小于30的文档记录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询年龄大于等于20的			</span></span><br><span class="line">BasicDBObject bson1=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$gte"</span>,<span class="number">20</span>));</span><br><span class="line"><span class="comment">//查询年龄小于30的</span></span><br><span class="line">BasicDBObject bson2=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lt"</span>,<span class="number">30</span>));</span><br><span class="line"><span class="comment">//构建查询条件and</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span>  BasicDBObject(<span class="string">"$and"</span>, Arrays.asList(bson1,bson2)  );</span><br></pre></td></tr></table></figure>
+<h2 id="4-1-6条件连接–或者"><a href="#4-1-6条件连接–或者" class="headerlink" title="4.1.6条件连接–或者"></a>4.1.6条件连接–或者</h2><p>示例：查询年龄小于等于20或者性别为女的文档记录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BasicDBObject bson1=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lte"</span>,<span class="number">20</span>));		</span><br><span class="line">BasicDBObject bson2=<span class="keyword">new</span> BasicDBObject(<span class="string">"sex"</span>, <span class="string">"女"</span>);</span><br><span class="line"><span class="comment">//构建查询条件or</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"$or"</span>, Arrays.asList( bson1, bson2 )  );</span><br></pre></td></tr></table></figure>
+<h2 id="4-2增加文档"><a href="#4-2增加文档" class="headerlink" title="4.2增加文档"></a>4.2增加文档</h2><p>我们使用insertOne方法来插入文档。</p>
+<p>示例：添加文档记录–名称：铁扇公主  性别:女 年龄：28   地址：芭蕉洞</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line">Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"name"</span>, <span class="string">"铁扇公主"</span>);</span><br><span class="line">map.put(<span class="string">"sex"</span>, <span class="string">"女"</span>);</span><br><span class="line">map.put(<span class="string">"age"</span>, <span class="number">35.0</span>);</span><br><span class="line">map.put(<span class="string">"address"</span>, <span class="string">"芭蕉洞"</span>);		</span><br><span class="line">Document doc=<span class="keyword">new</span> Document(map);		</span><br><span class="line">collection.insertOne(doc);<span class="comment">//插入一条记录</span></span><br><span class="line"><span class="comment">//collection.insertMany(documents);//一次性插入多条文档</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-3删除文档"><a href="#4-3删除文档" class="headerlink" title="4.3删除文档"></a>4.3删除文档</h2><p>示例：将名称为铁扇公主的文档删除</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"铁扇公主"</span>);</span><br><span class="line">collection.deleteOne(bson);<span class="comment">//删除记录（符合条件的第一条记录）</span></span><br><span class="line"><span class="comment">//collection.deleteMany(bson);//删除符合条件的全部记录</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-4修改文档"><a href="#4-4修改文档" class="headerlink" title="4.4修改文档"></a>4.4修改文档</h2><p>示例：将红孩儿的地址修改为“南海”</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//修改的条件</span></span><br><span class="line">BasicDBObject bson= <span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"红孩儿"</span>);</span><br><span class="line"><span class="comment">//修改后的值</span></span><br><span class="line">BasicDBObject bson2 = <span class="keyword">new</span> BasicDBObject(<span class="string">"$set"</span>,<span class="keyword">new</span> BasicDBObject(<span class="string">"address"</span>, <span class="string">"南海"</span>));</span><br><span class="line"><span class="comment">//参数1：修改条件  参数2：修改后的值</span></span><br><span class="line">collection.updateOne(bson, bson2);</span><br><span class="line"><span class="comment">//collection.updateMany(filter, update);//修改符合条件的所有记录</span></span><br></pre></td></tr></table></figure>
+<p>updateMany方法用于修改符合条件的所有记录</p>
+<p>updateOne方法用于修改符合条件的第一条记录</p>
+<h1 id="5-MongoDB连接池"><a href="#5-MongoDB连接池" class="headerlink" title="5.MongoDB连接池"></a>5.MongoDB连接池</h1><h2 id="5-1代码实现"><a href="#5-1代码实现" class="headerlink" title="5.1代码实现"></a>5.1代码实现</h2><p>MongoClient 被设计为线程安全的类，也就是我们在使用该类时不需要考虑并发的情况，这样我们可以考虑把MongoClient 做成一个静态变量，为所有线程公用，不必每次都销毁。这样可以极大提高执行效率。实际上，这是MongoDB提供的内置的连接池来实现的。    </p>
+<p>​    首先我们先创建一个“管理类”，相当于我们原来的BaseDao </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClient;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions.Builder;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.WriteConcern;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MongoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MongoClient mongoClient=<span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//对mongoClient初始化</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;		</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient();	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MongoDatabase <span class="title">getDatabase</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(mongoClient==<span class="keyword">null</span>)&#123;</span><br><span class="line">			init();</span><br><span class="line">		&#125;		</span><br><span class="line">		<span class="keyword">return</span> mongoClient.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    然后我们创建一个StudentDao</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> org.bson.Document;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoCollection;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 学员数据访问层</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String name,String sex,<span class="keyword">double</span> age,String address)</span></span>&#123;</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student2"</span>);</span><br><span class="line">		Document docment=<span class="keyword">new</span> Document();</span><br><span class="line">		docment.put(<span class="string">"name"</span>, name);</span><br><span class="line">		docment.put(<span class="string">"sex"</span>, sex);		</span><br><span class="line">		docment.put(<span class="string">"age"</span>, age);</span><br><span class="line">		docment.put(<span class="string">"address"</span>, address);</span><br><span class="line">		collection.insertOne(docment);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们现在做个测试，循环插入2万条数据，看看执行时间是多长时间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPool</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">long</span> startTime = <span class="keyword">new</span> Date().getTime();<span class="comment">//开始时间</span></span><br><span class="line">		</span><br><span class="line">		StudentDao studentDao=<span class="keyword">new</span> StudentDao();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20000</span>;i++)&#123;</span><br><span class="line">			studentDao.save(<span class="string">"测试"</span>+i, <span class="string">"男"</span>, <span class="number">25.0</span>, <span class="string">"测试地址"</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">long</span> endTime = <span class="keyword">new</span> Date().getTime();<span class="comment">//完成时间</span></span><br><span class="line">		System.out.println(<span class="string">"完成时间："</span>+(endTime-startTime)+<span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过测试：所用毫秒数为3589 </p>
+<h2 id="5-2参数设置"><a href="#5-2参数设置" class="headerlink" title="5.2参数设置"></a>5.2参数设置</h2><p>我们在刚才的代码基础上进行连接池参数的设置</p>
+<p>修改MongoManager的init方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对mongoClient初始化</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//连接池选项</span></span><br><span class="line">		Builder builder = <span class="keyword">new</span> MongoClientOptions.Builder();<span class="comment">//选项构建者	</span></span><br><span class="line">		builder.connectTimeout(<span class="number">5000</span>);<span class="comment">//设置连接超时时间</span></span><br><span class="line">		builder.socketTimeout(<span class="number">5000</span>);<span class="comment">//读取数据的超时时间</span></span><br><span class="line">		builder.connectionsPerHost(<span class="number">30</span>);<span class="comment">//每个地址最大请求数		</span></span><br><span class="line">		builder.writeConcern(WriteConcern.NORMAL);<span class="comment">//写入策略，仅抛出网络异常</span></span><br><span class="line">		MongoClientOptions options = builder.build();</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient(<span class="string">"127.0.0.1"</span>,options);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再次进行测试：所用的毫秒1544</p>
+<p>下面是写入策略。</p>
+<p>WriteConcern.NONE:没有异常抛出</p>
+<p>WriteConcern.NORMAL:仅抛出网络错误异常，没有服务器错误异常</p>
+<p>WriteConcern.SAFE:抛出网络错误异常、服务器错误异常；并等待服务器完成写操作。</p>
+<p>WriteConcern.MAJORITY: 抛出网络错误异常、服务器错误异常；并等待一个主服务器完成写操作。</p>
+<p>WriteConcern.FSYNC_SAFE: 抛出网络错误异常、服务器错误异常；写操作等待服务器将数据刷新到磁盘。</p>
+<p>WriteConcern.JOURNAL_SAFE:抛出网络错误异常、服务器错误异常；写操作等待服务器提交到磁盘的日志文件。</p>
+<p>WriteConcern.REPLICAS_SAFE:抛出网络错误异常、服务器错误异常；等待至少2台服务器完成写操作。</p>
+<h1 id="6-综合案例-《网站点击日志分析组件》"><a href="#6-综合案例-《网站点击日志分析组件》" class="headerlink" title="6.综合案例-《网站点击日志分析组件》"></a>6.综合案例-《网站点击日志分析组件》</h1><h1 id="6-1需求分析"><a href="#6-1需求分析" class="headerlink" title="6.1需求分析"></a>6.1需求分析</h1><p>《花生二手车》交易网站日访问IP高达2万+ ，每秒点击频率在2000次左右。为了能够对访问用户的行为做进一步的分析，产品部提出需求，用户每次点击浏览二手车都要记录该用户ID、访问IP、访问时间、点击车型、点击商品ID、价格等信息。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image40.png" alt="image40"></p>
+<h2 id="6-2数据库设计"><a href="#6-2数据库设计" class="headerlink" title="6.2数据库设计"></a>6.2数据库设计</h2><p>浏览日志browseLog</p>
+<table>
+<thead>
+<tr>
+<th>字段名称</th>
+<th>字段类型</th>
+<th>字段含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>userid</td>
+<td>字符</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>字符</td>
+<td>访问IP</td>
+</tr>
+<tr>
+<td>browseTime</td>
+<td>时间</td>
+<td>访问时间</td>
+</tr>
+<tr>
+<td>model</td>
+<td>字符</td>
+<td>点击车型</td>
+</tr>
+<tr>
+<td>goodsid</td>
+<td>字符</td>
+<td>点击商品ID</td>
+</tr>
+<tr>
+<td>price</td>
+<td>数值</td>
+<td>价格</td>
+</tr>
+<tr>
+<td>remark</td>
+<td>字符</td>
+<td>备注</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-3日志写入"><a href="#6-3日志写入" class="headerlink" title="6.3日志写入"></a>6.3日志写入</h2><p>（1）创建工程sitelog ，在pom.xml中引入依赖。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">       &lt;groupId&gt;org.mongodb&lt;/groupId&gt;</span><br><span class="line">       &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;</span><br><span class="line">       &lt;version&gt;3.4.1&lt;/version&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br><span class="line"> &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+<p>（2）在src/main/resources 添加配置文件sitelog.properties</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">port=<span class="number">27017</span></span><br></pre></td></tr></table></figure>
+<p>这个配置文件用于配置主机地址和端口</p>
+<p>（3）创建包com.huasheng.sitelog，建立Config 类，用于读取配置文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 配置类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span>&#123;			</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Properties p=<span class="keyword">new</span> Properties();</span><br><span class="line">			InputStream input=Config.class.getResourceAsStream(<span class="string">"/sitelog.propertis"</span>);</span><br><span class="line">			p.load(input);</span><br><span class="line">			host=p.getProperty(<span class="string">"host"</span>);</span><br><span class="line">			port=Integer.parseInt( p.getProperty(<span class="string">"port"</span>));</span><br><span class="line">			input.close();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="comment">//加载		</span></span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> String host;<span class="comment">//主机地址</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> port;<span class="comment">//端口</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getHost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> host;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getPort</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> port;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（4）创建管理类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClient;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions.Builder;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.ServerAddress;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.WriteConcern;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mongo数据库连接管理类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MongoManager</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MongoClient mongoClient=<span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="comment">//初始化</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//创建一个选项构造器</span></span><br><span class="line">		Builder builder = <span class="keyword">new</span> MongoClientOptions.Builder();</span><br><span class="line">		builder.connectTimeout(<span class="number">5000</span>);<span class="comment">//设置连接超时时间</span></span><br><span class="line">		builder.socketTimeout(<span class="number">5000</span>);<span class="comment">//读取数据的超时时间</span></span><br><span class="line">		builder.connectionsPerHost(<span class="number">30</span>);<span class="comment">//设置每个地址最大连接数</span></span><br><span class="line">		builder.writeConcern(WriteConcern.NORMAL);<span class="comment">//设置写入策略  ,只有网络异常才会抛出</span></span><br><span class="line">		<span class="comment">//得到选项封装</span></span><br><span class="line">		MongoClientOptions options = builder.build();		</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient(<span class="keyword">new</span> ServerAddress(Config.getHost(), Config.getPort()),options);		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MongoDatabase <span class="title">getDatabase</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(mongoClient==<span class="keyword">null</span>)&#123;</span><br><span class="line">			init();</span><br><span class="line">		&#125;		</span><br><span class="line">		<span class="keyword">return</span> mongoClient.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（5）日志工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> org.bson.Document;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoCollection;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 站点日志数据工具类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SiteLogUtil</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 写入日志</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> logname 日志名称</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> map 日志数据</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String logname,Map&lt;String, Object&gt; map)</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(logname);</span><br><span class="line">		Document doc=<span class="keyword">new</span> Document(map);		</span><br><span class="line">		collection.insertOne(doc);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（6）编写测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"userid"</span>, <span class="string">"8888"</span>);</span><br><span class="line">map.put(<span class="string">"ip"</span>, <span class="string">"188.188.200.2"</span>);</span><br><span class="line">map.put(<span class="string">"browseTime"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">map.put(<span class="string">"model"</span>, <span class="string">"大众"</span>);</span><br><span class="line">map.put(<span class="string">"goodsid"</span>, <span class="string">"123123"</span>);</span><br><span class="line">map.put(<span class="string">"price"</span>, <span class="number">15.3</span>);</span><br><span class="line">map.put(<span class="string">"remark"</span>, <span class="string">"八成新，贱卖了"</span>);</span><br><span class="line">SiteLogUtil.save(<span class="string">"browseLog"</span>, map);<span class="comment">//存入日志</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-4日志查询"><a href="#6-4日志查询" class="headerlink" title="6.4日志查询"></a>6.4日志查询</h2><h2 id="6-4-1条件查询"><a href="#6-4-1条件查询" class="headerlink" title="6.4.1条件查询"></a>6.4.1条件查询</h2><p>（1）在SiteLogUtil类中添加方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 按条件查询</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> logName</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> map</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> FindIterable&lt;Document&gt; <span class="title">list</span><span class="params">(String logName,Map&lt;String, Object&gt; map)</span></span>&#123;</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(logName);</span><br><span class="line">		BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(map);<span class="comment">//构建查询条件			</span></span><br><span class="line">		<span class="keyword">return</span> collection.find(bson);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）编写测试代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; map =<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"userid"</span>, <span class="string">"8888"</span>);		</span><br><span class="line">FindIterable&lt;Document&gt; list = SiteLogUtil.list(<span class="string">"browseLog"</span>, map);</span><br><span class="line">String json = JSON.serialize(list);</span><br><span class="line">System.out.println(json);</span><br></pre></td></tr></table></figure>
+<h2 id="6-4-2分页查询"><a href="#6-4-2分页查询" class="headerlink" title="6.4.2分页查询"></a>6.4.2分页查询</h2><p>（1）在SiteLogUtil类中添加方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页查询日志</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> logName 日志名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> map 条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageIndex 页码</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize 页大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,Object&gt; <span class="title">listPage</span><span class="params">(String logName,Map&lt;String, Object&gt; map,<span class="keyword">int</span> pageIndex,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">	MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">	MongoCollection&lt;Document&gt; collection = database.getCollection(logName);		</span><br><span class="line">	BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(map);<span class="comment">//构建查询条件			</span></span><br><span class="line">	FindIterable&lt;Document&gt; find = collection.find(bson);</span><br><span class="line">	<span class="keyword">int</span> skip= (pageIndex-<span class="number">1</span>)*pageSize;</span><br><span class="line">	find.skip( skip);<span class="comment">//跳过记录数</span></span><br><span class="line">	find.limit(pageSize);<span class="comment">//一页查询记录数</span></span><br><span class="line">	<span class="comment">//&#123; total:x,rows:[]  &#125;</span></span><br><span class="line">	<span class="keyword">long</span> count = collection.count(bson);</span><br><span class="line">	Map&lt;String,Object&gt; m=<span class="keyword">new</span> HashMap();</span><br><span class="line">	m.put(<span class="string">"total"</span>, count);</span><br><span class="line">	m.put(<span class="string">"rows"</span>, find);</span><br><span class="line">	<span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（2）添加测试数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1000</span>;i++)&#123;</span><br><span class="line">	</span><br><span class="line">	Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">	map.put(<span class="string">"userid"</span>, <span class="string">"900"</span>+i);<span class="comment">//用户ID</span></span><br><span class="line">	map.put(<span class="string">"ip"</span>, <span class="string">"121.211.112.212"</span>);</span><br><span class="line">	map.put(<span class="string">"browseTime"</span>, <span class="keyword">new</span> Date());<span class="comment">//浏览时间</span></span><br><span class="line">	map.put(<span class="string">"model"</span>, <span class="string">"大众"</span>+i);<span class="comment">//型号</span></span><br><span class="line">	map.put(<span class="string">"goodsid"</span>, <span class="string">"123456"</span>);<span class="comment">//商品ID</span></span><br><span class="line">	map.put(<span class="string">"price"</span>, <span class="number">11.8</span>);<span class="comment">//价格</span></span><br><span class="line">	map.put(<span class="string">"remark"</span>, <span class="string">"八成新，快来买吧"</span>);</span><br><span class="line">	</span><br><span class="line">	SiteLogUtil.save(<span class="string">"browseLog"</span>, map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（3）编写测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"goodsid"</span>, <span class="string">"123456"</span>);</span><br><span class="line">Map&lt;String, Object&gt; m = SiteLogUtil.listPage(<span class="string">"browseLog"</span>, map, <span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">String json = JSON.serialize(m);</span><br><span class="line">System.out.println(json);</span><br></pre></td></tr></table></figure>
+<p>使用Maven 的package命令进行打包。</p>
+<p>创建WEB工程，引入jar包，调用此方法即可实现日志查询。代码略。</p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/04/12/安装 Ruby, Rails 运行环境/">          
+
+            <span title="安装 Ruby, Rails 运行环境">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

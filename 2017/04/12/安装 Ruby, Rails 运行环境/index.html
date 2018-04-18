@@ -1,0 +1,344 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  安装 Ruby, Rails 运行环境 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		安装 Ruby, Rails 运行环境
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/04/12 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/redis/">redis</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/redis/">redis</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		1582
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h2 id="步骤1-－-安装-RVM"><a href="#步骤1-－-安装-RVM" class="headerlink" title="步骤1 － 安装 RVM"></a>步骤1 － 安装 RVM</h2><p>直接以如下命令行安装可能会不成功，因为rvm.io站点有时会被墙：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://get.rvm.io | bash -s stable</span><br><span class="line">#或者</span><br><span class="line">curl -L https://rvm.io | bash -s stable</span><br></pre></td></tr></table></figure>
+<p>没关系，我们可以直接从git仓库里下载并安装RVM，首先本地新建文件夹rvm:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir rvm</span><br><span class="line">cd rvm</span><br></pre></td></tr></table></figure>
+<p>然后依次执行如下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Install mpapis public key (might need `gpg2` and or `sudo`)</span><br><span class="line">gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3</span><br><span class="line"></span><br><span class="line"># Download the installer</span><br><span class="line">curl -O https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer</span><br><span class="line">curl -O https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer.asc</span><br><span class="line"></span><br><span class="line"># Verify the installer signature (might need `gpg2`), and if it validates...</span><br><span class="line">gpg --verify rvm-installer.asc &amp;&amp;</span><br><span class="line"></span><br><span class="line"># Run the installer</span><br><span class="line">bash rvm-installer stable</span><br></pre></td></tr></table></figure>
+<p>如果gpg –keyserver命令失败，用如下命令代替:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sSL https://rvm.io/mpapis.asc | gpg --import -</span><br></pre></td></tr></table></figure>
+<p>如果不出什么错误，RVM已经安装到系统上了，可以使用了。然后，载入 RVM 环境（新开 Termal 就不用这么做了，会自动重新载入的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ source ~/.rvm/scripts/rvm</span><br></pre></td></tr></table></figure>
+<p>修改 RVM 下载 Ruby 的源，到 Ruby China 的镜像:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;ruby_url=https://cache.ruby-china.org/pub/ruby&quot; &gt; ~/.rvm/user/db</span><br></pre></td></tr></table></figure>
+<p>检查一下是否安装正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rvm -v</span><br><span class="line">rvm 1.22.17 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com&gt;, Michal Papis &lt;mpapis@gmail.com&gt; [https://rvm.io/]</span><br></pre></td></tr></table></figure>
+<h2 id="步骤2-－-用-RVM-安装-Ruby-环境"><a href="#步骤2-－-用-RVM-安装-Ruby-环境" class="headerlink" title="步骤2 － 用 RVM 安装 Ruby 环境"></a>步骤2 － 用 RVM 安装 Ruby 环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rvm requirements</span><br><span class="line">$ rvm install 2.3.0</span><br></pre></td></tr></table></figure>
+<p>同样继续等待漫长的下载，编译过程，完成以后，Ruby, Ruby Gems 就安装好了。</p>
+<h2 id="步骤3-－-设置-Ruby-版本"><a href="#步骤3-－-设置-Ruby-版本" class="headerlink" title="步骤3 － 设置 Ruby 版本"></a>步骤3 － 设置 Ruby 版本</h2><p>RVM 装好以后，需要执行下面的命令将指定版本的 Ruby 设置为系统默认版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rvm use 2.3.0 --default</span><br></pre></td></tr></table></figure>
+<p>同样，也可以用其他版本号，前提是你有用 rvm install 安装过那个版本</p>
+<p>这个时候你可以测试是否正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ruby -v</span><br><span class="line">ruby 2.3.0 ...</span><br><span class="line"></span><br><span class="line">$ gem -v</span><br><span class="line">2.1.6</span><br><span class="line"></span><br><span class="line">$ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/</span><br></pre></td></tr></table></figure>
+<h3 id="安装-Bundler"><a href="#安装-Bundler" class="headerlink" title="安装 Bundler"></a>安装 Bundler</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install bundler</span><br></pre></td></tr></table></figure>
+<h2 id="步骤4-－-安装-Rails-环境"><a href="#步骤4-－-安装-Rails-环境" class="headerlink" title="步骤4 － 安装 Rails 环境"></a>步骤4 － 安装 Rails 环境</h2><p>上面 3 个步骤过后，Ruby 环境就安装好了，接下来安装 Rails</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install rails</span><br></pre></td></tr></table></figure>
+<p>然后测试安装是否正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ rails -v</span><br><span class="line">Rails 4.2.5</span><br></pre></td></tr></table></figure>
+<p>转载：</p>
+<p><a href="https://yq.aliyun.com/articles/24866" target="_blank" rel="noopener">inux下安装ruby版本管理器RVM</a></p>
+<p><a href="https://ruby-china.org/wiki/install_ruby_guide" target="_blank" rel="noopener">如何快速正确的安装 Ruby, Rails 运行环境</a></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/05/Redis使用/">          
+
+            <span title="Redis使用">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2016/10/05/mongoDB文档数据库/">         
+
+           <span title="mongoDB文档数据库">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

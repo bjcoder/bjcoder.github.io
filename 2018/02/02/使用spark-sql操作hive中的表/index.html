@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  使用Spark-Sql操作hive中的表 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		使用spark-sql操作hive中的表
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2018/02/02 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/spark/">spark</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		717
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="SparkSQL操作Hive中的表数据"><a href="#SparkSQL操作Hive中的表数据" class="headerlink" title="SparkSQL操作Hive中的表数据"></a>SparkSQL操作Hive中的表数据</h1><p>spark可以通过读取hive的元数据来兼容hive，读取hive的表数据，然后在spark引擎中进行sql统计分析。<br>注意：hive表的字符集应为latin1</p>
+<h1 id="1、启动hive的元数据服务"><a href="#1、启动hive的元数据服务" class="headerlink" title="1、启动hive的元数据服务"></a>1、启动hive的元数据服务</h1><p>hive可以通过服务的形式对外提供元数据读写操作，通过简单的配置即可<br>编辑 $HIVE_HOME/conf/hive-site.xml,增加如下内容:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;hive.metastore.uris&lt;/name&gt;</span><br><span class="line">&lt;value&gt;thrift:<span class="comment">//master:9083&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure><br> 启动hive metastore<br>[hadoop@centos-linux-7  ~]${HIVE_HOME}/bin/hive –service metastore  1&gt;/dev/null  2&gt;&amp;1  &amp;</p>
+<p> 查看 metastore:<br>[hadoop@centos-linux-7  ~] jobs<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/%E5%90%AF%E5%8A%A8megastore.png" alt="启动megastore"></p>
+<h1 id="2、spark配置"><a href="#2、spark配置" class="headerlink" title="2、spark配置"></a>2、spark配置</h1><p>将hive的配置文件拷贝给spark<br>将 $HIVE_HOME/conf/hive-site.xml copy $SPARK_HOME/conf/<br>将mysql的jdbc驱动包拷贝给spark<br>将 $HIVE_HOME/lib/mysql-connector-java-5.1.12.jar copy或者软链到$SPARK_HOME/lib/</p>
+<h1 id="3-启动spark-sql"><a href="#3-启动spark-sql" class="headerlink" title="3.启动spark-sql"></a>3.启动spark-sql</h1><p>所有命令启动spark-sql<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-sql --master spark:<span class="comment">//master:7077</span></span><br></pre></td></tr></table></figure><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A51.png" alt="启动spark-sql"><br>现在可以尽情的操作hive了，<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C1.png" alt="查询语句1"><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C1.png" alt="查询结果1"></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2018/02/05/solr cloud安装部署/">          
+
+            <span title="solr cloud安装部署">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2018/02/01/Hive配置/">         
+
+           <span title="Hive配置">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>
