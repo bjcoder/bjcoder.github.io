@@ -438,260 +438,6 @@
 	   
 	<div class="article-header">
 	    
-	     <a class="article-title"  href="/2017/12/14/Spring Boot 配置文件application/">Spring Boot配置文件application</a>  
-	       
-		 
-
-		 <time>2017-12-14 </time>    
-	</div>
-
-
-    <div class="article-excerpt">	
-	
-  	
-
-	  
-
-	  	<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br></pre></td><td class="code"><pre><span class="line">#########COMMON SPRING BOOT PROPERTIES</span><br><span class="line">######========CORE PROPERTIES===========</span><br><span class="line">#SPRING CONFIG (ConfigFileApplicationListener)</span><br><span class="line"></span><br><span class="line">spring.config.name= # config file name (default to 'application')</span><br><span class="line">spring.config.location= # location of config file</span><br><span class="line"></span><br><span class="line">#PROFILES</span><br><span class="line">spring.profiles= # comma list of active profiles</span><br><span class="line"></span><br><span class="line">#APPLICATION SETTINGS (SpringApplication)</span><br><span class="line">spring.main.sources=</span><br><span class="line">spring.main.web-environment= # detect by default</span><br><span class="line">spring.main.show-banner=true</span><br><span class="line">spring.main....= # see class for all properties</span><br><span class="line"></span><br><span class="line">#LOGGING</span><br><span class="line">logging.path=/var/logs</span><br><span class="line">logging.file=myapp.log</span><br><span class="line">logging.config=</span><br><span class="line"></span><br><span class="line">#IDENTITY (ContextIdApplicationContextInitializer)</span><br><span class="line">spring.application.name=</span><br><span class="line">spring.application.index=</span><br><span class="line"></span><br><span class="line">#EMBEDDED SERVER CONFIGURATION (ServerProperties)</span><br><span class="line">server.port=8080</span><br><span class="line">server.address= # bind to a specific NIC</span><br><span class="line">server.session-timeout= # session timeout in seconds</span><br><span class="line">server.context-path= # the context path, defaults to '/'</span><br><span class="line">server.servlet-path= # the servlet path, defaults to '/'</span><br><span class="line">server.tomcat.access-log-pattern= # log pattern of the access log</span><br><span class="line">server.tomcat.access-log-enabled=false # is access logging enabled</span><br><span class="line">server.tomcat.protocol-header=x-forwarded-proto # ssl forward headers</span><br><span class="line">server.tomcat.remote-ip-header=x-forwarded-for</span><br><span class="line">server.tomcat.basedir=/tmp # base dir (usually not needed, defaults to tmp)</span><br><span class="line">server.tomcat.background-processor-delay=30; # in seconds</span><br><span class="line">server.tomcat.max-threads = 0 # number of threads in protocol handler</span><br><span class="line">server.tomcat.uri-encoding = UTF-8 # character encoding to use for URL decoding</span><br><span class="line"></span><br><span class="line">#SPRING MVC (HttpMapperProperties)</span><br><span class="line">http.mappers.json-pretty-print=false # pretty print JSON</span><br><span class="line">http.mappers.json-sort-keys=false # sort keys</span><br><span class="line">spring.mvc.locale= # set fixed locale, e.g. enUK</span><br><span class="line">spring.mvc.date-format= # set fixed date format, e.g. dd/MM/yyyy</span><br><span class="line">spring.mvc.message-codes-resolver-format= # PREFIXERRORCODE / POSTFIXERROR_CODE</span><br><span class="line">spring.view.prefix= # MVC view prefix</span><br><span class="line">spring.view.suffix= # ... and suffix</span><br><span class="line">spring.resources.cache-period= # cache timeouts in headers sent to browser</span><br><span class="line">spring.resources.add-mappings=true # if default mappings should be added</span><br><span class="line"></span><br><span class="line">#THYMELEAF (ThymeleafAutoConfiguration)</span><br><span class="line">spring.thymeleaf.prefix=classpath:/templates/</span><br><span class="line">spring.thymeleaf.suffix=.html</span><br><span class="line">spring.thymeleaf.mode=HTML5</span><br><span class="line">spring.thymeleaf.encoding=UTF-8</span><br><span class="line">spring.thymeleaf.content-type=text/html # ;charset=<span class="tag">&lt;<span class="name">encoding</span>&gt;</span> is added</span><br><span class="line">spring.thymeleaf.cache=true # set to false for hot refresh</span><br><span class="line"></span><br><span class="line">#FREEMARKER (FreeMarkerAutoConfiguration)</span><br><span class="line">spring.freemarker.allowRequestOverride=false</span><br><span class="line">spring.freemarker.allowSessionOverride=false</span><br><span class="line">spring.freemarker.cache=true</span><br><span class="line">spring.freemarker.checkTemplateLocation=true</span><br><span class="line">spring.freemarker.contentType=text/html</span><br><span class="line">spring.freemarker.exposeRequestAttributes=false</span><br><span class="line">spring.freemarker.exposeSessionAttributes=false</span><br><span class="line">spring.freemarker.exposeSpringMacroHelpers=false</span><br><span class="line">spring.freemarker.prefix=</span><br><span class="line">spring.freemarker.requestContextAttribute=</span><br><span class="line">spring.freemarker.settings.*=</span><br><span class="line">spring.freemarker.suffix=.ftl</span><br><span class="line">spring.freemarker.templateEncoding=UTF-8</span><br><span class="line">spring.freemarker.templateLoaderPath=classpath:/templates/</span><br><span class="line">spring.freemarker.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#GROOVY TEMPLATES (GroovyTemplateAutoConfiguration)</span><br><span class="line">spring.groovy.template.allowRequestOverride=false</span><br><span class="line">spring.groovy.template.allowSessionOverride=false</span><br><span class="line">spring.groovy.template.cache=true</span><br><span class="line">spring.groovy.template.configuration.*= # See Groovy's TemplateConfiguration</span><br><span class="line">spring.groovy.template.contentType=text/html</span><br><span class="line">spring.groovy.template.prefix=classpath:/templates/</span><br><span class="line">spring.groovy.template.suffix=.tpl</span><br><span class="line">spring.groovy.template.templateEncoding=UTF-8</span><br><span class="line">spring.groovy.template.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#VELOCITY TEMPLATES (VelocityAutoConfiguration)</span><br><span class="line">spring.velocity.allowRequestOverride=false</span><br><span class="line">spring.velocity.allowSessionOverride=false</span><br><span class="line">spring.velocity.cache=true</span><br><span class="line">spring.velocity.checkTemplateLocation=true</span><br><span class="line">spring.velocity.contentType=text/html</span><br><span class="line">spring.velocity.dateToolAttribute=</span><br><span class="line">spring.velocity.exposeRequestAttributes=false</span><br><span class="line">spring.velocity.exposeSessionAttributes=false</span><br><span class="line">spring.velocity.exposeSpringMacroHelpers=false</span><br><span class="line">spring.velocity.numberToolAttribute=</span><br><span class="line">spring.velocity.prefix=</span><br><span class="line">spring.velocity.properties.*=</span><br><span class="line">spring.velocity.requestContextAttribute=</span><br><span class="line">spring.velocity.resourceLoaderPath=classpath:/templates/</span><br><span class="line">spring.velocity.suffix=.vm</span><br><span class="line">spring.velocity.templateEncoding=UTF-8</span><br><span class="line">spring.velocity.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#INTERNATIONALIZATION (MessageSourceAutoConfiguration)</span><br><span class="line">spring.messages.basename=messages</span><br><span class="line">spring.messages.cacheSeconds=-1</span><br><span class="line">spring.messages.encoding=UTF-8</span><br><span class="line"></span><br><span class="line">#SECURITY (SecurityProperties)</span><br><span class="line">security.user.name=user # login username</span><br><span class="line">security.user.password= # login password</span><br><span class="line">security.user.role=USER # role assigned to the user</span><br><span class="line">security.require-ssl=false # advanced settings ...</span><br><span class="line">security.enable-csrf=false</span><br><span class="line">security.basic.enabled=true</span><br><span class="line">security.basic.realm=Spring</span><br><span class="line">security.basic.path= # /**</span><br><span class="line">security.headers.xss=false</span><br><span class="line">security.headers.cache=false</span><br><span class="line">security.headers.frame=false</span><br><span class="line">security.headers.contentType=false</span><br><span class="line">security.headers.hsts=all # none / domain / all</span><br><span class="line">security.sessions=stateless # always / never / if_required / stateless</span><br><span class="line">security.ignored=false</span><br><span class="line"></span><br><span class="line">#DATASOURCE (DataSourceAutoConfiguration &amp; DataSourceProperties)</span><br><span class="line">spring.datasource.name= # name of the data source</span><br><span class="line">spring.datasource.initialize=true # populate using data.sql</span><br><span class="line">spring.datasource.schema= # a schema (DDL) script resource reference</span><br><span class="line">spring.datasource.data= # a data (DML) script resource reference</span><br><span class="line">spring.datasource.platform= # the platform to use in the schema resource (schema-$&#123;platform&#125;.sql)</span><br><span class="line">spring.datasource.continueOnError=false # continue even if can't be initialized</span><br><span class="line">spring.datasource.separator=; # statement separator in SQL initialization scripts</span><br><span class="line">spring.datasource.driverClassName= # JDBC Settings...</span><br><span class="line">spring.datasource.url=</span><br><span class="line">spring.datasource.username=</span><br><span class="line">spring.datasource.password=</span><br><span class="line">spring.datasource.max-active=100 # Advanced configuration...</span><br><span class="line">spring.datasource.max-idle=8</span><br><span class="line">spring.datasource.min-idle=8</span><br><span class="line">spring.datasource.initial-size=10</span><br><span class="line">spring.datasource.validation-query=</span><br><span class="line">spring.datasource.test-on-borrow=false</span><br><span class="line">spring.datasource.test-on-return=false</span><br><span class="line">spring.datasource.test-while-idle=</span><br><span class="line">spring.datasource.time-between-eviction-runs-millis=</span><br><span class="line">spring.datasource.min-evictable-idle-time-millis=</span><br><span class="line">spring.datasource.max-wait-millis=</span><br><span class="line"></span><br><span class="line">#MONGODB (MongoProperties)</span><br><span class="line">spring.data.mongodb.host= # the db host</span><br><span class="line">spring.data.mongodb.port=27017 # the connection port (defaults to 27107)</span><br><span class="line">spring.data.mongodb.uri=mongodb://localhost/test # connection URL</span><br><span class="line">spring.data.mongo.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)</span><br><span class="line">spring.jpa.properties.*= # properties to set on the JPA connection</span><br><span class="line">spring.jpa.openInView=true</span><br><span class="line">spring.jpa.show-sql=true</span><br><span class="line">spring.jpa.database-platform=</span><br><span class="line">spring.jpa.database=</span><br><span class="line">spring.jpa.generate-ddl=false # ignored by Hibernate, might be useful for other vendors</span><br><span class="line">spring.jpa.hibernate.naming-strategy= # naming classname</span><br><span class="line">spring.jpa.hibernate.ddl-auto= # defaults to create-drop for embedded dbs</span><br><span class="line">spring.data.jpa.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#SOLR (SolrProperties&#125;)</span><br><span class="line">spring.data.solr.host=http://127.0.0.1:8983/solr</span><br><span class="line">spring.data.solr.zkHost=</span><br><span class="line">spring.data.solr.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#ELASTICSEARCH (ElasticsearchProperties&#125;)</span><br><span class="line">spring.data.elasticsearch.cluster-name= # The cluster name (defaults to elasticsearch)</span><br><span class="line">spring.data.elasticsearch.cluster-nodes= # The address(es) of the server node (comma-separated; if not specified starts a client node)</span><br><span class="line">spring.data.elasticsearch.local=true # if local mode should be used with client nodes</span><br><span class="line">spring.data.elasticsearch.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#FLYWAY (FlywayProperties)</span><br><span class="line">flyway.locations=classpath:db/migrations # locations of migrations scripts</span><br><span class="line">flyway.schemas= # schemas to update</span><br><span class="line">flyway.initVersion= 1 # version to start migration</span><br><span class="line">flyway.prefix=V</span><br><span class="line">flyway.suffix=.sql</span><br><span class="line">flyway.enabled=true</span><br><span class="line">flyway.url= # JDBC url if you want Flyway to create its own DataSource</span><br><span class="line">flyway.user= # JDBC username if you want Flyway to create its own DataSource</span><br><span class="line">flyway.password= # JDBC password if you want Flyway to create its own DataSource</span><br><span class="line"></span><br><span class="line">#LIQUIBASE (LiquibaseProperties)</span><br><span class="line">liquibase.change-log=classpath:/db/changelog/db.changelog-master.yaml</span><br><span class="line">liquibase.contexts= # runtime contexts to use</span><br><span class="line">liquibase.default-schema= # default database schema to use</span><br><span class="line">liquibase.drop-first=false</span><br><span class="line">liquibase.enabled=true</span><br><span class="line"></span><br><span class="line">#JMX</span><br><span class="line">spring.jmx.enabled=true # Expose MBeans from Spring</span><br><span class="line"></span><br><span class="line">#ABBIT (RabbitProperties)</span><br><span class="line">spring.rabbitmq.host= # connection host</span><br><span class="line">spring.rabbitmq.port= # connection port</span><br><span class="line">spring.rabbitmq.addresses= # connection addresses (e.g. myhost:9999,otherhost:1111)</span><br><span class="line">spring.rabbitmq.username= # login user</span><br><span class="line">spring.rabbitmq.password= # login password</span><br><span class="line">spring.rabbitmq.virtualhost=</span><br><span class="line">spring.rabbitmq.dynamic=</span><br><span class="line"></span><br><span class="line">#REDIS (RedisProperties)</span><br><span class="line">spring.redis.host=localhost # server host</span><br><span class="line">spring.redis.password= # server password</span><br><span class="line">spring.redis.port=6379 # connection port</span><br><span class="line">spring.redis.pool.max-idle=8 # pool settings ...</span><br><span class="line">spring.redis.pool.min-idle=0</span><br><span class="line">spring.redis.pool.max-active=8</span><br><span class="line">spring.redis.pool.max-wait=-1</span><br><span class="line"></span><br><span class="line">#ACTIVEMQ (ActiveMQProperties)</span><br><span class="line">spring.activemq.broker-url=tcp://localhost:61616 # connection URL</span><br><span class="line">spring.activemq.user=</span><br><span class="line">spring.activemq.password=</span><br><span class="line">spring.activemq.in-memory=true # broker kind to create if no broker-url is specified</span><br><span class="line">spring.activemq.pooled=false</span><br><span class="line"></span><br><span class="line">#HornetQ (HornetQProperties)</span><br><span class="line">spring.hornetq.mode= # connection mode (native, embedded)</span><br><span class="line">spring.hornetq.host=localhost # hornetQ host (native mode)</span><br><span class="line">spring.hornetq.port=5445 # hornetQ port (native mode)</span><br><span class="line">spring.hornetq.embedded.enabled=true # if the embedded server is enabled (needs hornetq-jms-server.jar)</span><br><span class="line">spring.hornetq.embedded.serverId= # auto-generated id of the embedded server (integer)</span><br><span class="line">spring.hornetq.embedded.persistent=false # message persistence</span><br><span class="line">spring.hornetq.embedded.data-directory= # location of data content (when persistence is enabled)</span><br><span class="line">spring.hornetq.embedded.queues= # comma separate queues to create on startup</span><br><span class="line">spring.hornetq.embedded.topics= # comma separate topics to create on startup</span><br><span class="line">spring.hornetq.embedded.cluster-password= # customer password (randomly generated by default)</span><br><span class="line"></span><br><span class="line">#JMS (JmsProperties)</span><br><span class="line">spring.jms.pub-sub-domain= # false for queue (default), true for topic</span><br><span class="line"></span><br><span class="line">#SPRING BATCH (BatchDatabaseInitializer)</span><br><span class="line">spring.batch.job.names=job1,job2</span><br><span class="line">spring.batch.job.enabled=true</span><br><span class="line">spring.batch.initializer.enabled=true</span><br><span class="line">spring.batch.schema= # batch schema to load</span><br><span class="line"></span><br><span class="line">#AOP</span><br><span class="line">spring.aop.auto=</span><br><span class="line">spring.aop.proxy-target-class=</span><br><span class="line"></span><br><span class="line">#FILE ENCODING (FileEncodingApplicationListener)</span><br><span class="line">spring.mandatory-file-encoding=false</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL (SocialWebAutoConfiguration)</span><br><span class="line">spring.social.auto-connection-views=true # Set to true for default connection views or false if you provide your own</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL FACEBOOK (FacebookAutoConfiguration)</span><br><span class="line">spring.social.facebook.app-id= # your application's Facebook App ID</span><br><span class="line">spring.social.facebook.app-secret= # your application's Facebook App Secret</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL LINKEDIN (LinkedInAutoConfiguration)</span><br><span class="line">spring.social.linkedin.app-id= # your application's LinkedIn App ID</span><br><span class="line">spring.social.linkedin.app-secret= # your application's LinkedIn App Secret</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL TWITTER (TwitterAutoConfiguration)</span><br><span class="line">spring.social.twitter.app-id= # your application's Twitter App ID</span><br><span class="line">spring.social.twitter.app-secret= # your application's Twitter App Secret</span><br><span class="line"></span><br><span class="line">#SPRING MOBILE SITE PREFERENCE (SitePreferenceAutoConfiguration)</span><br><span class="line">spring.mobile.sitepreference.enabled=true # enabled by default</span><br><span class="line"></span><br><span class="line">#SPRING MOBILE DEVICE VIEWS (DeviceDelegatingViewResolverAutoConfiguration)</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.enabled=true # disabled by default</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.normalPrefix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.normalSuffix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.mobilePrefix=mobile/</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.mobileSuffix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.tabletPrefix=tablet/</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.tabletSuffix=</span><br><span class="line"></span><br><span class="line">######========ACTUATOR PROPERTIES===========</span><br><span class="line"></span><br><span class="line">#MANAGEMENT HTTP SERVER (ManagementServerProperties)</span><br><span class="line">management.port= # defaults to 'server.port'</span><br><span class="line">management.address= # bind to a specific NIC</span><br><span class="line">management.contextPath= # default to '/'</span><br><span class="line"></span><br><span class="line">#ENDPOINTS (AbstractEndpoint subclasses)</span><br><span class="line">endpoints.autoconfig.id=autoconfig</span><br><span class="line">endpoints.autoconfig.sensitive=true</span><br><span class="line">endpoints.autoconfig.enabled=true</span><br><span class="line">endpoints.beans.id=beans</span><br><span class="line">endpoints.beans.sensitive=true</span><br><span class="line">endpoints.beans.enabled=true</span><br><span class="line">endpoints.configprops.id=configprops</span><br><span class="line">endpoints.configprops.sensitive=true</span><br><span class="line">endpoints.configprops.enabled=true</span><br><span class="line">endpoints.configprops.keys-to-sanitize=password,secret</span><br><span class="line">endpoints.dump.id=dump</span><br><span class="line">endpoints.dump.sensitive=true</span><br><span class="line">endpoints.dump.enabled=true</span><br><span class="line">endpoints.env.id=env</span><br><span class="line">endpoints.env.sensitive=true</span><br><span class="line">endpoints.env.enabled=true</span><br><span class="line">endpoints.health.id=health</span><br><span class="line">endpoints.health.sensitive=false</span><br><span class="line">endpoints.health.enabled=true</span><br><span class="line">endpoints.info.id=info</span><br><span class="line">endpoints.info.sensitive=false</span><br><span class="line">endpoints.info.enabled=true</span><br><span class="line">endpoints.metrics.id=metrics</span><br><span class="line">endpoints.metrics.sensitive=true</span><br><span class="line">endpoints.metrics.enabled=true</span><br><span class="line">endpoints.shutdown.id=shutdown</span><br><span class="line">endpoints.shutdown.sensitive=true</span><br><span class="line">endpoints.shutdown.enabled=false</span><br><span class="line">endpoints.trace.id=trace</span><br><span class="line">endpoints.trace.sensitive=true</span><br><span class="line">endpoints.trace.enabled=true</span><br><span class="line"></span><br><span class="line">#MVC ONLY ENDPOINTS</span><br><span class="line">endpoints.jolokia.path=jolokia</span><br><span class="line">endpoints.jolokia.sensitive=true</span><br><span class="line">endpoints.jolokia.enabled=true # when using Jolokia</span><br><span class="line">endpoints.error.path=/error</span><br><span class="line"></span><br><span class="line">#JMX ENDPOINT (EndpointMBeanExportProperties)</span><br><span class="line">endpoints.jmx.enabled=true</span><br><span class="line">endpoints.jmx.domain= # the JMX domain, defaults to 'org.springboot'</span><br><span class="line">endpoints.jmx.unique-names=false</span><br><span class="line">endpoints.jmx.enabled=true</span><br><span class="line">endpoints.jmx.staticNames=</span><br><span class="line"></span><br><span class="line">#JOLOKIA (JolokiaProperties)</span><br><span class="line">jolokia.config.*= # See Jolokia manual</span><br><span class="line"></span><br><span class="line">#REMOTE SHELL</span><br><span class="line">shell.auth=simple # jaas, key, simple, spring</span><br><span class="line">shell.command-refresh-interval=-1</span><br><span class="line">shell.command-path-pattern= # classpath:/commands/, classpath:/crash/commands/</span><br><span class="line">shell.config-path-patterns= # classpath:/crash/</span><br><span class="line">shell.disabled-plugins=false # don't expose plugins</span><br><span class="line">shell.ssh.enabled= # ssh settings ...</span><br><span class="line">shell.ssh.keyPath=</span><br><span class="line">shell.ssh.port=</span><br><span class="line">shell.telnet.enabled= # telnet settings ...</span><br><span class="line">shell.telnet.port=</span><br><span class="line">shell.auth.jaas.domain= # authentication settings ...</span><br><span class="line">shell.auth.key.path=</span><br><span class="line">shell.auth.simple.user.name=</span><br><span class="line">shell.auth.simple.user.password=</span><br><span class="line">shell.auth.spring.roles=</span><br><span class="line"></span><br><span class="line">#GIT INFO</span><br><span class="line">spring.git.properties= # resource ref to generated git info properties file</span><br></pre></td></tr></table></figure>
- 
-
-	    
-</div>
-
-<div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/springBoot/">springBoot</a>
-				</span>
-		
-			
-
-		
-				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
-				</span>			
-			
-
-
-		
-
-		<span class="post-words"><span class="iconfont icon-words"></span>
-		14167
-		</span>		
-</div>		
-
-		
-    <a class="article-readmore" href="/2017/12/14/Spring Boot 配置文件application/">阅读更多</a> 
-    	
-</article>     
-     	
-      	  	
-
-  		
-    	<article class="article">		
-	   
-	<div class="article-header">
-	    
-	     <a class="article-title"  href="/2017/12/14/spring Boot简介及入门/">spring Boot简介及入门</a>  
-	       
-		 
-
-		 <time>2017-12-14 </time>    
-	</div>
-
-
-    <div class="article-excerpt">	
-	
-  	
-
-	  
-
-	  	<h1 id="1-Spring-Boot简介"><a href="#1-Spring-Boot简介" class="headerlink" title="1.Spring Boot简介"></a>1.Spring Boot简介</h1><p>​       Spring 诞生时是 Java 企业版（Java Enterprise Edition，JEE，也称 J2EE）的轻量级代替品。无需开发重量级的 Enterprise JavaBean（EJB），Spring 为企业级Java 开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用简单的Java 对象（Plain Old Java Object，POJO）实现了 EJB 的功能。</p>
-<p>​       虽然 Spring 的组件代码是轻量级的，但它的配置却是重量级的。一开始，Spring 用 XML 配置，而且是很多 XML 配置。Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置。Spring 3.0 引入了基于 Java 的配置，这是一种类型安全的可重构配置方式，可以代替 XML。所有这些配置都代表了开发时的损耗。因为在思考 Spring 特性配置和解决业务问题之间需要进行思维切换，所以写配置挤占了写应用程序逻辑的时间。和所有框架一样，Spring 实用，但与此同时它要求的回报也不少。</p>
-<p>​       除此之外，项目的依赖管理也是件吃力不讨好的事情。决定项目里要用哪些库就已经够让人头痛的了，你还要知道这些库的哪个版本和其他库不会有冲突，这难题实在太棘手。并且，依赖管理也是一种损耗，添加依赖不是写应用程序代码。一旦选错了依赖的版本，随之而来的不兼容问题毫无疑问会是生产力杀手。Spring Boot 让这一切成为了过去。</p>
-<p>​       Spring Boot 是 Spring 社区较新的一个项目。该项目的目的是帮助开发者更容易的创建基于 Spring 的应用程序和服务，让更多人的人更快的对 Spring 进行入门体验，为 Spring 生态系统提供了一种固定的、约定优于配置风格的框架。</p>
-<p>Spring Boot 具有如下特性：</p>
-<p>（1）为基于 Spring 的开发提供更快的入门体验</p>
-<p>（2）开箱即用，没有代码生成，也无需 XML 配置。同时也可以修改默认值来满足特定的需求。</p>
-<p>（3）提供了一些大型项目中常见的非功能性特性，如嵌入式服务器、安全、指标，健康检测、外部配置等。</p>
-<p>（4）Spring Boot 并不是不对 Spring 功能上的增强，而是提供了一种快速使用 Spring 的方式。</p>
-<h1 id="2-Spring-Boot入门Demo"><a href="#2-Spring-Boot入门Demo" class="headerlink" title="2.Spring Boot入门Demo"></a>2.Spring Boot入门Demo</h1><h2 id="2-1起步依赖"><a href="#2-1起步依赖" class="headerlink" title="2.1起步依赖"></a>2.1起步依赖</h2><p>创建Maven工程 springboot_demo（打包方式jar）  </p>
-<p>在pom.xml中添加如下依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      </span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>​     spring Boot会自动加载所需要的jar包,而这些jar包正式我们做开发时需要导入的jar包。因为这些jar包被我们刚才引入的spring-boot-starter-web所引用了，所以我们引用spring-boot-starter-web后会自动把依赖传递过来。</p>
-<h2 id="2-2-变更JDK版本"><a href="#2-2-变更JDK版本" class="headerlink" title="2.2 变更JDK版本"></a>2.2 变更JDK版本</h2><p>​       我们发现默认情况下工程的JDK版本是1.6 ,而我们通常用使用1.7的版本，所以我们需要在pom.xml中添加以下配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>添加后更新工程，会发现版本已经变更为1.7</p>
-<h2 id="2-3-引导类"><a href="#2-3-引导类" class="headerlink" title="2.3 引导类"></a>2.3 引导类</h2><p>我们需要创建一个引导类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单解释一下，@SpringBootApplication其实就是以下三个注解的总和</p>
-<p>@Configuration： 用于定义一个配置类</p>
-<p>@EnableAutoConfiguration ：Spring Boot会自动根据你jar包的依赖来自动配置项目。</p>
-<p>@ComponentScan： 告诉Spring 哪个packages 的用注解标识的类 会被spring自动扫描并且装入bean容器。</p>
-<p>我们直接执行这个引导类，会发现控制台出现的这个标识</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spring_boot/image4.png" alt="image4"></p>
-<h2 id="2-4-Spring-MVC实现Hello-World输出"><a href="#2-4-Spring-MVC实现Hello-World输出" class="headerlink" title="2.4 Spring MVC实现Hello World输出"></a>2.4 Spring MVC实现Hello World输出</h2><p>我们现在开始使用spring MVC框架，实现json数据的输出。如果按照我们原来的做法，需要在web.xml中添加一个DispatcherServlet的配置，再添加一个spring的配置文件，配置文件中需要添加如下配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">&lt;!-- 使用组件扫描，不用将controller在spring中配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"cn.itcast.demo.controller"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 使用注解驱动不用在下边定义映射器和适配置器 --&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">mvc:annotation-driven</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mvc:message-converters</span> <span class="attr">register-defaults</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span> <span class="attr">value</span>=<span class="string">"application/json"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"features"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteMapNullValue<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteDateUseDateFormat<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mvc:message-converters</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>但是我们用SpringBoot，这一切都省了。我们直接写Controller类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"HelloWorld"</span>;		</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们运行启动类来运行程序</p>
-<p>在浏览器地址栏输入 <a href="http://localhost:8080/info" target="_blank" rel="noopener">http://localhost:8080/info</a> 即可看到运行结果</p>
-<h1 id="3-springBoot支持修改配置文件"><a href="#3-springBoot支持修改配置文件" class="headerlink" title="3 springBoot支持修改配置文件"></a>3 springBoot支持修改配置文件</h1><h2 id="3-1-修改tomcat启动端口"><a href="#3-1-修改tomcat启动端口" class="headerlink" title="3.1 修改tomcat启动端口"></a>3.1 修改tomcat启动端口</h2><p>在src/main/resources下创建application.properties</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.port=8088</span><br></pre></td></tr></table></figure>
-<p>重新运行引导类。地址栏输入</p>
-<p><a href="http://localhost:8088/info" target="_blank" rel="noopener">http://localhost:8088/info</a></p>
-<h2 id="3-2-读取配置文件信息"><a href="#3-2-读取配置文件信息" class="headerlink" title="3.2 读取配置文件信息"></a>3.2 读取配置文件信息</h2><p>在src/main/resources下的application.properties 增加配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://www.baidu.com</span><br></pre></td></tr></table></figure>
-<p>我要在类中读取这个配置信息，修改HelloWorldController  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"HelloWorld~~"</span>+env.getProperty(<span class="string">"url"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
- 
-
-	    
-</div>
-
-<div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/springBoot/">springBoot</a>
-				</span>
-		
-			
-
-		
-				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
-				</span>			
-			
-
-
-		
-
-		<span class="post-words"><span class="iconfont icon-words"></span>
-		3843
-		</span>		
-</div>		
-
-		
-    <a class="article-readmore" href="/2017/12/14/spring Boot简介及入门/">阅读更多</a> 
-    	
-</article>     
-     	
-      	  	
-
-  		
-    	<article class="article">		
-	   
-	<div class="article-header">
-	    
-	     <a class="article-title"  href="/2017/12/14/Spring Boot应用启动器/">Spring Boot应用启动器</a>  
-	       
-		 
-
-		 <time>2017-12-14 </time>    
-	</div>
-
-
-    <div class="article-excerpt">	
-	
-  	
-
-	  
-
-	  	<h1 id="Spring-Boot应用启动器"><a href="#Spring-Boot应用启动器" class="headerlink" title="Spring Boot应用启动器"></a>Spring Boot应用启动器</h1><h2 id="spring-Boot应用启动器基本的一共有44种，具体如下："><a href="#spring-Boot应用启动器基本的一共有44种，具体如下：" class="headerlink" title="spring Boot应用启动器基本的一共有44种，具体如下："></a>spring Boot应用启动器基本的一共有44种，具体如下：</h2><p>1）spring-boot-starter<br>这是Spring Boot的核心启动器，包含了自动配置、日志和YAML。</p>
-<p>2）spring-boot-starter-actuator<br>帮助监控和管理应用。</p>
-<p>3）spring-boot-starter-amqp<br>通过spring-rabbit来支持AMQP协议（Advanced Message Queuing Protocol）。</p>
-<p>4）spring-boot-starter-aop<br>支持面向方面的编程即AOP，包括spring-aop和AspectJ。</p>
-<p>5）spring-boot-starter-artemis<br>通过Apache Artemis支持JMS的API（<a href="http://lib.csdn.net/base/java" target="_blank" rel="noopener">Java </a>Message Service API）。</p>
-<p>6）spring-boot-starter-batch<br>支持Spring Batch，包括HSQLDB<a href="http://lib.csdn.net/base/mysql" target="_blank" rel="noopener">数据库</a>。</p>
-<p>7）spring-boot-starter-cache<br>支持Spring的Cache抽象。</p>
-<p>8）spring-boot-starter-cloud-connectors<br>支持Spring Cloud Connectors，简化了在像Cloud Foundry或Heroku这样的云平台上连接服务。</p>
-<p>9）spring-boot-starter-data-elasticsearch<br>支持ElasticSearch搜索和分析引擎，包括spring-data-elasticsearch。</p>
-<p>10）spring-boot-starter-data-gemfire<br>支持GemFire分布式数据存储，包括spring-data-gemfire。</p>
-<p>11）spring-boot-starter-data-jpa<br>支持JPA（<a href="http://lib.csdn.net/base/javase" target="_blank" rel="noopener">Java</a> Persistence API），包括spring-data-jpa、spring-orm、<a href="http://lib.csdn.net/base/javaee" target="_blank" rel="noopener">hibernate</a>。</p>
-<p>12）spring-boot-starter-data-<a href="http://lib.csdn.net/base/mongodb" target="_blank" rel="noopener">MongoDB</a><br>支持MongoDB数据，包括spring-data-mongodb。</p>
-<p>13）spring-boot-starter-data-rest<br>通过spring-data-rest-webmvc，支持通过REST暴露Spring Data数据仓库。</p>
-<p>14）spring-boot-starter-data-solr<br>支持Apache Solr搜索平台，包括spring-data-solr。</p>
-<p>15）spring-boot-starter-freemarker<br>支持FreeMarker模板引擎。</p>
-<p>16）spring-boot-starter-groovy-templates<br>支持Groovy模板引擎。</p>
-<p>17）spring-boot-starter-hateoas<br>通过spring-hateoas支持基于HATEOAS的RESTful Web服务。</p>
-<p>18）spring-boot-starter-hornetq<br>通过HornetQ支持JMS。</p>
-<p>19）spring-boot-starter-integration<br>支持通用的spring-integration模块。</p>
-<p>20）spring-boot-starter-jdbc<br>支持JDBC数据库。</p>
-<p>21）spring-boot-starter-jersey<br>支持Jersey RESTful Web服务框架。</p>
-<p>22）spring-boot-starter-jta-atomikos<br>通过Atomikos支持JTA分布式事务处理。</p>
-<p>23）spring-boot-starter-jta-bitronix<br>通过Bitronix支持JTA分布式事务处理。</p>
-<p>24）spring-boot-starter-mail<br>支持javax.mail模块。</p>
-<p>25）spring-boot-starter-mobile<br>支持spring-mobile。</p>
-<p>26）spring-boot-starter-mustache<br>支持Mustache模板引擎。</p>
-<p>27）spring-boot-starter-<a href="http://lib.csdn.net/base/redis" target="_blank" rel="noopener">Redis</a><br>支持Redis键值存储数据库，包括spring-redis。</p>
-<p>28）spring-boot-starter-security<br>支持spring-security。</p>
-<p>29）spring-boot-starter-social-facebook<br>支持spring-social-facebook</p>
-<p>30）spring-boot-starter-social-linkedin<br>支持pring-social-linkedin</p>
-<p>31）spring-boot-starter-social-twitter<br>支持pring-social-twitter</p>
-<p>32）spring-boot-starter-test<br>支持常规的<a href="http://lib.csdn.net/base/softwaretest" target="_blank" rel="noopener">测试</a>依赖，包括JUnit、Hamcrest、Mockito以及spring-test模块。</p>
-<p>33）spring-boot-starter-thymeleaf<br>支持Thymeleaf模板引擎，包括与Spring的集成。</p>
-<p>34）spring-boot-starter-velocity<br>支持Velocity模板引擎。</p>
-<p>35）spring-boot-starter-web<br>S支持全栈式Web开发，包括Tomcat和spring-webmvc。</p>
-<p>36）spring-boot-starter-websocket<br>支持WebSocket开发。</p>
-<p>37）spring-boot-starter-ws<br>支持Spring Web Services。</p>
-<h2 id="Spring-Boot应用启动器面向生产环境的还有2种，具体如下："><a href="#Spring-Boot应用启动器面向生产环境的还有2种，具体如下：" class="headerlink" title="Spring Boot应用启动器面向生产环境的还有2种，具体如下："></a>Spring Boot应用启动器面向生产环境的还有2种，具体如下：</h2><p>1）spring-boot-starter-actuator<br>增加了面向产品上线相关的功能，比如测量和监控。</p>
-<p>2）spring-boot-starter-remote-shell<br>增加了远程ssh shell的支持。</p>
-<h2 id="Spring-Boot应用启动器还有一些替换技术的启动器，具体如下："><a href="#Spring-Boot应用启动器还有一些替换技术的启动器，具体如下：" class="headerlink" title="Spring Boot应用启动器还有一些替换技术的启动器，具体如下："></a>Spring Boot应用启动器还有一些替换技术的启动器，具体如下：</h2><p>1）spring-boot-starter-jetty<br>引入了Jetty HTTP引擎（用于替换Tomcat）。</p>
-<p>2）spring-boot-starter-log4j<br>支持Log4J日志框架。</p>
-<p>3）spring-boot-starter-logging<br>引入了Spring Boot默认的日志框架Logback。</p>
-<p>4）spring-boot-starter-tomcat<br>引入了Spring Boot默认的HTTP引擎Tomcat。</p>
-<p>5）spring-boot-starter-undertow<br>引入了Undertow HTTP引擎（用于替换Tomcat）。</p>
- 
-
-	    
-</div>
-
-<div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/springBoot/">springBoot</a>
-				</span>
-		
-			
-
-		
-				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
-				</span>			
-			
-
-
-		
-
-		<span class="post-words"><span class="iconfont icon-words"></span>
-		2759
-		</span>		
-</div>		
-
-		
-    <a class="article-readmore" href="/2017/12/14/Spring Boot应用启动器/">阅读更多</a> 
-    	
-</article>     
-     	
-      	  	
-
-  		
-    	<article class="article">		
-	   
-	<div class="article-header">
-	    
 	     <a class="article-title"  href="/2017/12/14/Hadoop集群的搭建/">Hadoop集群的搭建</a>  
 	       
 		 
@@ -862,6 +608,260 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
 	   
 	<div class="article-header">
 	    
+	     <a class="article-title"  href="/2017/12/14/Spring Boot 配置文件application/">Spring Boot配置文件application</a>  
+	       
+		 
+
+		 <time>2017-12-14 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br></pre></td><td class="code"><pre><span class="line">#########COMMON SPRING BOOT PROPERTIES</span><br><span class="line">######========CORE PROPERTIES===========</span><br><span class="line">#SPRING CONFIG (ConfigFileApplicationListener)</span><br><span class="line"></span><br><span class="line">spring.config.name= # config file name (default to 'application')</span><br><span class="line">spring.config.location= # location of config file</span><br><span class="line"></span><br><span class="line">#PROFILES</span><br><span class="line">spring.profiles= # comma list of active profiles</span><br><span class="line"></span><br><span class="line">#APPLICATION SETTINGS (SpringApplication)</span><br><span class="line">spring.main.sources=</span><br><span class="line">spring.main.web-environment= # detect by default</span><br><span class="line">spring.main.show-banner=true</span><br><span class="line">spring.main....= # see class for all properties</span><br><span class="line"></span><br><span class="line">#LOGGING</span><br><span class="line">logging.path=/var/logs</span><br><span class="line">logging.file=myapp.log</span><br><span class="line">logging.config=</span><br><span class="line"></span><br><span class="line">#IDENTITY (ContextIdApplicationContextInitializer)</span><br><span class="line">spring.application.name=</span><br><span class="line">spring.application.index=</span><br><span class="line"></span><br><span class="line">#EMBEDDED SERVER CONFIGURATION (ServerProperties)</span><br><span class="line">server.port=8080</span><br><span class="line">server.address= # bind to a specific NIC</span><br><span class="line">server.session-timeout= # session timeout in seconds</span><br><span class="line">server.context-path= # the context path, defaults to '/'</span><br><span class="line">server.servlet-path= # the servlet path, defaults to '/'</span><br><span class="line">server.tomcat.access-log-pattern= # log pattern of the access log</span><br><span class="line">server.tomcat.access-log-enabled=false # is access logging enabled</span><br><span class="line">server.tomcat.protocol-header=x-forwarded-proto # ssl forward headers</span><br><span class="line">server.tomcat.remote-ip-header=x-forwarded-for</span><br><span class="line">server.tomcat.basedir=/tmp # base dir (usually not needed, defaults to tmp)</span><br><span class="line">server.tomcat.background-processor-delay=30; # in seconds</span><br><span class="line">server.tomcat.max-threads = 0 # number of threads in protocol handler</span><br><span class="line">server.tomcat.uri-encoding = UTF-8 # character encoding to use for URL decoding</span><br><span class="line"></span><br><span class="line">#SPRING MVC (HttpMapperProperties)</span><br><span class="line">http.mappers.json-pretty-print=false # pretty print JSON</span><br><span class="line">http.mappers.json-sort-keys=false # sort keys</span><br><span class="line">spring.mvc.locale= # set fixed locale, e.g. enUK</span><br><span class="line">spring.mvc.date-format= # set fixed date format, e.g. dd/MM/yyyy</span><br><span class="line">spring.mvc.message-codes-resolver-format= # PREFIXERRORCODE / POSTFIXERROR_CODE</span><br><span class="line">spring.view.prefix= # MVC view prefix</span><br><span class="line">spring.view.suffix= # ... and suffix</span><br><span class="line">spring.resources.cache-period= # cache timeouts in headers sent to browser</span><br><span class="line">spring.resources.add-mappings=true # if default mappings should be added</span><br><span class="line"></span><br><span class="line">#THYMELEAF (ThymeleafAutoConfiguration)</span><br><span class="line">spring.thymeleaf.prefix=classpath:/templates/</span><br><span class="line">spring.thymeleaf.suffix=.html</span><br><span class="line">spring.thymeleaf.mode=HTML5</span><br><span class="line">spring.thymeleaf.encoding=UTF-8</span><br><span class="line">spring.thymeleaf.content-type=text/html # ;charset=<span class="tag">&lt;<span class="name">encoding</span>&gt;</span> is added</span><br><span class="line">spring.thymeleaf.cache=true # set to false for hot refresh</span><br><span class="line"></span><br><span class="line">#FREEMARKER (FreeMarkerAutoConfiguration)</span><br><span class="line">spring.freemarker.allowRequestOverride=false</span><br><span class="line">spring.freemarker.allowSessionOverride=false</span><br><span class="line">spring.freemarker.cache=true</span><br><span class="line">spring.freemarker.checkTemplateLocation=true</span><br><span class="line">spring.freemarker.contentType=text/html</span><br><span class="line">spring.freemarker.exposeRequestAttributes=false</span><br><span class="line">spring.freemarker.exposeSessionAttributes=false</span><br><span class="line">spring.freemarker.exposeSpringMacroHelpers=false</span><br><span class="line">spring.freemarker.prefix=</span><br><span class="line">spring.freemarker.requestContextAttribute=</span><br><span class="line">spring.freemarker.settings.*=</span><br><span class="line">spring.freemarker.suffix=.ftl</span><br><span class="line">spring.freemarker.templateEncoding=UTF-8</span><br><span class="line">spring.freemarker.templateLoaderPath=classpath:/templates/</span><br><span class="line">spring.freemarker.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#GROOVY TEMPLATES (GroovyTemplateAutoConfiguration)</span><br><span class="line">spring.groovy.template.allowRequestOverride=false</span><br><span class="line">spring.groovy.template.allowSessionOverride=false</span><br><span class="line">spring.groovy.template.cache=true</span><br><span class="line">spring.groovy.template.configuration.*= # See Groovy's TemplateConfiguration</span><br><span class="line">spring.groovy.template.contentType=text/html</span><br><span class="line">spring.groovy.template.prefix=classpath:/templates/</span><br><span class="line">spring.groovy.template.suffix=.tpl</span><br><span class="line">spring.groovy.template.templateEncoding=UTF-8</span><br><span class="line">spring.groovy.template.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#VELOCITY TEMPLATES (VelocityAutoConfiguration)</span><br><span class="line">spring.velocity.allowRequestOverride=false</span><br><span class="line">spring.velocity.allowSessionOverride=false</span><br><span class="line">spring.velocity.cache=true</span><br><span class="line">spring.velocity.checkTemplateLocation=true</span><br><span class="line">spring.velocity.contentType=text/html</span><br><span class="line">spring.velocity.dateToolAttribute=</span><br><span class="line">spring.velocity.exposeRequestAttributes=false</span><br><span class="line">spring.velocity.exposeSessionAttributes=false</span><br><span class="line">spring.velocity.exposeSpringMacroHelpers=false</span><br><span class="line">spring.velocity.numberToolAttribute=</span><br><span class="line">spring.velocity.prefix=</span><br><span class="line">spring.velocity.properties.*=</span><br><span class="line">spring.velocity.requestContextAttribute=</span><br><span class="line">spring.velocity.resourceLoaderPath=classpath:/templates/</span><br><span class="line">spring.velocity.suffix=.vm</span><br><span class="line">spring.velocity.templateEncoding=UTF-8</span><br><span class="line">spring.velocity.viewNames= # whitelist of view names that can be resolved</span><br><span class="line"></span><br><span class="line">#INTERNATIONALIZATION (MessageSourceAutoConfiguration)</span><br><span class="line">spring.messages.basename=messages</span><br><span class="line">spring.messages.cacheSeconds=-1</span><br><span class="line">spring.messages.encoding=UTF-8</span><br><span class="line"></span><br><span class="line">#SECURITY (SecurityProperties)</span><br><span class="line">security.user.name=user # login username</span><br><span class="line">security.user.password= # login password</span><br><span class="line">security.user.role=USER # role assigned to the user</span><br><span class="line">security.require-ssl=false # advanced settings ...</span><br><span class="line">security.enable-csrf=false</span><br><span class="line">security.basic.enabled=true</span><br><span class="line">security.basic.realm=Spring</span><br><span class="line">security.basic.path= # /**</span><br><span class="line">security.headers.xss=false</span><br><span class="line">security.headers.cache=false</span><br><span class="line">security.headers.frame=false</span><br><span class="line">security.headers.contentType=false</span><br><span class="line">security.headers.hsts=all # none / domain / all</span><br><span class="line">security.sessions=stateless # always / never / if_required / stateless</span><br><span class="line">security.ignored=false</span><br><span class="line"></span><br><span class="line">#DATASOURCE (DataSourceAutoConfiguration &amp; DataSourceProperties)</span><br><span class="line">spring.datasource.name= # name of the data source</span><br><span class="line">spring.datasource.initialize=true # populate using data.sql</span><br><span class="line">spring.datasource.schema= # a schema (DDL) script resource reference</span><br><span class="line">spring.datasource.data= # a data (DML) script resource reference</span><br><span class="line">spring.datasource.platform= # the platform to use in the schema resource (schema-$&#123;platform&#125;.sql)</span><br><span class="line">spring.datasource.continueOnError=false # continue even if can't be initialized</span><br><span class="line">spring.datasource.separator=; # statement separator in SQL initialization scripts</span><br><span class="line">spring.datasource.driverClassName= # JDBC Settings...</span><br><span class="line">spring.datasource.url=</span><br><span class="line">spring.datasource.username=</span><br><span class="line">spring.datasource.password=</span><br><span class="line">spring.datasource.max-active=100 # Advanced configuration...</span><br><span class="line">spring.datasource.max-idle=8</span><br><span class="line">spring.datasource.min-idle=8</span><br><span class="line">spring.datasource.initial-size=10</span><br><span class="line">spring.datasource.validation-query=</span><br><span class="line">spring.datasource.test-on-borrow=false</span><br><span class="line">spring.datasource.test-on-return=false</span><br><span class="line">spring.datasource.test-while-idle=</span><br><span class="line">spring.datasource.time-between-eviction-runs-millis=</span><br><span class="line">spring.datasource.min-evictable-idle-time-millis=</span><br><span class="line">spring.datasource.max-wait-millis=</span><br><span class="line"></span><br><span class="line">#MONGODB (MongoProperties)</span><br><span class="line">spring.data.mongodb.host= # the db host</span><br><span class="line">spring.data.mongodb.port=27017 # the connection port (defaults to 27107)</span><br><span class="line">spring.data.mongodb.uri=mongodb://localhost/test # connection URL</span><br><span class="line">spring.data.mongo.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#JPA (JpaBaseConfiguration, HibernateJpaAutoConfiguration)</span><br><span class="line">spring.jpa.properties.*= # properties to set on the JPA connection</span><br><span class="line">spring.jpa.openInView=true</span><br><span class="line">spring.jpa.show-sql=true</span><br><span class="line">spring.jpa.database-platform=</span><br><span class="line">spring.jpa.database=</span><br><span class="line">spring.jpa.generate-ddl=false # ignored by Hibernate, might be useful for other vendors</span><br><span class="line">spring.jpa.hibernate.naming-strategy= # naming classname</span><br><span class="line">spring.jpa.hibernate.ddl-auto= # defaults to create-drop for embedded dbs</span><br><span class="line">spring.data.jpa.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#SOLR (SolrProperties&#125;)</span><br><span class="line">spring.data.solr.host=http://127.0.0.1:8983/solr</span><br><span class="line">spring.data.solr.zkHost=</span><br><span class="line">spring.data.solr.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#ELASTICSEARCH (ElasticsearchProperties&#125;)</span><br><span class="line">spring.data.elasticsearch.cluster-name= # The cluster name (defaults to elasticsearch)</span><br><span class="line">spring.data.elasticsearch.cluster-nodes= # The address(es) of the server node (comma-separated; if not specified starts a client node)</span><br><span class="line">spring.data.elasticsearch.local=true # if local mode should be used with client nodes</span><br><span class="line">spring.data.elasticsearch.repositories.enabled=true # if spring data repository support is enabled</span><br><span class="line"></span><br><span class="line">#FLYWAY (FlywayProperties)</span><br><span class="line">flyway.locations=classpath:db/migrations # locations of migrations scripts</span><br><span class="line">flyway.schemas= # schemas to update</span><br><span class="line">flyway.initVersion= 1 # version to start migration</span><br><span class="line">flyway.prefix=V</span><br><span class="line">flyway.suffix=.sql</span><br><span class="line">flyway.enabled=true</span><br><span class="line">flyway.url= # JDBC url if you want Flyway to create its own DataSource</span><br><span class="line">flyway.user= # JDBC username if you want Flyway to create its own DataSource</span><br><span class="line">flyway.password= # JDBC password if you want Flyway to create its own DataSource</span><br><span class="line"></span><br><span class="line">#LIQUIBASE (LiquibaseProperties)</span><br><span class="line">liquibase.change-log=classpath:/db/changelog/db.changelog-master.yaml</span><br><span class="line">liquibase.contexts= # runtime contexts to use</span><br><span class="line">liquibase.default-schema= # default database schema to use</span><br><span class="line">liquibase.drop-first=false</span><br><span class="line">liquibase.enabled=true</span><br><span class="line"></span><br><span class="line">#JMX</span><br><span class="line">spring.jmx.enabled=true # Expose MBeans from Spring</span><br><span class="line"></span><br><span class="line">#ABBIT (RabbitProperties)</span><br><span class="line">spring.rabbitmq.host= # connection host</span><br><span class="line">spring.rabbitmq.port= # connection port</span><br><span class="line">spring.rabbitmq.addresses= # connection addresses (e.g. myhost:9999,otherhost:1111)</span><br><span class="line">spring.rabbitmq.username= # login user</span><br><span class="line">spring.rabbitmq.password= # login password</span><br><span class="line">spring.rabbitmq.virtualhost=</span><br><span class="line">spring.rabbitmq.dynamic=</span><br><span class="line"></span><br><span class="line">#REDIS (RedisProperties)</span><br><span class="line">spring.redis.host=localhost # server host</span><br><span class="line">spring.redis.password= # server password</span><br><span class="line">spring.redis.port=6379 # connection port</span><br><span class="line">spring.redis.pool.max-idle=8 # pool settings ...</span><br><span class="line">spring.redis.pool.min-idle=0</span><br><span class="line">spring.redis.pool.max-active=8</span><br><span class="line">spring.redis.pool.max-wait=-1</span><br><span class="line"></span><br><span class="line">#ACTIVEMQ (ActiveMQProperties)</span><br><span class="line">spring.activemq.broker-url=tcp://localhost:61616 # connection URL</span><br><span class="line">spring.activemq.user=</span><br><span class="line">spring.activemq.password=</span><br><span class="line">spring.activemq.in-memory=true # broker kind to create if no broker-url is specified</span><br><span class="line">spring.activemq.pooled=false</span><br><span class="line"></span><br><span class="line">#HornetQ (HornetQProperties)</span><br><span class="line">spring.hornetq.mode= # connection mode (native, embedded)</span><br><span class="line">spring.hornetq.host=localhost # hornetQ host (native mode)</span><br><span class="line">spring.hornetq.port=5445 # hornetQ port (native mode)</span><br><span class="line">spring.hornetq.embedded.enabled=true # if the embedded server is enabled (needs hornetq-jms-server.jar)</span><br><span class="line">spring.hornetq.embedded.serverId= # auto-generated id of the embedded server (integer)</span><br><span class="line">spring.hornetq.embedded.persistent=false # message persistence</span><br><span class="line">spring.hornetq.embedded.data-directory= # location of data content (when persistence is enabled)</span><br><span class="line">spring.hornetq.embedded.queues= # comma separate queues to create on startup</span><br><span class="line">spring.hornetq.embedded.topics= # comma separate topics to create on startup</span><br><span class="line">spring.hornetq.embedded.cluster-password= # customer password (randomly generated by default)</span><br><span class="line"></span><br><span class="line">#JMS (JmsProperties)</span><br><span class="line">spring.jms.pub-sub-domain= # false for queue (default), true for topic</span><br><span class="line"></span><br><span class="line">#SPRING BATCH (BatchDatabaseInitializer)</span><br><span class="line">spring.batch.job.names=job1,job2</span><br><span class="line">spring.batch.job.enabled=true</span><br><span class="line">spring.batch.initializer.enabled=true</span><br><span class="line">spring.batch.schema= # batch schema to load</span><br><span class="line"></span><br><span class="line">#AOP</span><br><span class="line">spring.aop.auto=</span><br><span class="line">spring.aop.proxy-target-class=</span><br><span class="line"></span><br><span class="line">#FILE ENCODING (FileEncodingApplicationListener)</span><br><span class="line">spring.mandatory-file-encoding=false</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL (SocialWebAutoConfiguration)</span><br><span class="line">spring.social.auto-connection-views=true # Set to true for default connection views or false if you provide your own</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL FACEBOOK (FacebookAutoConfiguration)</span><br><span class="line">spring.social.facebook.app-id= # your application's Facebook App ID</span><br><span class="line">spring.social.facebook.app-secret= # your application's Facebook App Secret</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL LINKEDIN (LinkedInAutoConfiguration)</span><br><span class="line">spring.social.linkedin.app-id= # your application's LinkedIn App ID</span><br><span class="line">spring.social.linkedin.app-secret= # your application's LinkedIn App Secret</span><br><span class="line"></span><br><span class="line">#SPRING SOCIAL TWITTER (TwitterAutoConfiguration)</span><br><span class="line">spring.social.twitter.app-id= # your application's Twitter App ID</span><br><span class="line">spring.social.twitter.app-secret= # your application's Twitter App Secret</span><br><span class="line"></span><br><span class="line">#SPRING MOBILE SITE PREFERENCE (SitePreferenceAutoConfiguration)</span><br><span class="line">spring.mobile.sitepreference.enabled=true # enabled by default</span><br><span class="line"></span><br><span class="line">#SPRING MOBILE DEVICE VIEWS (DeviceDelegatingViewResolverAutoConfiguration)</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.enabled=true # disabled by default</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.normalPrefix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.normalSuffix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.mobilePrefix=mobile/</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.mobileSuffix=</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.tabletPrefix=tablet/</span><br><span class="line">spring.mobile.devicedelegatingviewresolver.tabletSuffix=</span><br><span class="line"></span><br><span class="line">######========ACTUATOR PROPERTIES===========</span><br><span class="line"></span><br><span class="line">#MANAGEMENT HTTP SERVER (ManagementServerProperties)</span><br><span class="line">management.port= # defaults to 'server.port'</span><br><span class="line">management.address= # bind to a specific NIC</span><br><span class="line">management.contextPath= # default to '/'</span><br><span class="line"></span><br><span class="line">#ENDPOINTS (AbstractEndpoint subclasses)</span><br><span class="line">endpoints.autoconfig.id=autoconfig</span><br><span class="line">endpoints.autoconfig.sensitive=true</span><br><span class="line">endpoints.autoconfig.enabled=true</span><br><span class="line">endpoints.beans.id=beans</span><br><span class="line">endpoints.beans.sensitive=true</span><br><span class="line">endpoints.beans.enabled=true</span><br><span class="line">endpoints.configprops.id=configprops</span><br><span class="line">endpoints.configprops.sensitive=true</span><br><span class="line">endpoints.configprops.enabled=true</span><br><span class="line">endpoints.configprops.keys-to-sanitize=password,secret</span><br><span class="line">endpoints.dump.id=dump</span><br><span class="line">endpoints.dump.sensitive=true</span><br><span class="line">endpoints.dump.enabled=true</span><br><span class="line">endpoints.env.id=env</span><br><span class="line">endpoints.env.sensitive=true</span><br><span class="line">endpoints.env.enabled=true</span><br><span class="line">endpoints.health.id=health</span><br><span class="line">endpoints.health.sensitive=false</span><br><span class="line">endpoints.health.enabled=true</span><br><span class="line">endpoints.info.id=info</span><br><span class="line">endpoints.info.sensitive=false</span><br><span class="line">endpoints.info.enabled=true</span><br><span class="line">endpoints.metrics.id=metrics</span><br><span class="line">endpoints.metrics.sensitive=true</span><br><span class="line">endpoints.metrics.enabled=true</span><br><span class="line">endpoints.shutdown.id=shutdown</span><br><span class="line">endpoints.shutdown.sensitive=true</span><br><span class="line">endpoints.shutdown.enabled=false</span><br><span class="line">endpoints.trace.id=trace</span><br><span class="line">endpoints.trace.sensitive=true</span><br><span class="line">endpoints.trace.enabled=true</span><br><span class="line"></span><br><span class="line">#MVC ONLY ENDPOINTS</span><br><span class="line">endpoints.jolokia.path=jolokia</span><br><span class="line">endpoints.jolokia.sensitive=true</span><br><span class="line">endpoints.jolokia.enabled=true # when using Jolokia</span><br><span class="line">endpoints.error.path=/error</span><br><span class="line"></span><br><span class="line">#JMX ENDPOINT (EndpointMBeanExportProperties)</span><br><span class="line">endpoints.jmx.enabled=true</span><br><span class="line">endpoints.jmx.domain= # the JMX domain, defaults to 'org.springboot'</span><br><span class="line">endpoints.jmx.unique-names=false</span><br><span class="line">endpoints.jmx.enabled=true</span><br><span class="line">endpoints.jmx.staticNames=</span><br><span class="line"></span><br><span class="line">#JOLOKIA (JolokiaProperties)</span><br><span class="line">jolokia.config.*= # See Jolokia manual</span><br><span class="line"></span><br><span class="line">#REMOTE SHELL</span><br><span class="line">shell.auth=simple # jaas, key, simple, spring</span><br><span class="line">shell.command-refresh-interval=-1</span><br><span class="line">shell.command-path-pattern= # classpath:/commands/, classpath:/crash/commands/</span><br><span class="line">shell.config-path-patterns= # classpath:/crash/</span><br><span class="line">shell.disabled-plugins=false # don't expose plugins</span><br><span class="line">shell.ssh.enabled= # ssh settings ...</span><br><span class="line">shell.ssh.keyPath=</span><br><span class="line">shell.ssh.port=</span><br><span class="line">shell.telnet.enabled= # telnet settings ...</span><br><span class="line">shell.telnet.port=</span><br><span class="line">shell.auth.jaas.domain= # authentication settings ...</span><br><span class="line">shell.auth.key.path=</span><br><span class="line">shell.auth.simple.user.name=</span><br><span class="line">shell.auth.simple.user.password=</span><br><span class="line">shell.auth.spring.roles=</span><br><span class="line"></span><br><span class="line">#GIT INFO</span><br><span class="line">spring.git.properties= # resource ref to generated git info properties file</span><br></pre></td></tr></table></figure>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/springBoot/">springBoot</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		14167
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/12/14/Spring Boot 配置文件application/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/12/14/Spring Boot应用启动器/">Spring Boot应用启动器</a>  
+	       
+		 
+
+		 <time>2017-12-14 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<h1 id="Spring-Boot应用启动器"><a href="#Spring-Boot应用启动器" class="headerlink" title="Spring Boot应用启动器"></a>Spring Boot应用启动器</h1><h2 id="spring-Boot应用启动器基本的一共有44种，具体如下："><a href="#spring-Boot应用启动器基本的一共有44种，具体如下：" class="headerlink" title="spring Boot应用启动器基本的一共有44种，具体如下："></a>spring Boot应用启动器基本的一共有44种，具体如下：</h2><p>1）spring-boot-starter<br>这是Spring Boot的核心启动器，包含了自动配置、日志和YAML。</p>
+<p>2）spring-boot-starter-actuator<br>帮助监控和管理应用。</p>
+<p>3）spring-boot-starter-amqp<br>通过spring-rabbit来支持AMQP协议（Advanced Message Queuing Protocol）。</p>
+<p>4）spring-boot-starter-aop<br>支持面向方面的编程即AOP，包括spring-aop和AspectJ。</p>
+<p>5）spring-boot-starter-artemis<br>通过Apache Artemis支持JMS的API（<a href="http://lib.csdn.net/base/java" target="_blank" rel="noopener">Java </a>Message Service API）。</p>
+<p>6）spring-boot-starter-batch<br>支持Spring Batch，包括HSQLDB<a href="http://lib.csdn.net/base/mysql" target="_blank" rel="noopener">数据库</a>。</p>
+<p>7）spring-boot-starter-cache<br>支持Spring的Cache抽象。</p>
+<p>8）spring-boot-starter-cloud-connectors<br>支持Spring Cloud Connectors，简化了在像Cloud Foundry或Heroku这样的云平台上连接服务。</p>
+<p>9）spring-boot-starter-data-elasticsearch<br>支持ElasticSearch搜索和分析引擎，包括spring-data-elasticsearch。</p>
+<p>10）spring-boot-starter-data-gemfire<br>支持GemFire分布式数据存储，包括spring-data-gemfire。</p>
+<p>11）spring-boot-starter-data-jpa<br>支持JPA（<a href="http://lib.csdn.net/base/javase" target="_blank" rel="noopener">Java</a> Persistence API），包括spring-data-jpa、spring-orm、<a href="http://lib.csdn.net/base/javaee" target="_blank" rel="noopener">hibernate</a>。</p>
+<p>12）spring-boot-starter-data-<a href="http://lib.csdn.net/base/mongodb" target="_blank" rel="noopener">MongoDB</a><br>支持MongoDB数据，包括spring-data-mongodb。</p>
+<p>13）spring-boot-starter-data-rest<br>通过spring-data-rest-webmvc，支持通过REST暴露Spring Data数据仓库。</p>
+<p>14）spring-boot-starter-data-solr<br>支持Apache Solr搜索平台，包括spring-data-solr。</p>
+<p>15）spring-boot-starter-freemarker<br>支持FreeMarker模板引擎。</p>
+<p>16）spring-boot-starter-groovy-templates<br>支持Groovy模板引擎。</p>
+<p>17）spring-boot-starter-hateoas<br>通过spring-hateoas支持基于HATEOAS的RESTful Web服务。</p>
+<p>18）spring-boot-starter-hornetq<br>通过HornetQ支持JMS。</p>
+<p>19）spring-boot-starter-integration<br>支持通用的spring-integration模块。</p>
+<p>20）spring-boot-starter-jdbc<br>支持JDBC数据库。</p>
+<p>21）spring-boot-starter-jersey<br>支持Jersey RESTful Web服务框架。</p>
+<p>22）spring-boot-starter-jta-atomikos<br>通过Atomikos支持JTA分布式事务处理。</p>
+<p>23）spring-boot-starter-jta-bitronix<br>通过Bitronix支持JTA分布式事务处理。</p>
+<p>24）spring-boot-starter-mail<br>支持javax.mail模块。</p>
+<p>25）spring-boot-starter-mobile<br>支持spring-mobile。</p>
+<p>26）spring-boot-starter-mustache<br>支持Mustache模板引擎。</p>
+<p>27）spring-boot-starter-<a href="http://lib.csdn.net/base/redis" target="_blank" rel="noopener">Redis</a><br>支持Redis键值存储数据库，包括spring-redis。</p>
+<p>28）spring-boot-starter-security<br>支持spring-security。</p>
+<p>29）spring-boot-starter-social-facebook<br>支持spring-social-facebook</p>
+<p>30）spring-boot-starter-social-linkedin<br>支持pring-social-linkedin</p>
+<p>31）spring-boot-starter-social-twitter<br>支持pring-social-twitter</p>
+<p>32）spring-boot-starter-test<br>支持常规的<a href="http://lib.csdn.net/base/softwaretest" target="_blank" rel="noopener">测试</a>依赖，包括JUnit、Hamcrest、Mockito以及spring-test模块。</p>
+<p>33）spring-boot-starter-thymeleaf<br>支持Thymeleaf模板引擎，包括与Spring的集成。</p>
+<p>34）spring-boot-starter-velocity<br>支持Velocity模板引擎。</p>
+<p>35）spring-boot-starter-web<br>S支持全栈式Web开发，包括Tomcat和spring-webmvc。</p>
+<p>36）spring-boot-starter-websocket<br>支持WebSocket开发。</p>
+<p>37）spring-boot-starter-ws<br>支持Spring Web Services。</p>
+<h2 id="Spring-Boot应用启动器面向生产环境的还有2种，具体如下："><a href="#Spring-Boot应用启动器面向生产环境的还有2种，具体如下：" class="headerlink" title="Spring Boot应用启动器面向生产环境的还有2种，具体如下："></a>Spring Boot应用启动器面向生产环境的还有2种，具体如下：</h2><p>1）spring-boot-starter-actuator<br>增加了面向产品上线相关的功能，比如测量和监控。</p>
+<p>2）spring-boot-starter-remote-shell<br>增加了远程ssh shell的支持。</p>
+<h2 id="Spring-Boot应用启动器还有一些替换技术的启动器，具体如下："><a href="#Spring-Boot应用启动器还有一些替换技术的启动器，具体如下：" class="headerlink" title="Spring Boot应用启动器还有一些替换技术的启动器，具体如下："></a>Spring Boot应用启动器还有一些替换技术的启动器，具体如下：</h2><p>1）spring-boot-starter-jetty<br>引入了Jetty HTTP引擎（用于替换Tomcat）。</p>
+<p>2）spring-boot-starter-log4j<br>支持Log4J日志框架。</p>
+<p>3）spring-boot-starter-logging<br>引入了Spring Boot默认的日志框架Logback。</p>
+<p>4）spring-boot-starter-tomcat<br>引入了Spring Boot默认的HTTP引擎Tomcat。</p>
+<p>5）spring-boot-starter-undertow<br>引入了Undertow HTTP引擎（用于替换Tomcat）。</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/springBoot/">springBoot</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		2759
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/12/14/Spring Boot应用启动器/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/12/14/spring Boot简介及入门/">spring Boot简介及入门</a>  
+	       
+		 
+
+		 <time>2017-12-14 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<h1 id="1-Spring-Boot简介"><a href="#1-Spring-Boot简介" class="headerlink" title="1.Spring Boot简介"></a>1.Spring Boot简介</h1><p>​       Spring 诞生时是 Java 企业版（Java Enterprise Edition，JEE，也称 J2EE）的轻量级代替品。无需开发重量级的 Enterprise JavaBean（EJB），Spring 为企业级Java 开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用简单的Java 对象（Plain Old Java Object，POJO）实现了 EJB 的功能。</p>
+<p>​       虽然 Spring 的组件代码是轻量级的，但它的配置却是重量级的。一开始，Spring 用 XML 配置，而且是很多 XML 配置。Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置。Spring 3.0 引入了基于 Java 的配置，这是一种类型安全的可重构配置方式，可以代替 XML。所有这些配置都代表了开发时的损耗。因为在思考 Spring 特性配置和解决业务问题之间需要进行思维切换，所以写配置挤占了写应用程序逻辑的时间。和所有框架一样，Spring 实用，但与此同时它要求的回报也不少。</p>
+<p>​       除此之外，项目的依赖管理也是件吃力不讨好的事情。决定项目里要用哪些库就已经够让人头痛的了，你还要知道这些库的哪个版本和其他库不会有冲突，这难题实在太棘手。并且，依赖管理也是一种损耗，添加依赖不是写应用程序代码。一旦选错了依赖的版本，随之而来的不兼容问题毫无疑问会是生产力杀手。Spring Boot 让这一切成为了过去。</p>
+<p>​       Spring Boot 是 Spring 社区较新的一个项目。该项目的目的是帮助开发者更容易的创建基于 Spring 的应用程序和服务，让更多人的人更快的对 Spring 进行入门体验，为 Spring 生态系统提供了一种固定的、约定优于配置风格的框架。</p>
+<p>Spring Boot 具有如下特性：</p>
+<p>（1）为基于 Spring 的开发提供更快的入门体验</p>
+<p>（2）开箱即用，没有代码生成，也无需 XML 配置。同时也可以修改默认值来满足特定的需求。</p>
+<p>（3）提供了一些大型项目中常见的非功能性特性，如嵌入式服务器、安全、指标，健康检测、外部配置等。</p>
+<p>（4）Spring Boot 并不是不对 Spring 功能上的增强，而是提供了一种快速使用 Spring 的方式。</p>
+<h1 id="2-Spring-Boot入门Demo"><a href="#2-Spring-Boot入门Demo" class="headerlink" title="2.Spring Boot入门Demo"></a>2.Spring Boot入门Demo</h1><h2 id="2-1起步依赖"><a href="#2-1起步依赖" class="headerlink" title="2.1起步依赖"></a>2.1起步依赖</h2><p>创建Maven工程 springboot_demo（打包方式jar）  </p>
+<p>在pom.xml中添加如下依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      </span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>​     spring Boot会自动加载所需要的jar包,而这些jar包正式我们做开发时需要导入的jar包。因为这些jar包被我们刚才引入的spring-boot-starter-web所引用了，所以我们引用spring-boot-starter-web后会自动把依赖传递过来。</p>
+<h2 id="2-2-变更JDK版本"><a href="#2-2-变更JDK版本" class="headerlink" title="2.2 变更JDK版本"></a>2.2 变更JDK版本</h2><p>​       我们发现默认情况下工程的JDK版本是1.6 ,而我们通常用使用1.7的版本，所以我们需要在pom.xml中添加以下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>添加后更新工程，会发现版本已经变更为1.7</p>
+<h2 id="2-3-引导类"><a href="#2-3-引导类" class="headerlink" title="2.3 引导类"></a>2.3 引导类</h2><p>我们需要创建一个引导类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单解释一下，@SpringBootApplication其实就是以下三个注解的总和</p>
+<p>@Configuration： 用于定义一个配置类</p>
+<p>@EnableAutoConfiguration ：Spring Boot会自动根据你jar包的依赖来自动配置项目。</p>
+<p>@ComponentScan： 告诉Spring 哪个packages 的用注解标识的类 会被spring自动扫描并且装入bean容器。</p>
+<p>我们直接执行这个引导类，会发现控制台出现的这个标识</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spring_boot/image4.png" alt="image4"></p>
+<h2 id="2-4-Spring-MVC实现Hello-World输出"><a href="#2-4-Spring-MVC实现Hello-World输出" class="headerlink" title="2.4 Spring MVC实现Hello World输出"></a>2.4 Spring MVC实现Hello World输出</h2><p>我们现在开始使用spring MVC框架，实现json数据的输出。如果按照我们原来的做法，需要在web.xml中添加一个DispatcherServlet的配置，再添加一个spring的配置文件，配置文件中需要添加如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">&lt;!-- 使用组件扫描，不用将controller在spring中配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"cn.itcast.demo.controller"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 使用注解驱动不用在下边定义映射器和适配置器 --&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">mvc:annotation-driven</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mvc:message-converters</span> <span class="attr">register-defaults</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span> <span class="attr">value</span>=<span class="string">"application/json"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"features"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteMapNullValue<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteDateUseDateFormat<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mvc:message-converters</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但是我们用SpringBoot，这一切都省了。我们直接写Controller类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"HelloWorld"</span>;		</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们运行启动类来运行程序</p>
+<p>在浏览器地址栏输入 <a href="http://localhost:8080/info" target="_blank" rel="noopener">http://localhost:8080/info</a> 即可看到运行结果</p>
+<h1 id="3-springBoot支持修改配置文件"><a href="#3-springBoot支持修改配置文件" class="headerlink" title="3 springBoot支持修改配置文件"></a>3 springBoot支持修改配置文件</h1><h2 id="3-1-修改tomcat启动端口"><a href="#3-1-修改tomcat启动端口" class="headerlink" title="3.1 修改tomcat启动端口"></a>3.1 修改tomcat启动端口</h2><p>在src/main/resources下创建application.properties</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.port=8088</span><br></pre></td></tr></table></figure>
+<p>重新运行引导类。地址栏输入</p>
+<p><a href="http://localhost:8088/info" target="_blank" rel="noopener">http://localhost:8088/info</a></p>
+<h2 id="3-2-读取配置文件信息"><a href="#3-2-读取配置文件信息" class="headerlink" title="3.2 读取配置文件信息"></a>3.2 读取配置文件信息</h2><p>在src/main/resources下的application.properties 增加配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://www.baidu.com</span><br></pre></td></tr></table></figure>
+<p>我要在类中读取这个配置信息，修改HelloWorldController  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"HelloWorld~~"</span>+env.getProperty(<span class="string">"url"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/springBoot/">springBoot</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/springBoot/">springBoot</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		3843
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/12/14/spring Boot简介及入门/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
 	     <a class="article-title"  href="/2017/12/11/hadoop编译/">hadoop编译</a>  
 	       
 		 
@@ -928,6 +928,7 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
 <p> 5、几个编译好的Hadoop版本</p>
 <p><a href="https://pan.baidu.com/s/1XMxSkBX-A8VtPdE4SmRZ9Q" target="_blank" rel="noopener">centos6.7</a>        密码:c83v</p>
 <p><a href="https://pan.baidu.com/s/1TltMZDqqG306VeGKDauuZw" target="_blank" rel="noopener">windows</a>          密码:8fvc</p>
+<p><a href="https://pan.baidu.com/s/1uRHVUq8RDY3XoELVoNjVSA" target="_blank" rel="noopener">Mac</a>                 密码:da6s</p>
  
 
 	    
@@ -955,7 +956,7 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
 		
 
 		<span class="post-words"><span class="iconfont icon-words"></span>
-		2253
+		2264
 		</span>		
 </div>		
 
@@ -1181,6 +1182,123 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
 	   
 	<div class="article-header">
 	    
+	     <a class="article-title"  href="/2017/11/11/Linux集群资源监控/">Linux集群资源监控</a>  
+	       
+		 
+
+		 <time>2017-11-11 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><ul>
+<li>Ganglia 监控套件包括三个主要部分 gmond ，gmetad，和网页接口，通常被称为ganglia-web。<br>gmond 是一个守护进程，他运行在每一个需要监测的节点上，收集监测统计，发送和接受在同一个组播或单播通道上的统计信息。</li>
+<li>gmetad 也是一个守护进程，他定期检查gmonds ，从那里拉取数据，并将他们的指标存储在RRD存储引擎中。它可以查询多个集群并聚合指标。RRD也被用于生成用户界面的web前端。</li>
+<li>ganglia-web 顾名思义，他应该安装在有gmetad运行的机器上，以便读取RRD文件。</li>
+</ul>
+<p>​    一般来说一个集群的每台机器上都需要安装gmond，只要负责展示web界面的机器安装了gmetad即可。</p>
+<h1 id="二-ganglia规划"><a href="#二-ganglia规划" class="headerlink" title="二.ganglia规划"></a>二.ganglia规划</h1><p>​    <strong>主机名</strong>             ip               <strong>规划</strong>                         安装</p>
+<p>   hadoop1      10.2.6.250        服务端   ganglia-gmond、ganglia-gmetad、ganglia-web</p>
+<p>   hadoop2     10.2.6.246        客户端            ganglia-gmond</p>
+<p>   hadoop3     10.2.6.248        客户端            ganglia-gmond</p>
+<p>   hadoop4   10.2.6.249        客户端            ganglia-gmond</p>
+<p>安装前确保iptables关闭.</p>
+<h1 id="三-安装前的准备工作"><a href="#三-安装前的准备工作" class="headerlink" title="三.安装前的准备工作"></a>三.安装前的准备工作</h1><h2 id="3-1加载yum源，在每一台机器上面执行下面两个命令"><a href="#3-1加载yum源，在每一台机器上面执行下面两个命令" class="headerlink" title="3.1加载yum源，在每一台机器上面执行下面两个命令"></a>3.1加载yum源，在每一台机器上面执行下面两个命令</h2><p>rpm -Uvh <a href="http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm" target="_blank" rel="noopener">http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm</a></p>
+<p>yum  -y  install  httpd-devel  automake  autoconf  libtool  ncurses-devel  libxslt  groff  pcre-devel  pkgconfig</p>
+<h2 id="四-主节点服务安装配置"><a href="#四-主节点服务安装配置" class="headerlink" title="四.主节点服务安装配置"></a>四.主节点服务安装配置</h2><h2 id="4-1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad-和ganglia-web"><a href="#4-1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad-和ganglia-web" class="headerlink" title="4.1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad 和ganglia-web"></a>4.1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad 和ganglia-web</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum search ganglia     ------------------查看ganglia在epel的安装包,复制进行安装  </span><br><span class="line">yum -y install ganglia-web.x86_64 ganglia-gmond.x86_64  </span><br><span class="line">yum -y install ganglia-gmetad.x86_64 ----------------------(如果上一步执行了这步不用执行,web包会自动下载该依赖)  </span><br><span class="line">rpm -qa |grep ganglia          --------------------查看安装情况  </span><br><span class="line">rpm -ql ganglia-gmetad.x86_64       ------------- 复制上面命令执行结果的安装名,可查看安装路径</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-1配置gmetad"><a href="#4-1-1配置gmetad" class="headerlink" title="4.1.1配置gmetad"></a>4.1.1配置gmetad</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ganglia/gmetad.conf  </span><br><span class="line"></span><br><span class="line">data_source "my cluster" 10.2.6.250:8649  ---- Hadoop为cluster名称,后面是需要监控的主机名</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-2修改apache设置"><a href="#4-1-2修改apache设置" class="headerlink" title="4.1.2修改apache设置"></a>4.1.2修改apache设置</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> vi /etc/httpd/conf.d/ganglia.conf  </span><br><span class="line"></span><br><span class="line">文件内容Deny from all 为 allow from all </span><br><span class="line"></span><br><span class="line">修改后配置如下</span><br><span class="line"></span><br><span class="line">&lt;Location /ganglia&gt;</span><br><span class="line"></span><br><span class="line">    Order deny,allow</span><br><span class="line"></span><br><span class="line">    Allow from all</span><br><span class="line"></span><br><span class="line">    Allow from 127.0.0.1</span><br><span class="line"></span><br><span class="line">    Allow from ::1</span><br><span class="line"></span><br><span class="line">    # Allow from .example.com</span><br><span class="line"></span><br><span class="line">  &lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-3设置启动"><a href="#4-1-3设置启动" class="headerlink" title="4.1.3设置启动"></a>4.1.3设置启动</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add gmetad  </span><br><span class="line"></span><br><span class="line"> chkconfig --add gmond  </span><br><span class="line"></span><br><span class="line"> chkconfig --add httpd</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-4打开端口-关闭防火墙"><a href="#4-1-4打开端口-关闭防火墙" class="headerlink" title="4.1.4打开端口/关闭防火墙"></a>4.1.4打开端口/关闭防火墙</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables stop -------------------关闭防火墙,用于测试时,线上最好用打开端口方式</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-5关闭SELinux"><a href="#4-1-5关闭SELinux" class="headerlink" title="4.1.5关闭SELinux"></a>4.1.5关闭SELinux</h3><p>1 永久方法 – 需要重启服务器</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器。</p>
+<p>2 临时方法 – 设置系统参数</p>
+<p>使用命令setenforce 0</p>
+<p>附：</p>
+<p>setenforce 1 设置SELinux 成为enforcing模式</p>
+<p>setenforce 0 设置SELinux 成为permissive模式</p>
+<h1 id="五-监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）"><a href="#五-监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）" class="headerlink" title="五.监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）"></a>五.监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）</h1><h2 id="5-1安装ganglia-gmond"><a href="#5-1安装ganglia-gmond" class="headerlink" title="5.1安装ganglia-gmond"></a>5.1安装ganglia-gmond</h2><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum search ganglia  </span><br><span class="line"></span><br><span class="line">yum install ganglia-gmond.x86_64</span><br></pre></td></tr></table></figure>
+<h2 id="5-2配置gmond"><a href="#5-2配置gmond" class="headerlink" title="5.2配置gmond"></a>5.2配置gmond</h2><p>Shell<strong>代码</strong>   </p>
+<p>vi /etc/ganglia/gmond.conf  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">cluster &#123;</span><br><span class="line"></span><br><span class="line">  name = "my cluster"    ------ cluster名称,是你在gmetad.conf里配置的data_source名称 </span><br><span class="line"></span><br><span class="line">  owner = "root"</span><br><span class="line"></span><br><span class="line">  latlong = "unspecified"</span><br><span class="line"></span><br><span class="line">  url = "unspecified"</span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">udp_send_channel &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span> mcast_join = 239.2.11.71  ----- 组播  </span><br><span class="line"></span><br><span class="line">  host=10.2.6.250    -------------- 单播 gmeta主机的ip/主机名或者主机ip地址  </span><br><span class="line"></span><br><span class="line">  port = 8649</span><br><span class="line"></span><br><span class="line">ttl = 1</span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">udp_recv_channel &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">  #</span>mcast_join = 239.2.11.71  </span><br><span class="line"></span><br><span class="line">  port = 8649</span><br><span class="line"></span><br><span class="line">  bind = 10.2.6.246</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-3配置启动"><a href="#5-3配置启动" class="headerlink" title="5.3配置启动"></a>5.3配置启动</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chkconfig  --add  gmond</span><br><span class="line"></span><br><span class="line">chkconfig  --list  gmond</span><br></pre></td></tr></table></figure>
+<p>此时，如果正确安装，会出现gmond           0:off   1:off   2:off   3:off   4:off   5:off   6:off</p>
+<h2 id="5-4配置hosts"><a href="#5-4配置hosts" class="headerlink" title="5.4配置hosts"></a>5.4配置hosts</h2><p> vi /etc/hosts</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.2.6.250 hadoop1</span><br><span class="line"></span><br><span class="line">10.2.6.246 hadoop2</span><br><span class="line"></span><br><span class="line">10.2.6.248 hadoop3</span><br><span class="line"></span><br><span class="line">10.2.6.249 hadoop4</span><br></pre></td></tr></table></figure>
+<p><strong>全部安装完毕后</strong></p>
+<p>在主机上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">service gmetad start</span><br><span class="line"></span><br><span class="line">service gmond start</span><br><span class="line"></span><br><span class="line">service httpd start</span><br><span class="line"></span><br><span class="line">service gmetad status    -------------------验证是否启动成功</span><br><span class="line"></span><br><span class="line">service gmond status   -------------------验证是否启动成功</span><br></pre></td></tr></table></figure>
+<p>在监控节点上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service gmond start  </span><br><span class="line"></span><br><span class="line">service gmond status   -------------------验证是否启动成功</span><br></pre></td></tr></table></figure>
+<p>访问<a href="http://10.2.6.250/ganglia" target="_blank" rel="noopener">http://10.2.6.250/ganglia</a></p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p>Forbidden错误时,因为对apache有一个设置</p>
+<p>修改 /etc/httpd/conf.d/ganglia.conf文件内容Deny from all 为 allow from all</p>
+<p>There was an error collecting ganglia data (127.0.0.1:8652):fsockopen error: Permission denied </p>
+<p>解决方法</p>
+<p>1 永久方法 – 需要重启服务器</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器。</p>
+<p>2 临时方法 – 设置系统参数</p>
+<p>使用命令setenforce 0</p>
+<p>附：</p>
+<p>setenforce 1 设置SELinux 成为enforcing模式</p>
+<p>setenforce 0 设置SELinux 成为permissive模式</p>
+<p><strong>There was an error collecting ganglia data (127.0.0.1:8652):fsockopen error: Connection refused **</strong>解决办法**</p>
+<p>卸载yum remove ganglia-web ganglia-gmetad</p>
+<p>重新安装yum install ganglia-web    —– ganglia-web本身有引用gmetad</p>
+<p>重启即可</p>
+<p><a href="http://redhatdebian.blog.51cto.com/1197273/828992" target="_blank" rel="noopener">http://redhatdebian.blog.51cto.com/1197273/828992</a></p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/集群/">集群</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		3406
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/11/Linux集群资源监控/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
 	     <a class="article-title"  href="/2017/11/05/Redis使用/">Redis使用</a>  
 	       
 		 
@@ -1357,332 +1475,12 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
     	
 </article>     
      	
-      	  	
-
-  		
-    	<article class="article">		
-	   
-	<div class="article-header">
-	    
-	     <a class="article-title"  href="/2016/10/05/mongoDB文档数据库/">mongoDB文档数据库</a>  
-	       
-		 
-
-		 <time>2016-10-05 </time>    
-	</div>
-
-
-    <div class="article-excerpt">	
-	
-  	
-
-	  
-
-	  	<h1 id="1-MongoDB简介"><a href="#1-MongoDB简介" class="headerlink" title="1.MongoDB简介"></a>1.MongoDB简介</h1><h2 id="1-1什么是MongoDB"><a href="#1-1什么是MongoDB" class="headerlink" title="1.1什么是MongoDB"></a>1.1什么是MongoDB</h2><p>​        MongoDB 是一个跨平台的，面向文档的数据库，是当前 NoSQL 数据库产品中最热门的一种。它介于关系数据库和非关系数据库之间，是非关系数据库当中功能最丰富，最像关系数据库的产品。它支持的数据结构非常松散，是类似JSON  的 BSON 格式，因此可以存储比较复杂的数据类型。</p>
-<p>MongoDB 的官方网站地址是：<a href="http://www.mongodb.org/" target="_blank" rel="noopener">http://www.mongodb.org/</a></p>
-<h2 id="1-2-MongoDB特点"><a href="#1-2-MongoDB特点" class="headerlink" title="1.2 MongoDB特点"></a>1.2 MongoDB特点</h2><p>​       MongoDB 最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。它是一个面向集合的,模式自由的文档型数据库。</p>
-<p>具体特点总结如下：</p>
-<p>（1）面向集合存储，易于存储对象类型的数据</p>
-<p>（2）模式自由</p>
-<p>（3）支持动态查询</p>
-<p>（4）支持完全索引，包含内部对象</p>
-<p>（5）支持复制和故障恢复</p>
-<p>（6）使用高效的二进制数据存储，包括大型对象（如视频等）</p>
-<p>（7）自动处理碎片，以支持云计算层次的扩展性</p>
-<p>（8）支持 Python，PHP，Ruby，Java，C，C#，Javascript，Perl 及 C++语言的驱动程序，社区中也提供了对 Erlang 及.NET 等平台的驱动程序</p>
-<p>（9） 文件存储格式为 BSON（一种 JSON 的扩展）</p>
-<h2 id="1-3-MongoDB体系结构"><a href="#1-3-MongoDB体系结构" class="headerlink" title="1.3 MongoDB体系结构"></a>1.3 MongoDB体系结构</h2><p>MongoDB 的逻辑结构是一种层次结构。主要由：</p>
-<p>文档(document)、集合(collection)、数据库(database)这三部分组成的。逻辑结构是面向用户</p>
-<p>的，用户使用 MongoDB 开发应用程序使用的就是逻辑结构。</p>
-<p>（1）MongoDB 的文档（document），相当于关系数据库中的一行记录。</p>
-<p>（2）多个文档组成一个集合（collection），相当于关系数据库的表。</p>
-<p>（3）多个集合（collection），逻辑上组织在一起，就是数据库（database）。</p>
-<p>（4）一个 MongoDB 实例支持多个数据库（database）。</p>
-<p>文档(document)、集合(collection)、数据库(database)的层次结构如下图:</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image4.png" alt="image4"></p>
-<p>下表是MongoDB与MySQL数据库逻辑结构概念的对比</p>
-<table>
-<thead>
-<tr>
-<th>MongoDb</th>
-<th>关系型数据库Mysql</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数据库(databases)</td>
-<td>数据库(databases)</td>
-</tr>
-<tr>
-<td>集合(collections)</td>
-<td>表(table)</td>
-</tr>
-<tr>
-<td>文档(document)</td>
-<td>行(row)</td>
-</tr>
-</tbody>
-</table>
-<h1 id="2-基本增删改查操作"><a href="#2-基本增删改查操作" class="headerlink" title="2.基本增删改查操作"></a>2.基本增删改查操作</h1><h2 id="2-1选择或创建数据库"><a href="#2-1选择或创建数据库" class="headerlink" title="2.1选择或创建数据库"></a>2.1选择或创建数据库</h2><p>使用use 数据库名称即可选择数据库，如果该数据库不存在会自动创建</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image12.png" alt="image12"></p>
-<h2 id="2-2插入文档"><a href="#2-2插入文档" class="headerlink" title="2.2插入文档"></a>2.2插入文档</h2><p>文档相当于关系数据库中的记录</p>
-<p>首先我们定义一个文档变量，格式为变量名称={}; 例如：</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image13.png" alt="image13"></p>
-<p>接下来就是将这个变量存入MongoDB </p>
-<p>格式为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.集合名称.save(变量);</span><br></pre></td></tr></table></figure>
-<p>这里的集合就相当于关系数据库中的表。例如：</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image14.png" alt="image14"></p>
-<p>这样就在student集合中存入文档。如果这个student集合不存在，就会自动创建。</p>
-<p>当然，你也可以不用定义变量，直接把变量值放入save方法中也是可以地。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image15.png" alt="image15"></p>
-<p>为了方便后期测试，我们再多加点数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">db.student.save(&#123;name:<span class="string">"沙和尚"</span>,sex:<span class="string">"男"</span>,age:<span class="number">25</span>,address:<span class="string">"流沙河路11号"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"唐僧"</span>,sex:<span class="string">"男"</span>,age:<span class="number">35</span>,address:<span class="string">"东土大唐"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"白骨精"</span>,sex:<span class="string">"女"</span>,age:<span class="number">18</span>,address:<span class="string">"白骨洞"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"白龙马"</span>,sex:<span class="string">"男"</span>,age:<span class="number">20</span>,address:<span class="string">"西海"</span>&#125;);</span><br><span class="line">db.student.save(&#123;name:<span class="string">"哪吒"</span>,sex:<span class="string">"男"</span>,age:<span class="number">15</span>,address:<span class="string">"莲花湾小区"</span>&#125;);</span><br></pre></td></tr></table></figure>
-<h2 id="2-3查询集合"><a href="#2-3查询集合" class="headerlink" title="2.3查询集合"></a>2.3查询集合</h2><p>我们要查询某集合的所有文档，使用find()方法。语法格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.集合名称.find();</span><br></pre></td></tr></table></figure>
-<p>例如，我们要查询student集合中的所有文档：</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image16.png" alt="image16"> </p>
-<p>这里你会发现每条文档会有一个叫_id的字段，这个相当于我们原来关系数据库中表的主键，当你在插入文档记录时没有指定该字段，MongDB会自动创建，其类型是ObjectID类型。</p>
-<p>如果我们在插入文档记录时指定该字段也可以，其类型可以使ObjectID类型，也可以是MongoDB支持的任意类型. 例如：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image17.png" alt="image17"></p>
-<p>我们再次查询</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image18.png" alt="image18"></p>
-<p>如果我想按一定条件来查询，比如我想查询性别为“女”的记录，怎么办？很简单！</p>
-<p>只要在find()中添加参数即可，参数也是json格式，如下： </p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image19.png" alt="image19"></p>
-<p>为了避免游标可能带来的开销，MongoDB还提供了一个叫findOne()的方法，用来返回结果集的第一条记录。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image20.png" alt="image20"></p>
-<p>性别为男的有很多条，这里只返回了第一条记录。</p>
-<p>当我们需要返回查询结果的前几条记录时，可以使用limit方法，例如：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image21.png" alt="image21"></p>
-<h2 id="2-4修改文档"><a href="#2-4修改文档" class="headerlink" title="2.4修改文档"></a>2.4修改文档</h2><p>我们要想修改记录，可以使用update方法 .</p>
-<p>例如：我向将姓名为孙悟空的学员文档中的age字段值改为31，执行下列语句，看会发生什么？</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image22.png" alt="image22"></p>
-<p>再次查询：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image23.png" alt="image23"></p>
-<p>哦，悲剧了~~ 原来的孙悟空的文档只剩下_id 和age两个字段了。</p>
-<p>那如何保留其它字段值呢？</p>
-<p>我们需要使用MongoDB提供的修改器$set 来实现，请看下列代码。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image24.png" alt="image24"></p>
-<p>再次查询，会发现“猪八戒”文档中原有的其它字段还保留下来，而更新age字段也成功了。</p>
-<h2 id="2-5删除文档"><a href="#2-5删除文档" class="headerlink" title="2.5删除文档"></a>2.5删除文档</h2><p>删除文档使用remove()方法，格式为：</p>
-<p>请慎用remove({}), 它会一条不剩地把你的集合所有文档删的干干净净。</p>
-<p>我们现在演示一下，删除name为“哪吒”的记录：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image25.png" alt="image25"></p>
-<p>再次查询，会发现哪吒的文档不见了。</p>
-<h1 id="3-高级查询"><a href="#3-高级查询" class="headerlink" title="3.高级查询"></a>3.高级查询</h1><h2 id="3-1模糊查询"><a href="#3-1模糊查询" class="headerlink" title="3.1模糊查询"></a>3.1模糊查询</h2><p>MongoDB的模糊查询是通过正则表达式的方式实现的。格式为：</p>
-<p>  /模糊查询字符串/</p>
-<p>例如，我要查询student集合中address字段中含有“洞”的所有文档，代码如下：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image26.png" alt="image26"></p>
-<p>如果要查询name字段中以“白”开头的，代码如下：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image27.png" alt="image27"></p>
-<h2 id="3-2-Null值处理"><a href="#3-2-Null值处理" class="headerlink" title="3.2 Null值处理"></a>3.2 Null值处理</h2><p>如果我们想找出集合中某字段值为空的文档，如何查询呢？其实和我们之前的条件查询是一样的，条件值写为null就可以了。</p>
-<p>我们现在集合中的文档都是没有空值的，为了方便测试，现在我们将数据做些修改：</p>
-<p>将“唐僧”的address改为空</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image28.png" alt="image28"> </p>
-<p>再次查询：</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image29.png" alt="image29"></p>
-<p>我们会发现不仅会显示“唐僧”这条文档，之前因为修改导致address字段丢失的那条记录也出现了。也就是说，这种查询会查询出该字段为null的以及不存在该字段的文档记录。</p>
-<h2 id="3-3大于小于"><a href="#3-3大于小于" class="headerlink" title="3.3大于小于"></a>3.3大于小于</h2><p>&lt;, &lt;=, &gt;, &gt;= 这个操作符也是很常用的，格式如下</p>
-<p>db.collection.find({ “field” : { $gt: value } } ); // 大于: field &gt; value</p>
-<p>db.collection.find({ “field” : { $lt: value } } ); // 小于: field &lt; value</p>
-<p>db.collection.find({ “field” : { $gte: value } } ); // 大于等于: field &gt;= value</p>
-<p>db.collection.find({ “field” : { $lte: value } } ); // 小于等于: field &lt;= value</p>
-<p>示例：查询年龄大于等于20岁的学员记录</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image30.png" alt="image30"></p>
-<h2 id="3-4不等于"><a href="#3-4不等于" class="headerlink" title="3.4不等于"></a>3.4不等于</h2><p>不等于使用$ne操作符。</p>
-<p>示例：查询sex字段不为“男”的文档</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image31.png" alt="image31"> </p>
-<h2 id="3-5判断字段是否存在"><a href="#3-5判断字段是否存在" class="headerlink" title="3.5判断字段是否存在"></a>3.5判断字段是否存在</h2><p>判断字段是否存在使用$exists操作符。</p>
-<p>示例：查询所有含有address字符的文档。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image32.png" alt="image3"></p>
-<p>示例：查询所有不含有address字符的文档。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image33.png" alt="image33"></p>
-<h2 id="3-6包含与不包含"><a href="#3-6包含与不包含" class="headerlink" title="3.6包含与不包含"></a>3.6包含与不包含</h2><p>包含使用$in操作符。</p>
-<p>示例：查询student集合中age字段包含20,25,30的文档</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image34.png" alt="image34"></p>
-<p>示例：查询student集合中age字段不包含20,25,30的文档</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image35.png" alt="image35"></p>
-<h2 id="3-7统计记录条数"><a href="#3-7统计记录条数" class="headerlink" title="3.7统计记录条数"></a>3.7统计记录条数</h2><p>统计记录条件使用count()方法。</p>
-<p>示例：查询student集合的文档条数。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image36.png" alt="image36"></p>
-<p>示例：查询student集合中age字段小于等于20的文档条数。</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image37.png" alt="image37"> </p>
-<h2 id="3-8条件连接–并且"><a href="#3-8条件连接–并且" class="headerlink" title="3.8条件连接–并且"></a>3.8条件连接–并且</h2><p>我们如果需要查询同时满足两个以上条件，需要使用$and操作符将条件进行关联。（相当于SQL的and）</p>
-<p>格式为：$and:[ {  },{  },{   } ]</p>
-<p>示例：查询student集合中age大于等于20 并且age小于30的文档</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image38.png" alt="image38"></p>
-<h2 id="3-9-条件连接–或者"><a href="#3-9-条件连接–或者" class="headerlink" title="3.9 条件连接–或者"></a>3.9 条件连接–或者</h2><p>如果两个以上条件之间是或者的关系，我们使用$or操作符进行关联，与前面$and的使用方式相同</p>
-<p>格式为：$or:[ {  },{  },{   } ]</p>
-<p>示例：查询student集合中sex为女，或者年龄小于20的文档记录</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image39.png" alt="image39"></p>
-<h1 id="4-java连接MongoDB"><a href="#4-java连接MongoDB" class="headerlink" title="4.java连接MongoDB"></a>4.java连接MongoDB</h1><h2 id="4-1查询文档"><a href="#4-1查询文档" class="headerlink" title="4.1查询文档"></a>4.1查询文档</h2><h2 id="4-1-1查询全部记录"><a href="#4-1-1查询全部记录" class="headerlink" title="4.1.1查询全部记录"></a>4.1.1查询全部记录</h2><p>（1）创建maven工程mongoDBDemo ，引入依赖。 </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.mongodb&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;3.4.1&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">  &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-<p>（2）编写代码，遍历student集合所有数据：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();<span class="comment">//创建连接对象</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);<span class="comment">//获取数据库		</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);<span class="comment">//获取集合</span></span><br><span class="line">		</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find();<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="keyword">for</span>( Document doc: list)&#123;<span class="comment">//遍历集合中的文档输出数据</span></span><br><span class="line">	System.out.println(<span class="string">"name:"</span>+ doc.getString(<span class="string">"name"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"sex:"</span>+ doc.getString(<span class="string">"sex"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"age:"</span>+ doc.getDouble(<span class="string">"age"</span>) );<span class="comment">//默认为浮点型</span></span><br><span class="line">	System.out.println(<span class="string">"address:"</span>+ doc.getString(<span class="string">"address"</span>) );</span><br><span class="line">	System.out.println(<span class="string">"--------------------------"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>MongoDB的数字类型默认使用64位浮点型数值。{“x”：3.14}或{“x”：3}。对于整型值，可以使用NumberInt（4字节符号整数），{“x”:NumberInt(“3”)}  或NumberLong（8字节符号整数）{“x”:NumberLong(“3”)}</p>
-<h2 id="4-1-2匹配查询"><a href="#4-1-2匹配查询" class="headerlink" title="4.1.2匹配查询"></a>4.1.2匹配查询</h2><p>MongoDB使用BasicDBObject类型封装查询条件，构造方法的参数为key 和value .</p>
-<p>示例：查询student集合中name为猪八戒的文档</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构建查询条件</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"猪八戒"</span>);		</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-1-3模糊查询"><a href="#4-1-3模糊查询" class="headerlink" title="4.1.3模糊查询"></a>4.1.3模糊查询</h2><p>构建模糊查询条件是通过正则表达式的方式来实现的</p>
-<p>（1）完全匹配Pattern pattern = Pattern.compile(“^name$”);</p>
-<p>（2）右匹配Pattern pattern = Pattern.compile(“^.*name$”);</p>
-<p>（3）左匹配Pattern pattern = Pattern.compile(“^name.*$”);</p>
-<p>（4）模糊匹配Pattern pattern = Pattern.compile(“^.<em>name.</em>$”);</p>
-<p>示例：模糊查询student集合中address 中含有洞的文档记录</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模糊查询：like %洞%</span></span><br><span class="line">Pattern queryPattern = Pattern.compile(<span class="string">"^.*洞.*$"</span>);</span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"address"</span>, queryPattern);	</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集合</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-1-4大于小于"><a href="#4-1-4大于小于" class="headerlink" title="4.1.4大于小于"></a>4.1.4大于小于</h2><p>在MongoDB提示符下条件json字符串为{ age: { $lt :20 } } ，对应的java代码也是BasicDBObject 的嵌套。</p>
-<p>示例：查询student集合中age小于20的文档记录 </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询年龄小于20的		</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lt"</span>,<span class="number">20</span>));</span><br><span class="line">FindIterable&lt;Document&gt; list = collection.find(bson);<span class="comment">//获取文档集</span></span><br><span class="line"><span class="comment">//....遍历集合</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-1-5条件连接–并且"><a href="#4-1-5条件连接–并且" class="headerlink" title="4.1.5条件连接–并且"></a>4.1.5条件连接–并且</h2><p>示例：查询年龄大于等于20并且小于30的文档记录</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询年龄大于等于20的			</span></span><br><span class="line">BasicDBObject bson1=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$gte"</span>,<span class="number">20</span>));</span><br><span class="line"><span class="comment">//查询年龄小于30的</span></span><br><span class="line">BasicDBObject bson2=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lt"</span>,<span class="number">30</span>));</span><br><span class="line"><span class="comment">//构建查询条件and</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span>  BasicDBObject(<span class="string">"$and"</span>, Arrays.asList(bson1,bson2)  );</span><br></pre></td></tr></table></figure>
-<h2 id="4-1-6条件连接–或者"><a href="#4-1-6条件连接–或者" class="headerlink" title="4.1.6条件连接–或者"></a>4.1.6条件连接–或者</h2><p>示例：查询年龄小于等于20或者性别为女的文档记录</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BasicDBObject bson1=<span class="keyword">new</span> BasicDBObject(<span class="string">"age"</span>, <span class="keyword">new</span> BasicDBObject(<span class="string">"$lte"</span>,<span class="number">20</span>));		</span><br><span class="line">BasicDBObject bson2=<span class="keyword">new</span> BasicDBObject(<span class="string">"sex"</span>, <span class="string">"女"</span>);</span><br><span class="line"><span class="comment">//构建查询条件or</span></span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"$or"</span>, Arrays.asList( bson1, bson2 )  );</span><br></pre></td></tr></table></figure>
-<h2 id="4-2增加文档"><a href="#4-2增加文档" class="headerlink" title="4.2增加文档"></a>4.2增加文档</h2><p>我们使用insertOne方法来插入文档。</p>
-<p>示例：添加文档记录–名称：铁扇公主  性别:女 年龄：28   地址：芭蕉洞</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line">Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"name"</span>, <span class="string">"铁扇公主"</span>);</span><br><span class="line">map.put(<span class="string">"sex"</span>, <span class="string">"女"</span>);</span><br><span class="line">map.put(<span class="string">"age"</span>, <span class="number">35.0</span>);</span><br><span class="line">map.put(<span class="string">"address"</span>, <span class="string">"芭蕉洞"</span>);		</span><br><span class="line">Document doc=<span class="keyword">new</span> Document(map);		</span><br><span class="line">collection.insertOne(doc);<span class="comment">//插入一条记录</span></span><br><span class="line"><span class="comment">//collection.insertMany(documents);//一次性插入多条文档</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-3删除文档"><a href="#4-3删除文档" class="headerlink" title="4.3删除文档"></a>4.3删除文档</h2><p>示例：将名称为铁扇公主的文档删除</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line">BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"铁扇公主"</span>);</span><br><span class="line">collection.deleteOne(bson);<span class="comment">//删除记录（符合条件的第一条记录）</span></span><br><span class="line"><span class="comment">//collection.deleteMany(bson);//删除符合条件的全部记录</span></span><br></pre></td></tr></table></figure>
-<h2 id="4-4修改文档"><a href="#4-4修改文档" class="headerlink" title="4.4修改文档"></a>4.4修改文档</h2><p>示例：将红孩儿的地址修改为“南海”</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取连接</span></span><br><span class="line">MongoClient client=<span class="keyword">new</span> MongoClient();</span><br><span class="line"><span class="comment">//得到数据库</span></span><br><span class="line">MongoDatabase database = client.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line"><span class="comment">//得到集合封装对象</span></span><br><span class="line">MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//修改的条件</span></span><br><span class="line">BasicDBObject bson= <span class="keyword">new</span> BasicDBObject(<span class="string">"name"</span>, <span class="string">"红孩儿"</span>);</span><br><span class="line"><span class="comment">//修改后的值</span></span><br><span class="line">BasicDBObject bson2 = <span class="keyword">new</span> BasicDBObject(<span class="string">"$set"</span>,<span class="keyword">new</span> BasicDBObject(<span class="string">"address"</span>, <span class="string">"南海"</span>));</span><br><span class="line"><span class="comment">//参数1：修改条件  参数2：修改后的值</span></span><br><span class="line">collection.updateOne(bson, bson2);</span><br><span class="line"><span class="comment">//collection.updateMany(filter, update);//修改符合条件的所有记录</span></span><br></pre></td></tr></table></figure>
-<p>updateMany方法用于修改符合条件的所有记录</p>
-<p>updateOne方法用于修改符合条件的第一条记录</p>
-<h1 id="5-MongoDB连接池"><a href="#5-MongoDB连接池" class="headerlink" title="5.MongoDB连接池"></a>5.MongoDB连接池</h1><h2 id="5-1代码实现"><a href="#5-1代码实现" class="headerlink" title="5.1代码实现"></a>5.1代码实现</h2><p>MongoClient 被设计为线程安全的类，也就是我们在使用该类时不需要考虑并发的情况，这样我们可以考虑把MongoClient 做成一个静态变量，为所有线程公用，不必每次都销毁。这样可以极大提高执行效率。实际上，这是MongoDB提供的内置的连接池来实现的。    </p>
-<p>​    首先我们先创建一个“管理类”，相当于我们原来的BaseDao </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClient;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions.Builder;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.WriteConcern;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MongoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MongoClient mongoClient=<span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//对mongoClient初始化</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;		</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient();	</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MongoDatabase <span class="title">getDatabase</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(mongoClient==<span class="keyword">null</span>)&#123;</span><br><span class="line">			init();</span><br><span class="line">		&#125;		</span><br><span class="line">		<span class="keyword">return</span> mongoClient.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​    然后我们创建一个StudentDao</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> org.bson.Document;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoCollection;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 学员数据访问层</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StudentDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String name,String sex,<span class="keyword">double</span> age,String address)</span></span>&#123;</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(<span class="string">"student2"</span>);</span><br><span class="line">		Document docment=<span class="keyword">new</span> Document();</span><br><span class="line">		docment.put(<span class="string">"name"</span>, name);</span><br><span class="line">		docment.put(<span class="string">"sex"</span>, sex);		</span><br><span class="line">		docment.put(<span class="string">"age"</span>, age);</span><br><span class="line">		docment.put(<span class="string">"address"</span>, address);</span><br><span class="line">		collection.insertOne(docment);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们现在做个测试，循环插入2万条数据，看看执行时间是多长时间</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.haha.demo;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPool</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">long</span> startTime = <span class="keyword">new</span> Date().getTime();<span class="comment">//开始时间</span></span><br><span class="line">		</span><br><span class="line">		StudentDao studentDao=<span class="keyword">new</span> StudentDao();</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20000</span>;i++)&#123;</span><br><span class="line">			studentDao.save(<span class="string">"测试"</span>+i, <span class="string">"男"</span>, <span class="number">25.0</span>, <span class="string">"测试地址"</span>+i);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">long</span> endTime = <span class="keyword">new</span> Date().getTime();<span class="comment">//完成时间</span></span><br><span class="line">		System.out.println(<span class="string">"完成时间："</span>+(endTime-startTime)+<span class="string">"毫秒"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>经过测试：所用毫秒数为3589 </p>
-<h2 id="5-2参数设置"><a href="#5-2参数设置" class="headerlink" title="5.2参数设置"></a>5.2参数设置</h2><p>我们在刚才的代码基础上进行连接池参数的设置</p>
-<p>修改MongoManager的init方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//对mongoClient初始化</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//连接池选项</span></span><br><span class="line">		Builder builder = <span class="keyword">new</span> MongoClientOptions.Builder();<span class="comment">//选项构建者	</span></span><br><span class="line">		builder.connectTimeout(<span class="number">5000</span>);<span class="comment">//设置连接超时时间</span></span><br><span class="line">		builder.socketTimeout(<span class="number">5000</span>);<span class="comment">//读取数据的超时时间</span></span><br><span class="line">		builder.connectionsPerHost(<span class="number">30</span>);<span class="comment">//每个地址最大请求数		</span></span><br><span class="line">		builder.writeConcern(WriteConcern.NORMAL);<span class="comment">//写入策略，仅抛出网络异常</span></span><br><span class="line">		MongoClientOptions options = builder.build();</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient(<span class="string">"127.0.0.1"</span>,options);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>再次进行测试：所用的毫秒1544</p>
-<p>下面是写入策略。</p>
-<p>WriteConcern.NONE:没有异常抛出</p>
-<p>WriteConcern.NORMAL:仅抛出网络错误异常，没有服务器错误异常</p>
-<p>WriteConcern.SAFE:抛出网络错误异常、服务器错误异常；并等待服务器完成写操作。</p>
-<p>WriteConcern.MAJORITY: 抛出网络错误异常、服务器错误异常；并等待一个主服务器完成写操作。</p>
-<p>WriteConcern.FSYNC_SAFE: 抛出网络错误异常、服务器错误异常；写操作等待服务器将数据刷新到磁盘。</p>
-<p>WriteConcern.JOURNAL_SAFE:抛出网络错误异常、服务器错误异常；写操作等待服务器提交到磁盘的日志文件。</p>
-<p>WriteConcern.REPLICAS_SAFE:抛出网络错误异常、服务器错误异常；等待至少2台服务器完成写操作。</p>
-<h1 id="6-综合案例-《网站点击日志分析组件》"><a href="#6-综合案例-《网站点击日志分析组件》" class="headerlink" title="6.综合案例-《网站点击日志分析组件》"></a>6.综合案例-《网站点击日志分析组件》</h1><h1 id="6-1需求分析"><a href="#6-1需求分析" class="headerlink" title="6.1需求分析"></a>6.1需求分析</h1><p>《花生二手车》交易网站日访问IP高达2万+ ，每秒点击频率在2000次左右。为了能够对访问用户的行为做进一步的分析，产品部提出需求，用户每次点击浏览二手车都要记录该用户ID、访问IP、访问时间、点击车型、点击商品ID、价格等信息。</p>
-<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/MongoDB/image40.png" alt="image40"></p>
-<h2 id="6-2数据库设计"><a href="#6-2数据库设计" class="headerlink" title="6.2数据库设计"></a>6.2数据库设计</h2><p>浏览日志browseLog</p>
-<table>
-<thead>
-<tr>
-<th>字段名称</th>
-<th>字段类型</th>
-<th>字段含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>userid</td>
-<td>字符</td>
-<td>用户ID</td>
-</tr>
-<tr>
-<td>ip</td>
-<td>字符</td>
-<td>访问IP</td>
-</tr>
-<tr>
-<td>browseTime</td>
-<td>时间</td>
-<td>访问时间</td>
-</tr>
-<tr>
-<td>model</td>
-<td>字符</td>
-<td>点击车型</td>
-</tr>
-<tr>
-<td>goodsid</td>
-<td>字符</td>
-<td>点击商品ID</td>
-</tr>
-<tr>
-<td>price</td>
-<td>数值</td>
-<td>价格</td>
-</tr>
-<tr>
-<td>remark</td>
-<td>字符</td>
-<td>备注</td>
-</tr>
-</tbody>
-</table>
-<h2 id="6-3日志写入"><a href="#6-3日志写入" class="headerlink" title="6.3日志写入"></a>6.3日志写入</h2><p>（1）创建工程sitelog ，在pom.xml中引入依赖。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">       &lt;groupId&gt;org.mongodb&lt;/groupId&gt;</span><br><span class="line">       &lt;artifactId&gt;mongodb-driver&lt;/artifactId&gt;</span><br><span class="line">       &lt;version&gt;3.4.1&lt;/version&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br><span class="line"> &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
-<p>（2）在src/main/resources 添加配置文件sitelog.properties</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host=<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">port=<span class="number">27017</span></span><br></pre></td></tr></table></figure>
-<p>这个配置文件用于配置主机地址和端口</p>
-<p>（3）创建包com.huasheng.sitelog，建立Config 类，用于读取配置文件</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 配置类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span>&#123;			</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Properties p=<span class="keyword">new</span> Properties();</span><br><span class="line">			InputStream input=Config.class.getResourceAsStream(<span class="string">"/sitelog.propertis"</span>);</span><br><span class="line">			p.load(input);</span><br><span class="line">			host=p.getProperty(<span class="string">"host"</span>);</span><br><span class="line">			port=Integer.parseInt( p.getProperty(<span class="string">"port"</span>));</span><br><span class="line">			input.close();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;<span class="comment">//加载		</span></span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> String host;<span class="comment">//主机地址</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> port;<span class="comment">//端口</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getHost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> host;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">getPort</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> port;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（4）创建管理类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClient;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.MongoClientOptions.Builder;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.ServerAddress;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.WriteConcern;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mongo数据库连接管理类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MongoManager</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MongoClient mongoClient=<span class="keyword">null</span>;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="comment">//初始化</span></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span>  <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="comment">//创建一个选项构造器</span></span><br><span class="line">		Builder builder = <span class="keyword">new</span> MongoClientOptions.Builder();</span><br><span class="line">		builder.connectTimeout(<span class="number">5000</span>);<span class="comment">//设置连接超时时间</span></span><br><span class="line">		builder.socketTimeout(<span class="number">5000</span>);<span class="comment">//读取数据的超时时间</span></span><br><span class="line">		builder.connectionsPerHost(<span class="number">30</span>);<span class="comment">//设置每个地址最大连接数</span></span><br><span class="line">		builder.writeConcern(WriteConcern.NORMAL);<span class="comment">//设置写入策略  ,只有网络异常才会抛出</span></span><br><span class="line">		<span class="comment">//得到选项封装</span></span><br><span class="line">		MongoClientOptions options = builder.build();		</span><br><span class="line">		mongoClient=<span class="keyword">new</span> MongoClient(<span class="keyword">new</span> ServerAddress(Config.getHost(), Config.getPort()),options);		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MongoDatabase <span class="title">getDatabase</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(mongoClient==<span class="keyword">null</span>)&#123;</span><br><span class="line">			init();</span><br><span class="line">		&#125;		</span><br><span class="line">		<span class="keyword">return</span> mongoClient.getDatabase(<span class="string">"itcastdb"</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（5）日志工具类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.huasheng.sitelog;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> org.bson.Document;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoCollection;</span><br><span class="line"><span class="keyword">import</span> com.mongodb.client.MongoDatabase;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 站点日志数据工具类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> Administrator</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SiteLogUtil</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 写入日志</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> logname 日志名称</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> map 日志数据</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">save</span><span class="params">(String logname,Map&lt;String, Object&gt; map)</span></span>&#123;</span><br><span class="line">		</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(logname);</span><br><span class="line">		Document doc=<span class="keyword">new</span> Document(map);		</span><br><span class="line">		collection.insertOne(doc);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（6）编写测试代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"userid"</span>, <span class="string">"8888"</span>);</span><br><span class="line">map.put(<span class="string">"ip"</span>, <span class="string">"188.188.200.2"</span>);</span><br><span class="line">map.put(<span class="string">"browseTime"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">map.put(<span class="string">"model"</span>, <span class="string">"大众"</span>);</span><br><span class="line">map.put(<span class="string">"goodsid"</span>, <span class="string">"123123"</span>);</span><br><span class="line">map.put(<span class="string">"price"</span>, <span class="number">15.3</span>);</span><br><span class="line">map.put(<span class="string">"remark"</span>, <span class="string">"八成新，贱卖了"</span>);</span><br><span class="line">SiteLogUtil.save(<span class="string">"browseLog"</span>, map);<span class="comment">//存入日志</span></span><br></pre></td></tr></table></figure>
-<h2 id="6-4日志查询"><a href="#6-4日志查询" class="headerlink" title="6.4日志查询"></a>6.4日志查询</h2><h2 id="6-4-1条件查询"><a href="#6-4-1条件查询" class="headerlink" title="6.4.1条件查询"></a>6.4.1条件查询</h2><p>（1）在SiteLogUtil类中添加方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 按条件查询</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> logName</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@param</span> map</span></span><br><span class="line"><span class="comment">	 * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> FindIterable&lt;Document&gt; <span class="title">list</span><span class="params">(String logName,Map&lt;String, Object&gt; map)</span></span>&#123;</span><br><span class="line">		MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">		MongoCollection&lt;Document&gt; collection = database.getCollection(logName);</span><br><span class="line">		BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(map);<span class="comment">//构建查询条件			</span></span><br><span class="line">		<span class="keyword">return</span> collection.find(bson);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>（2）编写测试代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; map =<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"userid"</span>, <span class="string">"8888"</span>);		</span><br><span class="line">FindIterable&lt;Document&gt; list = SiteLogUtil.list(<span class="string">"browseLog"</span>, map);</span><br><span class="line">String json = JSON.serialize(list);</span><br><span class="line">System.out.println(json);</span><br></pre></td></tr></table></figure>
-<h2 id="6-4-2分页查询"><a href="#6-4-2分页查询" class="headerlink" title="6.4.2分页查询"></a>6.4.2分页查询</h2><p>（1）在SiteLogUtil类中添加方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 分页查询日志</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> logName 日志名称</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> map 条件</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageIndex 页码</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> pageSize 页大小</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String,Object&gt; <span class="title">listPage</span><span class="params">(String logName,Map&lt;String, Object&gt; map,<span class="keyword">int</span> pageIndex,<span class="keyword">int</span> pageSize)</span></span>&#123;</span><br><span class="line">	MongoDatabase database = MongoManager.getDatabase();</span><br><span class="line">	MongoCollection&lt;Document&gt; collection = database.getCollection(logName);		</span><br><span class="line">	BasicDBObject bson=<span class="keyword">new</span> BasicDBObject(map);<span class="comment">//构建查询条件			</span></span><br><span class="line">	FindIterable&lt;Document&gt; find = collection.find(bson);</span><br><span class="line">	<span class="keyword">int</span> skip= (pageIndex-<span class="number">1</span>)*pageSize;</span><br><span class="line">	find.skip( skip);<span class="comment">//跳过记录数</span></span><br><span class="line">	find.limit(pageSize);<span class="comment">//一页查询记录数</span></span><br><span class="line">	<span class="comment">//&#123; total:x,rows:[]  &#125;</span></span><br><span class="line">	<span class="keyword">long</span> count = collection.count(bson);</span><br><span class="line">	Map&lt;String,Object&gt; m=<span class="keyword">new</span> HashMap();</span><br><span class="line">	m.put(<span class="string">"total"</span>, count);</span><br><span class="line">	m.put(<span class="string">"rows"</span>, find);</span><br><span class="line">	<span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（2）添加测试数据</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">1000</span>;i++)&#123;</span><br><span class="line">	</span><br><span class="line">	Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">	map.put(<span class="string">"userid"</span>, <span class="string">"900"</span>+i);<span class="comment">//用户ID</span></span><br><span class="line">	map.put(<span class="string">"ip"</span>, <span class="string">"121.211.112.212"</span>);</span><br><span class="line">	map.put(<span class="string">"browseTime"</span>, <span class="keyword">new</span> Date());<span class="comment">//浏览时间</span></span><br><span class="line">	map.put(<span class="string">"model"</span>, <span class="string">"大众"</span>+i);<span class="comment">//型号</span></span><br><span class="line">	map.put(<span class="string">"goodsid"</span>, <span class="string">"123456"</span>);<span class="comment">//商品ID</span></span><br><span class="line">	map.put(<span class="string">"price"</span>, <span class="number">11.8</span>);<span class="comment">//价格</span></span><br><span class="line">	map.put(<span class="string">"remark"</span>, <span class="string">"八成新，快来买吧"</span>);</span><br><span class="line">	</span><br><span class="line">	SiteLogUtil.save(<span class="string">"browseLog"</span>, map);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（3）编写测试代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, Object&gt; map=<span class="keyword">new</span> HashMap();</span><br><span class="line">map.put(<span class="string">"goodsid"</span>, <span class="string">"123456"</span>);</span><br><span class="line">Map&lt;String, Object&gt; m = SiteLogUtil.listPage(<span class="string">"browseLog"</span>, map, <span class="number">2</span>, <span class="number">10</span>);</span><br><span class="line">String json = JSON.serialize(m);</span><br><span class="line">System.out.println(json);</span><br></pre></td></tr></table></figure>
-<p>使用Maven 的package命令进行打包。</p>
-<p>创建WEB工程，引入jar包，调用此方法即可实现日志查询。代码略。</p>
- 
-
-	    
-</div>
-
-<div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/数据库/">数据库</a>
-				</span>
-		
-			
-
-		
-				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/mongoDB/">mongoDB</a>
-				</span>			
-			
-
-
-		
-
-		<span class="post-words"><span class="iconfont icon-words"></span>
-		15463
-		</span>		
-</div>		
-
-		
-    <a class="article-readmore" href="/2016/10/05/mongoDB文档数据库/">阅读更多</a> 
-    	
-</article>     
-     	
   
 
  
 
   <nav class="paginator">
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
   </nav>
   
 

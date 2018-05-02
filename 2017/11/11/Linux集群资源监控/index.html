@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Linux集群资源监控 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		Linux集群资源监控
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/11 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/集群/">集群</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		3406
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="一、介绍"><a href="#一、介绍" class="headerlink" title="一、介绍"></a>一、介绍</h1><ul>
+<li>Ganglia 监控套件包括三个主要部分 gmond ，gmetad，和网页接口，通常被称为ganglia-web。<br>gmond 是一个守护进程，他运行在每一个需要监测的节点上，收集监测统计，发送和接受在同一个组播或单播通道上的统计信息。</li>
+<li>gmetad 也是一个守护进程，他定期检查gmonds ，从那里拉取数据，并将他们的指标存储在RRD存储引擎中。它可以查询多个集群并聚合指标。RRD也被用于生成用户界面的web前端。</li>
+<li>ganglia-web 顾名思义，他应该安装在有gmetad运行的机器上，以便读取RRD文件。</li>
+</ul>
+<p>​    一般来说一个集群的每台机器上都需要安装gmond，只要负责展示web界面的机器安装了gmetad即可。</p>
+<h1 id="二-ganglia规划"><a href="#二-ganglia规划" class="headerlink" title="二.ganglia规划"></a>二.ganglia规划</h1><p>​    <strong>主机名</strong>             ip               <strong>规划</strong>                         安装</p>
+<p>   hadoop1      10.2.6.250        服务端   ganglia-gmond、ganglia-gmetad、ganglia-web</p>
+<p>   hadoop2     10.2.6.246        客户端            ganglia-gmond</p>
+<p>   hadoop3     10.2.6.248        客户端            ganglia-gmond</p>
+<p>   hadoop4   10.2.6.249        客户端            ganglia-gmond</p>
+<p>安装前确保iptables关闭.</p>
+<h1 id="三-安装前的准备工作"><a href="#三-安装前的准备工作" class="headerlink" title="三.安装前的准备工作"></a>三.安装前的准备工作</h1><h2 id="3-1加载yum源，在每一台机器上面执行下面两个命令"><a href="#3-1加载yum源，在每一台机器上面执行下面两个命令" class="headerlink" title="3.1加载yum源，在每一台机器上面执行下面两个命令"></a>3.1加载yum源，在每一台机器上面执行下面两个命令</h2><p>rpm -Uvh <a href="http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm" target="_blank" rel="noopener">http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm</a></p>
+<p>yum  -y  install  httpd-devel  automake  autoconf  libtool  ncurses-devel  libxslt  groff  pcre-devel  pkgconfig</p>
+<h2 id="四-主节点服务安装配置"><a href="#四-主节点服务安装配置" class="headerlink" title="四.主节点服务安装配置"></a>四.主节点服务安装配置</h2><h2 id="4-1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad-和ganglia-web"><a href="#4-1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad-和ganglia-web" class="headerlink" title="4.1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad 和ganglia-web"></a>4.1主节点的服务安装（hadoop1上面的安装配置）安装ganglia-gmetad 和ganglia-web</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum search ganglia     ------------------查看ganglia在epel的安装包,复制进行安装  </span><br><span class="line">yum -y install ganglia-web.x86_64 ganglia-gmond.x86_64  </span><br><span class="line">yum -y install ganglia-gmetad.x86_64 ----------------------(如果上一步执行了这步不用执行,web包会自动下载该依赖)  </span><br><span class="line">rpm -qa |grep ganglia          --------------------查看安装情况  </span><br><span class="line">rpm -ql ganglia-gmetad.x86_64       ------------- 复制上面命令执行结果的安装名,可查看安装路径</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-1配置gmetad"><a href="#4-1-1配置gmetad" class="headerlink" title="4.1.1配置gmetad"></a>4.1.1配置gmetad</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/ganglia/gmetad.conf  </span><br><span class="line"></span><br><span class="line">data_source "my cluster" 10.2.6.250:8649  ---- Hadoop为cluster名称,后面是需要监控的主机名</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-2修改apache设置"><a href="#4-1-2修改apache设置" class="headerlink" title="4.1.2修改apache设置"></a>4.1.2修改apache设置</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> vi /etc/httpd/conf.d/ganglia.conf  </span><br><span class="line"></span><br><span class="line">文件内容Deny from all 为 allow from all </span><br><span class="line"></span><br><span class="line">修改后配置如下</span><br><span class="line"></span><br><span class="line">&lt;Location /ganglia&gt;</span><br><span class="line"></span><br><span class="line">    Order deny,allow</span><br><span class="line"></span><br><span class="line">    Allow from all</span><br><span class="line"></span><br><span class="line">    Allow from 127.0.0.1</span><br><span class="line"></span><br><span class="line">    Allow from ::1</span><br><span class="line"></span><br><span class="line">    # Allow from .example.com</span><br><span class="line"></span><br><span class="line">  &lt;/Location&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-3设置启动"><a href="#4-1-3设置启动" class="headerlink" title="4.1.3设置启动"></a>4.1.3设置启动</h3><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --add gmetad  </span><br><span class="line"></span><br><span class="line"> chkconfig --add gmond  </span><br><span class="line"></span><br><span class="line"> chkconfig --add httpd</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-4打开端口-关闭防火墙"><a href="#4-1-4打开端口-关闭防火墙" class="headerlink" title="4.1.4打开端口/关闭防火墙"></a>4.1.4打开端口/关闭防火墙</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/iptables stop -------------------关闭防火墙,用于测试时,线上最好用打开端口方式</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-5关闭SELinux"><a href="#4-1-5关闭SELinux" class="headerlink" title="4.1.5关闭SELinux"></a>4.1.5关闭SELinux</h3><p>1 永久方法 – 需要重启服务器</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器。</p>
+<p>2 临时方法 – 设置系统参数</p>
+<p>使用命令setenforce 0</p>
+<p>附：</p>
+<p>setenforce 1 设置SELinux 成为enforcing模式</p>
+<p>setenforce 0 设置SELinux 成为permissive模式</p>
+<h1 id="五-监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）"><a href="#五-监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）" class="headerlink" title="五.监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）"></a>五.监控节点的安装（每个监控节点，hadoop2，hadoop3，hadoop4都要安装）</h1><h2 id="5-1安装ganglia-gmond"><a href="#5-1安装ganglia-gmond" class="headerlink" title="5.1安装ganglia-gmond"></a>5.1安装ganglia-gmond</h2><p>Shell<strong>代码</strong>   </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum search ganglia  </span><br><span class="line"></span><br><span class="line">yum install ganglia-gmond.x86_64</span><br></pre></td></tr></table></figure>
+<h2 id="5-2配置gmond"><a href="#5-2配置gmond" class="headerlink" title="5.2配置gmond"></a>5.2配置gmond</h2><p>Shell<strong>代码</strong>   </p>
+<p>vi /etc/ganglia/gmond.conf  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">cluster &#123;</span><br><span class="line"></span><br><span class="line">  name = "my cluster"    ------ cluster名称,是你在gmetad.conf里配置的data_source名称 </span><br><span class="line"></span><br><span class="line">  owner = "root"</span><br><span class="line"></span><br><span class="line">  latlong = "unspecified"</span><br><span class="line"></span><br><span class="line">  url = "unspecified"</span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">udp_send_channel &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta"> #</span> mcast_join = 239.2.11.71  ----- 组播  </span><br><span class="line"></span><br><span class="line">  host=10.2.6.250    -------------- 单播 gmeta主机的ip/主机名或者主机ip地址  </span><br><span class="line"></span><br><span class="line">  port = 8649</span><br><span class="line"></span><br><span class="line">ttl = 1</span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">udp_recv_channel &#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">  #</span>mcast_join = 239.2.11.71  </span><br><span class="line"></span><br><span class="line">  port = 8649</span><br><span class="line"></span><br><span class="line">  bind = 10.2.6.246</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-3配置启动"><a href="#5-3配置启动" class="headerlink" title="5.3配置启动"></a>5.3配置启动</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chkconfig  --add  gmond</span><br><span class="line"></span><br><span class="line">chkconfig  --list  gmond</span><br></pre></td></tr></table></figure>
+<p>此时，如果正确安装，会出现gmond           0:off   1:off   2:off   3:off   4:off   5:off   6:off</p>
+<h2 id="5-4配置hosts"><a href="#5-4配置hosts" class="headerlink" title="5.4配置hosts"></a>5.4配置hosts</h2><p> vi /etc/hosts</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.2.6.250 hadoop1</span><br><span class="line"></span><br><span class="line">10.2.6.246 hadoop2</span><br><span class="line"></span><br><span class="line">10.2.6.248 hadoop3</span><br><span class="line"></span><br><span class="line">10.2.6.249 hadoop4</span><br></pre></td></tr></table></figure>
+<p><strong>全部安装完毕后</strong></p>
+<p>在主机上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">service gmetad start</span><br><span class="line"></span><br><span class="line">service gmond start</span><br><span class="line"></span><br><span class="line">service httpd start</span><br><span class="line"></span><br><span class="line">service gmetad status    -------------------验证是否启动成功</span><br><span class="line"></span><br><span class="line">service gmond status   -------------------验证是否启动成功</span><br></pre></td></tr></table></figure>
+<p>在监控节点上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service gmond start  </span><br><span class="line"></span><br><span class="line">service gmond status   -------------------验证是否启动成功</span><br></pre></td></tr></table></figure>
+<p>访问<a href="http://10.2.6.250/ganglia" target="_blank" rel="noopener">http://10.2.6.250/ganglia</a></p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p>Forbidden错误时,因为对apache有一个设置</p>
+<p>修改 /etc/httpd/conf.d/ganglia.conf文件内容Deny from all 为 allow from all</p>
+<p>There was an error collecting ganglia data (127.0.0.1:8652):fsockopen error: Permission denied </p>
+<p>解决方法</p>
+<p>1 永久方法 – 需要重启服务器</p>
+<p>修改/etc/selinux/config文件中设置SELINUX=disabled ，然后重启服务器。</p>
+<p>2 临时方法 – 设置系统参数</p>
+<p>使用命令setenforce 0</p>
+<p>附：</p>
+<p>setenforce 1 设置SELinux 成为enforcing模式</p>
+<p>setenforce 0 设置SELinux 成为permissive模式</p>
+<p><strong>There was an error collecting ganglia data (127.0.0.1:8652):fsockopen error: Connection refused **</strong>解决办法**</p>
+<p>卸载yum remove ganglia-web ganglia-gmetad</p>
+<p>重新安装yum install ganglia-web    —– ganglia-web本身有引用gmetad</p>
+<p>重启即可</p>
+<p><a href="http://redhatdebian.blog.51cto.com/1197273/828992" target="_blank" rel="noopener">http://redhatdebian.blog.51cto.com/1197273/828992</a></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/25/IDEA快捷键/">          
+
+            <span title="IDEA快捷键">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/05/Redis使用/">         
+
+           <span title="Redis使用">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>
