@@ -433,11 +433,11 @@
 	   
 	<div class="article-header">
 	    
-	     <a class="article-title"  href="/2018/02/01/Hive配置/">Hive配置</a>  
+	     <a class="article-title"  href="/2018/01/25/Hive sql/">无标题</a>  
 	       
 		 
 
-		 <time>2018-02-01 </time>    
+		 <time>2018-01-25 </time>    
 	</div>
 
 
@@ -447,55 +447,110 @@
 
 	  
 
-	  	<h1 id="注意事项："><a href="#注意事项：" class="headerlink" title="注意事项："></a>注意事项：</h1><p>安装hive前提是要先安装hadoop集群，并且hive只需要再hadoop的namenode节点集群里安装即可(需要再所有namenode上安装)，可以不在datanode节点的机器上安装。另外还需要说明的是，虽然修改配置文件并不需要你已经把hadoop跑起来，但是本文中用到了hadoop命令，在执行这些命令前你必须确保hadoop是在正常跑着的，而且启动hive的前提也是需要hadoop在正常跑着，所以建议你先将hadoop跑起来在按照本文操作。</p>
-<h1 id="1下载hive"><a href="#1下载hive" class="headerlink" title="1下载hive"></a>1下载hive</h1><p>下载地址：<a href="http://mirror.bit.edu.cn/apache/hive/" target="_blank" rel="noopener">Hive下载</a><br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/hive%E4%B8%8B%E8%BD%BD.png" alt="hive下载"><br>apache-hive-2.1.1-bin.tar.gz</p>
-<h1 id="2安装"><a href="#2安装" class="headerlink" title="2安装"></a>2安装</h1><h2 id="2-1上载和解压缩"><a href="#2-1上载和解压缩" class="headerlink" title="2.1上载和解压缩"></a>2.1上载和解压缩</h2><p> 在~目录下新建一个名为hive的目录，将apache-hive-2.1.1-bin.tar.gz拷贝上去<br> 执行进入目录的命令：cd ~/hive<br> 执行解压缩的命令：tar -zxvf  apache-hive-2.1.1-bin.tar.gz</p>
-<h2 id="2-2配置环境变量"><a href="#2-2配置环境变量" class="headerlink" title="2.2配置环境变量"></a>2.2配置环境变量</h2><p> 编辑/etc/profile文件，增加hive相关的环境变量配置</p>
-<h1 id="Hive-environment"><a href="#Hive-environment" class="headerlink" title="Hive environment"></a>Hive environment</h1><p> export HIVE_HOME=/home/parallels/hive/apache-hive-2.1.1-bin<br> export PATH=$HIVE_HOME/bin:$HIVE_HOME/conf:$PATH</p>
-<p> profile文件编辑完成后，执行下面命令，让配置生效，命令是: source  /etc/profile</p>
-<h2 id="2-3对hive进行配置"><a href="#2-3对hive进行配置" class="headerlink" title="2.3对hive进行配置"></a>2.3对hive进行配置</h2><h3 id="2-3-1-hive-site-xml相关的配置"><a href="#2-3-1-hive-site-xml相关的配置" class="headerlink" title="2.3.1 hive-site.xml相关的配置"></a>2.3.1 hive-site.xml相关的配置</h3><h4 id="2-3-1-1新建hive-site-xml文件"><a href="#2-3-1-1新建hive-site-xml文件" class="headerlink" title="2.3.1.1新建hive-site.xml文件"></a>2.3.1.1新建hive-site.xml文件</h4><p> 进入到apache-hive-2.1.1-bin/conf目录，命令是：<br> 将hive-default.xml.template文件复制一份，并且改名为hive-site.xml，命令是：<br> cp hive-default.xml.template   hive-site.xml</p>
-<h4 id="2-3-1-2使用hadoop新建hdfs目录"><a href="#2-3-1-2使用hadoop新建hdfs目录" class="headerlink" title="2.3.1.2使用hadoop新建hdfs目录"></a>2.3.1.2使用hadoop新建hdfs目录</h4><pre><code>因为在hive-site.xml中有这样的配置：
-</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;</span><br><span class="line">&lt;value&gt;/user/hive/warehouse&lt;/value&gt;</span><br><span class="line"> &lt;name&gt;hive.exec.scratchdir&lt;/name&gt;</span><br><span class="line">&lt;value&gt;/tmp/hive&lt;/value&gt;</span><br></pre></td></tr></table></figure>
-<p>  所以要让hadoop新建/user/hive/warehouse目录，执行命令：<br> $HADOOP_HOME/bin/hadoop fs -mkdir -p /user/hive/warehouse<br>  给刚才新建的目录赋予读写权限，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -chmod   777   /user/hive/warehouse<br>  让hadoop新建/tmp/hive/目录，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -mkdir  -p   /tmp/hive/<br> 给刚才新建的目录赋予读写权限，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -chmod  777   /tmp/hive</p>
-<h4 id="2-3-1-3检查hdfs目录是否创建成功"><a href="#2-3-1-3检查hdfs目录是否创建成功" class="headerlink" title="2.3.1.3检查hdfs目录是否创建成功"></a>2.3.1.3检查hdfs目录是否创建成功</h4><p> 检查/user/hive/warehouse目录是否创建成功，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -ls   /user/hive/<br> 检查/tmp/hive是否创建成功，执行命令：<br> $HADOOP_HOME/bin/hadoop   fs   -ls   /tmp/</p>
-<h4 id="2-3-1-4修改hive-site-xml中的临时目录"><a href="#2-3-1-4修改hive-site-xml中的临时目录" class="headerlink" title="2.3.1.4修改hive-site.xml中的临时目录"></a>2.3.1.4修改hive-site.xml中的临时目录</h4><p> 将hive-site.xml文件中的${system:java.io.tmpdir}替换为hive的临时目录，例如我替换为~/hive/tmp，该目录如果不存在则要自己手工创建，并且赋予读写权限。<br>可以用命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -n <span class="string">"$&#123;system:java.io.tmpdir&#125;"</span> hive-site.xml</span><br></pre></td></tr></table></figure><br>来查找字段所在行数，然后替换<br>如：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;value&gt;$&#123;system:java.io.tmpdir&#125;/$&#123;system:user.name&#125;&lt;/value&gt;</span><br></pre></td></tr></table></figure><br>  被我替换为了<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;value&gt;/home/parallels/hive/apache-hive-2.1.1-bin/tmp&lt;/value&gt;  </span><br></pre></td></tr></table></figure>    </p>
-<h4 id="2-3-1-5修改hive-site-xml数据库相关的配置"><a href="#2-3-1-5修改hive-site-xml数据库相关的配置" class="headerlink" title="2.3.1.5修改hive-site.xml数据库相关的配置"></a>2.3.1.5修改hive-site.xml数据库相关的配置</h4><p> 搜索javax.jdo.option.ConnectionURL，将该name对应的value修改为MySQL的地址，例如我修改后是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;  </span><br><span class="line">&lt;value&gt;jdbc:mysql:<span class="comment">//master:3306/hive?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionDriverName，将该name对应的value修改为MySQL驱动类路径，例如我的修改后是：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt; </span><br><span class="line">  &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; </span><br><span class="line">  &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;      </span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionUserName，将对应的value修改为MySQL数据库登录名：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">&lt;value&gt;root&lt;/value&gt;</span><br></pre></td></tr></table></figure><br> 搜索javax.jdo.option.ConnectionPassword，将对应的value修改为MySQL数据库的登录密码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">&lt;value&gt;root&lt;/value&gt;</span><br></pre></td></tr></table></figure><br> 搜索hive.metastore.schema.verification，将对应的value修改为false：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;name&gt;hive.metastore.schema.verification&lt;/name&gt;</span><br><span class="line">&lt;value&gt;false&lt;/value&gt;</span><br></pre></td></tr></table></figure> </p>
-<h4 id="2-3-1-6将MySQL驱动包上载到lib目录"><a href="#2-3-1-6将MySQL驱动包上载到lib目录" class="headerlink" title="2.3.1.6将MySQL驱动包上载到lib目录"></a>2.3.1.6将MySQL驱动包上载到lib目录</h4><p> 将MySQL驱动包上载到Hive的lib目录下，例如我是上载到apache-hive-2.1.1-bin/lib目录下。<br> 2.3.2新建hive-env.sh文件并进行修改<br> 进入到hive/apache-hive-2.1.1-bin/conf目录，命令是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/conf</span><br></pre></td></tr></table></figure><br> 将hive-env.sh.template文件复制一份，并且改名为hive-env.sh，命令是：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp hive-env.sh.template hive-env.sh</span><br></pre></td></tr></table></figure><br> 打开hive-env.sh配置并且添加以下内容：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span>  HADOOP_HOME=/home/parallels/hadoop/hadoop<span class="number">-2.8</span><span class="number">.2</span></span><br><span class="line"><span class="keyword">export</span>  HIVE_CONF_DIR=/home/parallels/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/conf</span><br><span class="line"><span class="keyword">export</span>  HIVE_AUX_JARS_PATH=/home/parallels/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/lib</span><br></pre></td></tr></table></figure> </p>
-<h1 id="3启动和测试"><a href="#3启动和测试" class="headerlink" title="3启动和测试"></a>3启动和测试</h1><h2 id="3-1对MySQL数据库进行初始化"><a href="#3-1对MySQL数据库进行初始化" class="headerlink" title="3.1对MySQL数据库进行初始化"></a>3.1对MySQL数据库进行初始化</h2><p> 进入到hive的bin目录 执行命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ~/hive/apache-hive<span class="number">-2.1</span><span class="number">.1</span>-bin/bin</span><br></pre></td></tr></table></figure><br> 对数据库进行初始化，执行命令：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schematool -initSchema  -dbType  mysql</span><br></pre></td></tr></table></figure><br> 执行成功后，hive数据库里已经有一堆表创建好了</p>
-<h2 id="3-2启动hive"><a href="#3-2启动hive" class="headerlink" title="3.2启动hive"></a>3.2启动hive</h2><p> 进入到hive的bin目录执行命令：<br> cd  ~/hive/apache-hive-2.1.1-bin/bin<br> 执行hive脚本进行启动，执行命令：<br> ./hive</p>
+	  	<p>title: Hive sql<br>date: 2018-02-06<br>categories: 大数据<br>tags: </p>
+<pre><code>- hive sql
+- 复习
+</code></pre><p>分组top N</p>
+<p>Hive在0.11.0版本开始加入了row_number、rank、dense_rank分析函数，可以查询分组排序后的top值</p>
+<p>说明：</p>
+<p>row_number() over (partition col1)</p>
+<p>rank() over (partition col1)</p>
+<p>dense_rank() over (partition col1)</p>
+<p>它们都是根据col1字段分组，然后对col2字段进行排序，对排序后的每行生成一个行号，这个行号从1开始递增</p>
+<p>col1、col2都可以是多个字段，用’,’分隔</p>
+<p>区别：</p>
+<p>1）row_number：不管col2字段的值是否相等，行号一直递增，比如：有两条记录的值相等，但一个是第一，一个是第二</p>
+<p>3）dense_rank：上下两条记录的col2相等时，下一个col2值的行号递增1，比如：有两条并列第一，下一个是第二</p>
+<p>row_number可以实现分页查询</p>
+<p>实例：</p>
+<ol>
+<li>hive&gt; create table t(name string, sub string, score int) row format delimited fields terminated by ‘\t’;</li>
+</ol>
+<p>数据在附件的a.txt里</p>
+<ol>
+<li>a    chinese    98</li>
+<li>a    english    90</li>
+<li>d    chinese    88</li>
+<li>c    english    82</li>
+<li>c    math    98</li>
+<li>b    math    89</li>
+<li>b    chinese    79</li>
+<li>z    english    90</li>
+<li>z    math    89</li>
+<li>z    chinese    80</li>
+<li>e    math    99</li>
+<li>e    english    87</li>
+<li>d    english    90</li>
+</ol>
+<p>1、row_number</p>
+<ol>
+<li>hive (test)&gt; select *, row_number() over (partition by sub order by score) as od from t;</li>
+</ol>
+<p>2、rank</p>
+<ol>
+<li>hive (test)&gt; select *, rank() over (partition by sub order by score) as od from t;</li>
+</ol>
+<p>3、dense_ran</p>
+<ol>
+<li>hive (test)&gt; select *, dense_rank() over (partition by sub order by score desc) from t;</li>
+</ol>
+<p>业务实例：</p>
+<p>统计每个学科的前三名</p>
+<ol>
+<li>select <em> from (select </em>, row_number() over (partition by sub order by score desc) as od from t ) t where od&lt;=3;</li>
+</ol>
+<p>语文成绩是80分的排名是多少</p>
+<ol>
+<li>hive (test)&gt; select od from (select *, row_number() over (partition by sub order by score desc) as od from t )t where sub=’chinese’ and score=80;</li>
+</ol>
+<p>分页查询</p>
+<ol>
+<li>hive (test)&gt; select <em> from (select </em>, row_number() over () as rn from t) t1 where rn between 1 and 5;</li>
+</ol>
+<p>UV</p>
+<p>select store,count(distinct uid) as uv from Visit group by store;</p>
+<p>排序</p>
+<p>select * from Users order by age desc, total;</p>
+<p>行转列</p>
+<p>select  stage_someone, count(distinct UID)  from  LifeStage  lateral  view  explode(split(stage,’,’))  LifeStage_tmp  as stage_someone  group  by  stage_someone;</p>
+<p>列转行</p>
+<p>select UID,concat_ws(‘,’,collect_set(stage)) as stages from LifeStage group by UID;</p>
+<p>sql除法</p>
+<p>a    chinese    98</p>
+<p>a    english    90</p>
+<p>d    chinese    88</p>
+<p>c    english    82</p>
+<p>c    math    98</p>
+<p>b    math    89</p>
+<p>b    chinese    79</p>
+<p>z    english    90</p>
+<p>z    math    89</p>
+<p>z    chinese    80</p>
+<p>e    math    99</p>
+<p>e    english    87</p>
+<p>d    english    90</p>
+<p>求a的chinese成绩/english成绩</p>
+<p>select name,t1.score/t2.score from (select <em> from t where sub=’chinese’) t1 inner join (select </em> from t where sub=’english’) t2 on t1.name=t2.name where t1.name=’a’;</p>
  
 
 	    
 </div>
 
 <div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/大数据/">大数据</a>
-				</span>
-		
-			
-
-		
 				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/集群搭建/">集群搭建</a>
-				</span>			
+
 			
 
 
 		
 
 		<span class="post-words"><span class="iconfont icon-words"></span>
-		3528
+		1925
 		</span>		
 </div>		
 
 		
-    <a class="article-readmore" href="/2018/02/01/Hive配置/">阅读更多</a> 
+    <a class="article-readmore" href="/2018/01/25/Hive sql/">阅读更多</a> 
     	
 </article>     
      	
