@@ -104,6 +104,311 @@
     </entry>
     
     <entry>
+      <title><![CDATA[zookeeper原理]]></title>
+      <url>/2018/03/11/zookeeper%E5%8E%9F%E7%90%86/</url>
+      <content type="html"><![CDATA[<p>Zookeeper中的角色主要有以下三类，如下表所示：</p>
+<p><img src="http://static.oschina.net/uploads/img/201308/08171344_cqXs.jpg" alt="7"></p>
+<p>系统模型如图所示：</p>
+<p><img src="http://static.oschina.net/uploads/img/201308/08171345_l5K3.jpg" alt="1"></p>
+<h2 id="1-2-设计目的"><a href="#1-2-设计目的" class="headerlink" title="1.2 设计目的"></a>1.2 设计目的</h2><p>1.最终一致性：client不论连接到哪个Server，展示给它都是同一个视图，这是zookeeper最重要的性能。</p>
+<p>2 .可靠性：具有简单、健壮、良好的性能，如果消息m被到一台服务器接受，那么它将被所有的服务器接受。</p>
+<p>3 .实时性：Zookeeper保证客户端将在一个时间间隔范围内获得服务器的更新信息，或者服务器失效的信息。但由于网络延时等原因，Zookeeper不能保证两个客户端能同时得到刚更新的数据，如果需要最新数据，应该在读数据之前调用sync()接口。</p>
+<p>4 .等待无关（wait-free）：慢的或者失效的client不得干预快速的client的请求，使得每个client都能有效的等待。</p>
+<p>5.原子性：更新只能成功或者失败，没有中间状态。</p>
+<p>6 .顺序性：包括全局有序和偏序两种：全局有序是指如果在一台服务器上消息a在消息b前发布，则在所有Server上消息a都将在消息b前被发布；偏序是指如果一个消息b在消息a后被同一个发送者发布，a必将排在b前面。</p>
+<h1 id="2-ZooKeeper的工作原理"><a href="#2-ZooKeeper的工作原理" class="headerlink" title="2 ZooKeeper的工作原理"></a>2 ZooKeeper的工作原理</h1><p>Zookeeper的核心是原子广播，这个机制保证了各个Server之间的同步。实现这个机制的协议叫做Zab协议。Zab协议有两种模式，它们分别是恢复模式（选主）和广播模式（同步）。当服务启动或者在领导者崩溃后，Zab就进入了恢复模式，当领导者被选举出来，且大多数Server完成了和leader的状态同步以后，恢复模式就结束了。状态同步保证了leader和Server具有相同的系统状态。</p>
+<p>为了保证事务的顺序一致性，zookeeper采用了递增的事务id号（zxid）来标识事务。所有的提议（proposal）都在被提出的时候加上了zxid。实现中zxid是一个64位的数字，它高32位是epoch用来标识leader关系是否改变，每次一个leader被选出来，它都会有一个新的epoch，标识当前属于那个leader的统治时期。低32位用于递增计数。</p>
+<p>每个Server在工作过程中有三种状态：</p>
+<ul>
+<li>LOOKING：当前Server不知道leader是谁，正在搜寻</li>
+<li>LEADING：当前Server即为选举出来的leader</li>
+<li>FOLLOWING：leader已经选举出来，当前Server与之同步</li>
+</ul>
+<h2 id="2-1-选主流程"><a href="#2-1-选主流程" class="headerlink" title="2.1 选主流程"></a>2.1 选主流程</h2><p>当leader崩溃或者leader失去大多数的follower，这时候zk进入恢复模式，恢复模式需要重新选举出一个新的leader，让所有的Server都恢复到一个正确的状态。Zk的选举算法有两种：一种是基于basic paxos实现的，另外一种是基于fast paxos算法实现的。系统默认的选举算法为fast paxos。先介绍basic paxos流程：</p>
+<ol>
+<li>1 .选举线程由当前Server发起选举的线程担任，其主要功能是对投票结果进行统计，并选出推荐的Server；</li>
+<li>2 .选举线程首先向所有Server发起一次询问(包括自己)；</li>
+<li>3 .选举线程收到回复后，验证是否是自己发起的询问(验证zxid是否一致)，然后获取对方的id(myid)，并存储到当前询问对象列表中，最后获取对方提议的leader相关信息(id,zxid)，并将这些信息存储到当次选举的投票记录表中；</li>
+<li>\4.  收到所有Server回复以后，就计算出zxid最大的那个Server，并将这个Server相关信息设置成下一次要投票的Server；</li>
+<li>\5.  线程将当前zxid最大的Server设置为当前Server要推荐的Leader，如果此时获胜的Server获得n/2 + 1的Server票数， 设置当前推荐的leader为获胜的Server，将根据获胜的Server相关信息设置自己的状态，否则，继续这个过程，直到leader被选举出来。</li>
+</ol>
+<p>通过流程分析我们可以得出：要使Leader获得多数Server的支持，则Server总数必须是奇数2n+1，且存活的Server的数目不得少于n+1.</p>
+<p>每个Server启动后都会重复以上流程。在恢复模式下，如果是刚从崩溃状态恢复的或者刚启动的server还会从磁盘快照中恢复数据和会话信息，zk会记录事务日志并定期进行快照，方便在恢复时进行状态恢复。选主的具体流程图如下所示：</p>
+<p><a href="http://static.oschina.net/uploads/img/201308/08171345_J3LF.jpg" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201308/08171345_J3LF.jpg" alt="2"></a></p>
+<p>fast paxos流程是在选举过程中，某Server首先向所有Server提议自己要成为leader，当其它Server收到提议以后，解决epoch和zxid的冲突，并接受对方的提议，然后向对方发送接受提议完成的消息，重复这个流程，最后一定能选举出Leader。其流程图如下所示：</p>
+<p><a href="http://static.oschina.net/uploads/img/201308/08171346_zLlp.jpg" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201308/08171346_zLlp.jpg" alt="3"></a></p>
+<h2 id="2-2-同步流程"><a href="#2-2-同步流程" class="headerlink" title="2.2 同步流程"></a>2.2 同步流程</h2><p>选完leader以后，zk就进入状态同步过程。</p>
+<ol>
+<li>\1. leader等待server连接；</li>
+<li>2 .Follower连接leader，将最大的zxid发送给leader；</li>
+<li>3 .Leader根据follower的zxid确定同步点；</li>
+<li>4 .完成同步后通知follower 已经成为uptodate状态；</li>
+<li>5 .Follower收到uptodate消息后，又可以重新接受client的请求进行服务了。</li>
+</ol>
+<p>流程图如下所示：</p>
+<p><a href="http://static.oschina.net/uploads/img/201308/08171346_oExa.jpg" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201308/08171346_oExa.jpg" alt="4"></a></p>
+<h2 id="2-3-工作流程"><a href="#2-3-工作流程" class="headerlink" title="2.3 工作流程"></a>2.3 工作流程</h2><h3 id="2-3-1-Leader工作流程"><a href="#2-3-1-Leader工作流程" class="headerlink" title="2.3.1 Leader工作流程"></a>2.3.1 Leader工作流程</h3><p>Leader主要有三个功能：</p>
+<ol>
+<li>1 .恢复数据；</li>
+<li>2 .维持与Learner的心跳，接收Learner请求并判断Learner的请求消息类型；</li>
+<li>3 .Learner的消息类型主要有PING消息、REQUEST消息、ACK消息、REVALIDATE消息，根据不同的消息类型，进行不同的处理。</li>
+</ol>
+<p>PING消息是指Learner的心跳信息；REQUEST消息是Follower发送的提议信息，包括写请求及同步请求；ACK消息是Follower的对提议的回复，超过半数的Follower通过，则commit该提议；REVALIDATE消息是用来延长SESSION有效时间。<br>Leader的工作流程简图如下所示，在实际实现中，流程要比下图复杂得多，启动了三个线程来实现功能。<a href="http://static.oschina.net/uploads/img/201308/08171346_87iA.jpg" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201308/08171346_87iA.jpg" alt="5"></a></p>
+<h3 id="2-3-2-Follower工作流程"><a href="#2-3-2-Follower工作流程" class="headerlink" title="2.3.2 Follower工作流程"></a>2.3.2 Follower工作流程</h3><p>Follower主要有四个功能：</p>
+<ol>
+<li>\1. 向Leader发送请求（PING消息、REQUEST消息、ACK消息、REVALIDATE消息）；</li>
+<li>2 .接收Leader消息并进行处理；</li>
+<li>3 .接收Client的请求，如果为写请求，发送给Leader进行投票；</li>
+<li>4 .返回Client结果。</li>
+</ol>
+<p>Follower的消息循环处理如下几种来自Leader的消息：</p>
+<ol>
+<li>1 .PING消息： 心跳消息；</li>
+<li>2 .PROPOSAL消息：Leader发起的提案，要求Follower投票；</li>
+<li>3 .COMMIT消息：服务器端最新一次提案的信息；</li>
+<li>4 .UPTODATE消息：表明同步完成；</li>
+<li>5 .REVALIDATE消息：根据Leader的REVALIDATE结果，关闭待revalidate的session还是允许其接受消息；</li>
+<li>6 .SYNC消息：返回SYNC结果到客户端，这个消息最初由客户端发起，用来强制得到最新的更新。</li>
+</ol>
+<p>Follower的工作流程简图如下所示，在实际实现中，Follower是通过5个线程来实现功能的。</p>
+<p><a href="http://static.oschina.net/uploads/img/201308/08171346_slOJ.jpg" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201308/08171346_slOJ.jpg" alt="6"></a></p>
+<p>对于observer的流程不再叙述，observer流程和Follower的唯一不同的地方就是observer不会参加leader发起的投票。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> zookeeper </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 复习 </tag>
+            
+            <tag> zookeeper </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[spark架构]]></title>
+      <url>/2018/03/11/spark%E6%9E%B6%E6%9E%84/</url>
+      <content type="html"><![CDATA[<p>Apache Spark是一个围绕速度、易用性和复杂分析构建的大数据处理框架，最初在2009年由加州大学伯克利分校的AMPLab开发，并于2010年成为Apache的开源项目之一，与Hadoop和Storm等其他大数据和MapReduce技术相比，Spark有如下优势：</p>
+<ul>
+<li>Spark提供了一个全面、统一的框架用于管理各种有着不同性质（文本数据、图表数据等）的数据集和数据源（批量数据或实时的流数据）的大数据处理的需求</li>
+<li><p>官方资料介绍Spark可以将Hadoop集群中的应用在内存中的运行速度提升100倍，甚至能够将应用在磁盘上的运行速度提升10倍</p>
+<p><strong>目标：</strong></p>
+</li>
+<li><p>架构及生态</p>
+</li>
+<li>spark 与 hadoop</li>
+<li>运行流程及特点</li>
+<li>常用术语</li>
+<li>standalone模式</li>
+<li>yarn集群</li>
+<li>RDD运行流程</li>
+</ul>
+<p><strong>架构及生态：</strong></p>
+<hr>
+<ul>
+<li>通常当需要处理的数据量超过了单机尺度(比如我们的计算机有4GB的内存，而我们需要处理100GB以上的数据)这时我们可以选择spark集群进行计算，有时我们可能需要处理的数据量并不大，但是计算很复杂，需要大量的时间，这时我们也可以选择利用spark集群强大的计算资源，并行化地计算，其架构示意图如下：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark1.png" alt="img"></li>
+<li>Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以及这两者上的动作。其他Spark的库都是构建在RDD和Spark Core之上的</li>
+<li>Spark SQL：提供通过Apache Hive的SQL变体Hive查询语言（HiveQL）与Spark进行交互的API。每个数据库表被当做一个RDD，Spark SQL查询被转换为Spark操作。</li>
+<li>Spark Streaming：对实时数据流进行处理和控制。Spark Streaming允许程序能够像普通RDD一样处理实时数据</li>
+<li>MLlib：一个常用机器学习算法库，算法被实现为对RDD的Spark操作。这个库包含可扩展的学习算法，比如分类、回归等需要对大量数据集进行迭代的操作。</li>
+<li>GraphX：控制图、并行图操作和计算的一组算法和工具的集合。GraphX扩展了RDD API，包含控制图、创建子图、访问路径上所有顶点的操作</li>
+<li>Spark架构的组成图如下：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark2.png" alt="img"></li>
+<li>Cluster Manager：在standalone模式中即为Master主节点，控制整个集群，监控worker。在YARN模式中为资源管理器</li>
+<li>Worker节点：从节点，负责控制计算节点，启动Executor或者Driver。</li>
+<li>Driver： 运行Application 的main()函数</li>
+<li>Executor：执行器，是为某个Application运行在worker node上的一个进程</li>
+</ul>
+<p><strong>Spark与hadoop:</strong></p>
+<hr>
+<ul>
+<li>Hadoop有两个核心模块，分布式存储模块HDFS和分布式计算模块Mapreduce</li>
+<li>spark本身并没有提供分布式文件系统，因此spark的分析大多依赖于Hadoop的分布式文件系统HDFS</li>
+<li>Hadoop的Mapreduce与spark都可以进行数据计算，而相比于Mapreduce，spark的速度更快并且提供的功能更加丰富</li>
+<li>关系图如下：</li>
+<li><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark3.png" alt="img"></p>
+<p><strong>运行流程及特点：</strong></p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>spark运行流程图如下：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark4.png" alt="img"></li>
+</ul>
+<ol>
+<li>构建Spark Application的运行环境，启动SparkContext</li>
+<li>SparkContext向资源管理器（可以是Standalone，Mesos，Yarn）申请运行Executor资源，并启动StandaloneExecutorbackend，</li>
+<li>Executor向SparkContext申请Task</li>
+<li>SparkContext将应用程序分发给Executor</li>
+<li>SparkContext构建成DAG图，将DAG图分解成Stage、将Taskset发送给Task Scheduler，最后由Task Scheduler将Task发送给Executor运行</li>
+<li>Task在Executor上运行，运行完释放所有资源</li>
+</ol>
+<p>​     <strong>Spark运行特点：</strong></p>
+<ol>
+<li>每个Application获取专属的executor进程，该进程在Application期间一直驻留，并以多线程方式运行Task。这种Application隔离机制是有优势的，无论是从调度角度看（每个Driver调度他自己的任务），还是从运行角度看（来自不同Application的Task运行在不同JVM中），当然这样意味着Spark Application不能跨应用程序共享数据，除非将数据写入外部存储系统</li>
+<li>Spark与资源管理器无关，只要能够获取executor进程，并能保持相互通信就可以了</li>
+<li>提交SparkContext的Client应该靠近Worker节点（运行Executor的节点），最好是在同一个Rack里，因为Spark Application运行过程中SparkContext和Executor之间有大量的信息交换</li>
+<li>Task采用了数据本地性和推测执行的优化机制</li>
+</ol>
+<p><strong>常用术语:</strong></p>
+<hr>
+<ul>
+<li><strong>Application:</strong> Appliction都是指用户编写的Spark应用程序，其中包括一个Driver功能的代码和分布在集群中多个节点上运行的Executor代码</li>
+<li><strong>Driver:</strong>  Spark中的Driver即运行上述Application的main函数并创建SparkContext，创建SparkContext的目的是为了准备Spark应用程序的运行环境，在Spark中有SparkContext负责与ClusterManager通信，<em>进行资源申请、任务的分配和监控</em>等，当Executor部分运行完毕后，Driver同时负责将SparkContext关闭，通常用SparkContext代表Driver</li>
+<li><strong>Executor:</strong>  某个Application运行在worker节点上的一个进程，  该进程负责运行某些Task， 并且负责将数据存到内存或磁盘上，每个Application都有各自独立的一批Executor， 在Spark on Yarn模式下，其进程名称为CoarseGrainedExecutor Backend。一个CoarseGrainedExecutor Backend有且仅有一个Executor对象， 负责将Task包装成taskRunner,并从线程池中抽取一个空闲线程运行Task， 这个每一个oarseGrainedExecutor Backend能并行运行Task的数量取决与分配给它的cpu个数</li>
+<li><strong>Cluter Manager：</strong>指的是在集群上获取资源的外部服务。目前有三种类型</li>
+</ul>
+<ol>
+<li><ol>
+<li>Standalon : spark原生的资源管理，由Master负责资源的分配</li>
+<li>Apache Mesos:与hadoop MR兼容性良好的一种资源调度框架</li>
+<li>Hadoop Yarn: 主要是指Yarn中的ResourceManager</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><strong>Worker:</strong> 集群中任何可以运行Application代码的节点，在Standalone模式中指的是通过slave文件配置的Worker节点，在Spark on Yarn模式下就是NoteManager节点</li>
+<li><strong>Task:</strong> 被送到某个Executor上的工作单元，但hadoopMR中的MapTask和ReduceTask概念一样，是运行Application的基本单位，多个Task组成一个Stage，而Task的调度和管理等是由TaskScheduler负责</li>
+<li><strong>Job:</strong> 包含多个Task组成的并行计算，往往由Spark Action触发生成， 一个Application中往往会产生多个Job</li>
+<li><strong>Stage:</strong> 每个Job会被拆分成多组Task， 作为一个TaskSet， 其名称为Stage，Stage的划分和调度是有DAGScheduler来负责的，Stage有非最终的Stage（Shuffle Map Stage）和最终的Stage（Result Stage）两种，Stage的边界就是发生shuffle的地方</li>
+<li><strong>DAGScheduler:</strong> 根据Job构建基于Stage的DAG（Directed Acyclic Graph有向无环图)，并提交Stage给TASkScheduler。 其划分Stage的依据是RDD之间的依赖的关系找出开销最小的调度方法，如下图</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark5.png" alt="img"></li>
+<li><strong>TASKSedulter:</strong> 将TaskSET提交给worker运行，每个Executor运行什么Task就是在此处分配的. TaskScheduler维护所有TaskSet，当Executor向Driver发生心跳时，TaskScheduler会根据资源剩余情况分配相应的Task。另外TaskScheduler还维护着所有Task的运行标签，重试失败的Task。下图展示了TaskScheduler的作用</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark6.png" alt="img"></li>
+<li>在不同运行模式中任务调度器具体为：</li>
+</ul>
+<ol>
+<li><ol>
+<li>Spark on Standalone模式为TaskScheduler</li>
+<li>YARN-Client模式为YarnClientClusterScheduler</li>
+<li>YARN-Cluster模式为YarnClusterScheduler</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>将这些术语串起来的运行层次图如下：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark7.png" alt="img"></li>
+<li>Job=多个stage，Stage=多个同种task, Task分为ShuffleMapTask和ResultTask，Dependency分为ShuffleDependency和NarrowDependency</li>
+</ul>
+<p><strong>Spark运行模式：</strong></p>
+<hr>
+<ul>
+<li>Spark的运行模式多种多样，灵活多变，部署在单机上时，既可以用本地模式运行，也可以用伪分布模式运行，而当以分布式集群的方式部署时，也有众多的运行模式可供选择，这取决于集群的实际情况，底层的资源调度即可以依赖外部资源调度框架，也可以使用Spark内建的Standalone模式。</li>
+<li>对于外部资源调度框架的支持，目前的实现包括相对稳定的Mesos模式，以及hadoop YARN模式</li>
+<li><strong>本地模式：</strong>常用于本地开发测试，本地还分别 local 和 local cluster</li>
+</ul>
+<p><strong>standalone:</strong> 独立集群运行模式</p>
+<hr>
+<ul>
+<li>Standalone模式使用Spark自带的资源调度框架</li>
+<li>采用Master/Slaves的典型架构，选用ZooKeeper来实现Master的HA</li>
+<li>框架结构图如下:</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark8.png" alt="img"></li>
+<li>该模式主要的节点有Client节点、Master节点和Worker节点。其中Driver既可以运行在Master节点上中，也可以运行在本地Client端。当用spark-shell交互式工具提交Spark的Job时，Driver在Master节点上运行；当使用spark-submit工具提交Job或者在Eclips、IDEA等开发平台上使用”new SparkConf.setManager(“spark://master:7077”)”方式运行Spark任务时，Driver是运行在本地Client端上的</li>
+<li>运行过程如下图：（<em>参考至：<a href="http://blog.csdn.net/gamer_gyt/article/details/51833681" target="_blank" rel="noopener">http://blog.csdn.net/gamer_gyt/article/details/51833681</a></em>）</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark9.png" alt="img"></li>
+</ul>
+<ol>
+<li>SparkContext连接到Master，向Master注册并申请资源（CPU Core 和Memory）</li>
+<li>Master根据SparkContext的资源申请要求和Worker心跳周期内报告的信息决定在哪个Worker上分配资源，然后在该Worker上获取资源，然后启动StandaloneExecutorBackend；</li>
+<li>StandaloneExecutorBackend向SparkContext注册；</li>
+<li>SparkContext将Applicaiton代码发送给StandaloneExecutorBackend；并且SparkContext解析Applicaiton代码，构建DAG图，并提交给DAG Scheduler分解成Stage（当碰到Action操作时，就会催生Job；每个Job中含有1个或多个Stage，Stage一般在获取外部数据和shuffle之前产生），然后以Stage（或者称为TaskSet）提交给Task Scheduler，Task Scheduler负责将Task分配到相应的Worker，最后提交给StandaloneExecutorBackend执行；</li>
+<li>StandaloneExecutorBackend会建立Executor线程池，开始执行Task，并向SparkContext报告，直至Task完成</li>
+<li>所有Task完成后，SparkContext向Master注销，释放资源</li>
+</ol>
+<p><strong>yarn:</strong>  <em>（参考：<a href="http://blog.csdn.net/gamer_gyt/article/details/51833681）" target="_blank" rel="noopener">http://blog.csdn.net/gamer_gyt/article/details/51833681）</a></em></p>
+<hr>
+<ul>
+<li>Spark on YARN模式根据Driver在集群中的位置分为两种模式：一种是YARN-Client模式，另一种是YARN-Cluster（或称为YARN-Standalone模式）</li>
+<li>Yarn-Client模式中，Driver在客户端本地运行，这种模式可以使得Spark Application和客户端进行交互，因为Driver在客户端，所以可以通过webUI访问Driver的状态，默认是<a href="http://hadoop1:4040访问，而YARN通过http://" target="_blank" rel="noopener">http://hadoop1:4040访问，而YARN通过http://</a> hadoop1:8088访问</li>
+<li>YARN-client的工作流程步骤为：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark10.png" alt="img"></li>
+<li>Spark Yarn Client向YARN的ResourceManager申请启动Application Master。同时在SparkContent初始化中将创建DAGScheduler和TASKScheduler等，由于我们选择的是Yarn-Client模式，程序会选择YarnClientClusterScheduler和YarnClientSchedulerBackend</li>
+<li>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，与YARN-Cluster区别的是在该ApplicationMaster不运行SparkContext，只与SparkContext进行联系进行资源的分派</li>
+<li>Client中的SparkContext初始化完毕后，与ApplicationMaster建立通讯，向ResourceManager注册，根据任务信息向ResourceManager申请资源（Container）</li>
+<li>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向Client中的SparkContext注册并申请Task</li>
+<li>client中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向Driver汇报运行的状态和进度，以让Client随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务</li>
+<li>应用程序运行完成后，Client的SparkContext向ResourceManager申请注销并关闭自己</li>
+</ul>
+<p><strong>Spark Cluster模式:</strong></p>
+<ul>
+<li>在YARN-Cluster模式中，当用户向YARN中提交一个应用程序后，YARN将分两个阶段运行该应用程序：</li>
+</ul>
+<ol>
+<li><ol>
+<li>第一个阶段是把Spark的Driver作为一个ApplicationMaster在YARN集群中先启动；</li>
+<li>第二个阶段是由ApplicationMaster创建应用程序，然后为它向ResourceManager申请资源，并启动Executor来运行Task，同时监控它的整个运行过程，直到运行完成</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>YARN-cluster的工作流程分为以下几个步骤</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark11.png" alt="img"></li>
+<li>Spark Yarn Client向YARN中提交应用程序，包括ApplicationMaster程序、启动ApplicationMaster的命令、需要在Executor中运行的程序等</li>
+<li>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，其中ApplicationMaster进行SparkContext等的初始化</li>
+<li>ApplicationMaster向ResourceManager注册，这样用户可以直接通过ResourceManage查看应用程序的运行状态，然后它将采用轮询的方式通过RPC协议为各个任务申请资源，并监控它们的运行状态直到运行结束</li>
+<li>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向ApplicationMaster中的SparkContext注册并申请Task。这一点和Standalone模式一样，只不过SparkContext在Spark Application中初始化时，使用CoarseGrainedSchedulerBackend配合YarnClusterScheduler进行任务的调度，其中YarnClusterScheduler只是对TaskSchedulerImpl的一个简单包装，增加了对Executor的等待逻辑等</li>
+<li>ApplicationMaster中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向ApplicationMaster汇报运行的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务</li>
+<li>应用程序运行完成后，ApplicationMaster向ResourceManager申请注销并关闭自己</li>
+</ul>
+<p><strong>Spark Client 和 Spark Cluster的区别:</strong></p>
+<ul>
+<li>理解YARN-Client和YARN-Cluster深层次的区别之前先清楚一个概念：Application Master。在YARN中，每个Application实例都有一个ApplicationMaster进程，它是Application启动的第一个容器。它负责和ResourceManager打交道并请求资源，获取资源之后告诉NodeManager为其启动Container。从深层次的含义讲YARN-Cluster和YARN-Client模式的区别其实就是ApplicationMaster进程的区别</li>
+<li>YARN-Cluster模式下，Driver运行在AM(Application Master)中，它负责向YARN申请资源，并监督作业的运行状况。当用户提交了作业之后，就可以关掉Client，作业会继续在YARN上运行，因而YARN-Cluster模式不适合运行交互类型的作业</li>
+<li>YARN-Client模式下，Application Master仅仅向YARN请求Executor，Client会和请求的Container通信来调度他们工作，也就是说Client不能离开</li>
+</ul>
+<p>思考： 我们在使用Spark提交job时使用的哪种模式？</p>
+<p><strong>RDD运行流程：</strong></p>
+<hr>
+<ul>
+<li>RDD在Spark中运行大概分为以下三步：</li>
+</ul>
+<ol>
+<li><ol>
+<li>创建RDD对象</li>
+<li>DAGScheduler模块介入运算，计算RDD之间的依赖关系，RDD之间的依赖关系就形成了DAG</li>
+<li>每一个Job被分为多个Stage。划分Stage的一个主要依据是当前计算因子的输入是否是确定的，如果是则将其分在同一个Stage，避免多个Stage之间的消息传递开销</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li>示例图如下：</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark12.png" alt="img"></li>
+<li>以下面一个按 A-Z 首字母分类，查找相同首字母下不同姓名总个数的例子来看一下 RDD 是如何运行起来的</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark13.png" alt="img"></li>
+<li>创建 RDD  上面的例子除去最后一个 collect 是个动作，不会创建 RDD 之外，前面四个转换都会创建出新的 RDD 。因此第一步就是创建好所有 RDD( 内部的五项信息 )？</li>
+<li>创建执行计划 Spark 会尽可能地管道化，并基于是否要重新组织数据来划分 阶段 (stage) ，例如本例中的 groupBy() 转换就会将整个执行计划划分成两阶段执行。最终会产生一个 DAG(directed acyclic graph ，有向无环图 ) 作为逻辑执行计划</li>
+<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark14.png" alt="img"></li>
+<li>调度任务  将各阶段划分成不同的 任务 (task) ，每个任务都是数据和计算的合体。在进行下一阶段前，当前阶段的所有任务都要执行完成。因为下一阶段的第一个转换一定是重新组织数据的，所以必须等当前阶段所有结果数据都计算出来了才能继续</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> spark </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> spark </tag>
+            
+            <tag> 复习 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[idea操作]]></title>
       <url>/2018/02/12/idea%E6%93%8D%E4%BD%9C/</url>
       <content type="html"><![CDATA[<h1 id="1-idea操作"><a href="#1-idea操作" class="headerlink" title="1 idea操作"></a>1 idea操作</h1><h2 id="设置idea的eclipse模式的快捷键"><a href="#设置idea的eclipse模式的快捷键" class="headerlink" title="设置idea的eclipse模式的快捷键"></a>设置idea的eclipse模式的快捷键</h2><p>windows:Configure-&gt;setting-&gt;keymap-&gt;keymaps-&gt;eclipse<br>Mac:Configure-&gt;preferences-&gt;keymap-&gt;keymaps-&gt;eclipse(Mac OS X)<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/idea1.gif" alt="idea1"></p>
@@ -481,9 +786,9 @@
             
             <tag> Hadoop </tag>
             
-            <tag> spark </tag>
-            
             <tag> 异常 </tag>
+            
+            <tag> spark </tag>
             
         </tags>
         
@@ -776,6 +1081,128 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Spring Boot应用启动器]]></title>
+      <url>/2017/12/14/Spring%20Boot%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E5%99%A8/</url>
+      <content type="html"><![CDATA[<h1 id="Spring-Boot应用启动器"><a href="#Spring-Boot应用启动器" class="headerlink" title="Spring Boot应用启动器"></a>Spring Boot应用启动器</h1><h2 id="spring-Boot应用启动器基本的一共有44种，具体如下："><a href="#spring-Boot应用启动器基本的一共有44种，具体如下：" class="headerlink" title="spring Boot应用启动器基本的一共有44种，具体如下："></a>spring Boot应用启动器基本的一共有44种，具体如下：</h2><p>1）spring-boot-starter<br>这是Spring Boot的核心启动器，包含了自动配置、日志和YAML。</p>
+<p>2）spring-boot-starter-actuator<br>帮助监控和管理应用。</p>
+<p>3）spring-boot-starter-amqp<br>通过spring-rabbit来支持AMQP协议（Advanced Message Queuing Protocol）。</p>
+<p>4）spring-boot-starter-aop<br>支持面向方面的编程即AOP，包括spring-aop和AspectJ。</p>
+<p>5）spring-boot-starter-artemis<br>通过Apache Artemis支持JMS的API（<a href="http://lib.csdn.net/base/java" target="_blank" rel="noopener">Java </a>Message Service API）。</p>
+<p>6）spring-boot-starter-batch<br>支持Spring Batch，包括HSQLDB<a href="http://lib.csdn.net/base/mysql" target="_blank" rel="noopener">数据库</a>。</p>
+<p>7）spring-boot-starter-cache<br>支持Spring的Cache抽象。</p>
+<p>8）spring-boot-starter-cloud-connectors<br>支持Spring Cloud Connectors，简化了在像Cloud Foundry或Heroku这样的云平台上连接服务。</p>
+<p>9）spring-boot-starter-data-elasticsearch<br>支持ElasticSearch搜索和分析引擎，包括spring-data-elasticsearch。</p>
+<p>10）spring-boot-starter-data-gemfire<br>支持GemFire分布式数据存储，包括spring-data-gemfire。</p>
+<p>11）spring-boot-starter-data-jpa<br>支持JPA（<a href="http://lib.csdn.net/base/javase" target="_blank" rel="noopener">Java</a> Persistence API），包括spring-data-jpa、spring-orm、<a href="http://lib.csdn.net/base/javaee" target="_blank" rel="noopener">hibernate</a>。</p>
+<p>12）spring-boot-starter-data-<a href="http://lib.csdn.net/base/mongodb" target="_blank" rel="noopener">MongoDB</a><br>支持MongoDB数据，包括spring-data-mongodb。</p>
+<p>13）spring-boot-starter-data-rest<br>通过spring-data-rest-webmvc，支持通过REST暴露Spring Data数据仓库。</p>
+<p>14）spring-boot-starter-data-solr<br>支持Apache Solr搜索平台，包括spring-data-solr。</p>
+<p>15）spring-boot-starter-freemarker<br>支持FreeMarker模板引擎。</p>
+<p>16）spring-boot-starter-groovy-templates<br>支持Groovy模板引擎。</p>
+<p>17）spring-boot-starter-hateoas<br>通过spring-hateoas支持基于HATEOAS的RESTful Web服务。</p>
+<p>18）spring-boot-starter-hornetq<br>通过HornetQ支持JMS。</p>
+<p>19）spring-boot-starter-integration<br>支持通用的spring-integration模块。</p>
+<p>20）spring-boot-starter-jdbc<br>支持JDBC数据库。</p>
+<p>21）spring-boot-starter-jersey<br>支持Jersey RESTful Web服务框架。</p>
+<p>22）spring-boot-starter-jta-atomikos<br>通过Atomikos支持JTA分布式事务处理。</p>
+<p>23）spring-boot-starter-jta-bitronix<br>通过Bitronix支持JTA分布式事务处理。</p>
+<p>24）spring-boot-starter-mail<br>支持javax.mail模块。</p>
+<p>25）spring-boot-starter-mobile<br>支持spring-mobile。</p>
+<p>26）spring-boot-starter-mustache<br>支持Mustache模板引擎。</p>
+<p>27）spring-boot-starter-<a href="http://lib.csdn.net/base/redis" target="_blank" rel="noopener">Redis</a><br>支持Redis键值存储数据库，包括spring-redis。</p>
+<p>28）spring-boot-starter-security<br>支持spring-security。</p>
+<p>29）spring-boot-starter-social-facebook<br>支持spring-social-facebook</p>
+<p>30）spring-boot-starter-social-linkedin<br>支持pring-social-linkedin</p>
+<p>31）spring-boot-starter-social-twitter<br>支持pring-social-twitter</p>
+<p>32）spring-boot-starter-test<br>支持常规的<a href="http://lib.csdn.net/base/softwaretest" target="_blank" rel="noopener">测试</a>依赖，包括JUnit、Hamcrest、Mockito以及spring-test模块。</p>
+<p>33）spring-boot-starter-thymeleaf<br>支持Thymeleaf模板引擎，包括与Spring的集成。</p>
+<p>34）spring-boot-starter-velocity<br>支持Velocity模板引擎。</p>
+<p>35）spring-boot-starter-web<br>S支持全栈式Web开发，包括Tomcat和spring-webmvc。</p>
+<p>36）spring-boot-starter-websocket<br>支持WebSocket开发。</p>
+<p>37）spring-boot-starter-ws<br>支持Spring Web Services。</p>
+<h2 id="Spring-Boot应用启动器面向生产环境的还有2种，具体如下："><a href="#Spring-Boot应用启动器面向生产环境的还有2种，具体如下：" class="headerlink" title="Spring Boot应用启动器面向生产环境的还有2种，具体如下："></a>Spring Boot应用启动器面向生产环境的还有2种，具体如下：</h2><p>1）spring-boot-starter-actuator<br>增加了面向产品上线相关的功能，比如测量和监控。</p>
+<p>2）spring-boot-starter-remote-shell<br>增加了远程ssh shell的支持。</p>
+<h2 id="Spring-Boot应用启动器还有一些替换技术的启动器，具体如下："><a href="#Spring-Boot应用启动器还有一些替换技术的启动器，具体如下：" class="headerlink" title="Spring Boot应用启动器还有一些替换技术的启动器，具体如下："></a>Spring Boot应用启动器还有一些替换技术的启动器，具体如下：</h2><p>1）spring-boot-starter-jetty<br>引入了Jetty HTTP引擎（用于替换Tomcat）。</p>
+<p>2）spring-boot-starter-log4j<br>支持Log4J日志框架。</p>
+<p>3）spring-boot-starter-logging<br>引入了Spring Boot默认的日志框架Logback。</p>
+<p>4）spring-boot-starter-tomcat<br>引入了Spring Boot默认的HTTP引擎Tomcat。</p>
+<p>5）spring-boot-starter-undertow<br>引入了Undertow HTTP引擎（用于替换Tomcat）。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> springBoot </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> springBoot </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[spring Boot简介及入门]]></title>
+      <url>/2017/12/14/spring%20Boot%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%85%A5%E9%97%A8/</url>
+      <content type="html"><![CDATA[<h1 id="1-Spring-Boot简介"><a href="#1-Spring-Boot简介" class="headerlink" title="1.Spring Boot简介"></a>1.Spring Boot简介</h1><p>​       Spring 诞生时是 Java 企业版（Java Enterprise Edition，JEE，也称 J2EE）的轻量级代替品。无需开发重量级的 Enterprise JavaBean（EJB），Spring 为企业级Java 开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用简单的Java 对象（Plain Old Java Object，POJO）实现了 EJB 的功能。</p>
+<p>​       虽然 Spring 的组件代码是轻量级的，但它的配置却是重量级的。一开始，Spring 用 XML 配置，而且是很多 XML 配置。Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置。Spring 3.0 引入了基于 Java 的配置，这是一种类型安全的可重构配置方式，可以代替 XML。所有这些配置都代表了开发时的损耗。因为在思考 Spring 特性配置和解决业务问题之间需要进行思维切换，所以写配置挤占了写应用程序逻辑的时间。和所有框架一样，Spring 实用，但与此同时它要求的回报也不少。</p>
+<p>​       除此之外，项目的依赖管理也是件吃力不讨好的事情。决定项目里要用哪些库就已经够让人头痛的了，你还要知道这些库的哪个版本和其他库不会有冲突，这难题实在太棘手。并且，依赖管理也是一种损耗，添加依赖不是写应用程序代码。一旦选错了依赖的版本，随之而来的不兼容问题毫无疑问会是生产力杀手。Spring Boot 让这一切成为了过去。</p>
+<p>​       Spring Boot 是 Spring 社区较新的一个项目。该项目的目的是帮助开发者更容易的创建基于 Spring 的应用程序和服务，让更多人的人更快的对 Spring 进行入门体验，为 Spring 生态系统提供了一种固定的、约定优于配置风格的框架。</p>
+<p>Spring Boot 具有如下特性：</p>
+<p>（1）为基于 Spring 的开发提供更快的入门体验</p>
+<p>（2）开箱即用，没有代码生成，也无需 XML 配置。同时也可以修改默认值来满足特定的需求。</p>
+<p>（3）提供了一些大型项目中常见的非功能性特性，如嵌入式服务器、安全、指标，健康检测、外部配置等。</p>
+<p>（4）Spring Boot 并不是不对 Spring 功能上的增强，而是提供了一种快速使用 Spring 的方式。</p>
+<h1 id="2-Spring-Boot入门Demo"><a href="#2-Spring-Boot入门Demo" class="headerlink" title="2.Spring Boot入门Demo"></a>2.Spring Boot入门Demo</h1><h2 id="2-1起步依赖"><a href="#2-1起步依赖" class="headerlink" title="2.1起步依赖"></a>2.1起步依赖</h2><p>创建Maven工程 springboot_demo（打包方式jar）  </p>
+<p>在pom.xml中添加如下依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      </span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>​     spring Boot会自动加载所需要的jar包,而这些jar包正式我们做开发时需要导入的jar包。因为这些jar包被我们刚才引入的spring-boot-starter-web所引用了，所以我们引用spring-boot-starter-web后会自动把依赖传递过来。</p>
+<h2 id="2-2-变更JDK版本"><a href="#2-2-变更JDK版本" class="headerlink" title="2.2 变更JDK版本"></a>2.2 变更JDK版本</h2><p>​       我们发现默认情况下工程的JDK版本是1.6 ,而我们通常用使用1.7的版本，所以我们需要在pom.xml中添加以下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>添加后更新工程，会发现版本已经变更为1.7</p>
+<h2 id="2-3-引导类"><a href="#2-3-引导类" class="headerlink" title="2.3 引导类"></a>2.3 引导类</h2><p>我们需要创建一个引导类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单解释一下，@SpringBootApplication其实就是以下三个注解的总和</p>
+<p>@Configuration： 用于定义一个配置类</p>
+<p>@EnableAutoConfiguration ：Spring Boot会自动根据你jar包的依赖来自动配置项目。</p>
+<p>@ComponentScan： 告诉Spring 哪个packages 的用注解标识的类 会被spring自动扫描并且装入bean容器。</p>
+<p>我们直接执行这个引导类，会发现控制台出现的这个标识</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spring_boot/image4.png" alt="image4"></p>
+<h2 id="2-4-Spring-MVC实现Hello-World输出"><a href="#2-4-Spring-MVC实现Hello-World输出" class="headerlink" title="2.4 Spring MVC实现Hello World输出"></a>2.4 Spring MVC实现Hello World输出</h2><p>我们现在开始使用spring MVC框架，实现json数据的输出。如果按照我们原来的做法，需要在web.xml中添加一个DispatcherServlet的配置，再添加一个spring的配置文件，配置文件中需要添加如下配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">&lt;!-- 使用组件扫描，不用将controller在spring中配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"cn.itcast.demo.controller"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 使用注解驱动不用在下边定义映射器和适配置器 --&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">mvc:annotation-driven</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mvc:message-converters</span> <span class="attr">register-defaults</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span> <span class="attr">value</span>=<span class="string">"application/json"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"features"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteMapNullValue<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteDateUseDateFormat<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mvc:message-converters</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但是我们用SpringBoot，这一切都省了。我们直接写Controller类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"HelloWorld"</span>;		</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们运行启动类来运行程序</p>
+<p>在浏览器地址栏输入 <a href="http://localhost:8080/info" target="_blank" rel="noopener">http://localhost:8080/info</a> 即可看到运行结果</p>
+<h1 id="3-springBoot支持修改配置文件"><a href="#3-springBoot支持修改配置文件" class="headerlink" title="3 springBoot支持修改配置文件"></a>3 springBoot支持修改配置文件</h1><h2 id="3-1-修改tomcat启动端口"><a href="#3-1-修改tomcat启动端口" class="headerlink" title="3.1 修改tomcat启动端口"></a>3.1 修改tomcat启动端口</h2><p>在src/main/resources下创建application.properties</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.port=8088</span><br></pre></td></tr></table></figure>
+<p>重新运行引导类。地址栏输入</p>
+<p><a href="http://localhost:8088/info" target="_blank" rel="noopener">http://localhost:8088/info</a></p>
+<h2 id="3-2-读取配置文件信息"><a href="#3-2-读取配置文件信息" class="headerlink" title="3.2 读取配置文件信息"></a>3.2 读取配置文件信息</h2><p>在src/main/resources下的application.properties 增加配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://www.baidu.com</span><br></pre></td></tr></table></figure>
+<p>我要在类中读取这个配置信息，修改HelloWorldController  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"HelloWorld~~"</span>+env.getProperty(<span class="string">"url"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> springBoot </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> springBoot </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hadoop集群的搭建]]></title>
       <url>/2017/12/14/Hadoop%E9%9B%86%E7%BE%A4%E7%9A%84%E6%90%AD%E5%BB%BA/</url>
       <content type="html"><![CDATA[<h1 id="1-准备Linux环境"><a href="#1-准备Linux环境" class="headerlink" title="1.准备Linux环境"></a>1.准备Linux环境</h1><p>​    </p>
@@ -905,128 +1332,6 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
             <tag> Hadoop </tag>
             
             <tag> 集群搭建 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[spring Boot简介及入门]]></title>
-      <url>/2017/12/14/spring%20Boot%E7%AE%80%E4%BB%8B%E5%8F%8A%E5%85%A5%E9%97%A8/</url>
-      <content type="html"><![CDATA[<h1 id="1-Spring-Boot简介"><a href="#1-Spring-Boot简介" class="headerlink" title="1.Spring Boot简介"></a>1.Spring Boot简介</h1><p>​       Spring 诞生时是 Java 企业版（Java Enterprise Edition，JEE，也称 J2EE）的轻量级代替品。无需开发重量级的 Enterprise JavaBean（EJB），Spring 为企业级Java 开发提供了一种相对简单的方法，通过依赖注入和面向切面编程，用简单的Java 对象（Plain Old Java Object，POJO）实现了 EJB 的功能。</p>
-<p>​       虽然 Spring 的组件代码是轻量级的，但它的配置却是重量级的。一开始，Spring 用 XML 配置，而且是很多 XML 配置。Spring 2.5 引入了基于注解的组件扫描，这消除了大量针对应用程序自身组件的显式 XML 配置。Spring 3.0 引入了基于 Java 的配置，这是一种类型安全的可重构配置方式，可以代替 XML。所有这些配置都代表了开发时的损耗。因为在思考 Spring 特性配置和解决业务问题之间需要进行思维切换，所以写配置挤占了写应用程序逻辑的时间。和所有框架一样，Spring 实用，但与此同时它要求的回报也不少。</p>
-<p>​       除此之外，项目的依赖管理也是件吃力不讨好的事情。决定项目里要用哪些库就已经够让人头痛的了，你还要知道这些库的哪个版本和其他库不会有冲突，这难题实在太棘手。并且，依赖管理也是一种损耗，添加依赖不是写应用程序代码。一旦选错了依赖的版本，随之而来的不兼容问题毫无疑问会是生产力杀手。Spring Boot 让这一切成为了过去。</p>
-<p>​       Spring Boot 是 Spring 社区较新的一个项目。该项目的目的是帮助开发者更容易的创建基于 Spring 的应用程序和服务，让更多人的人更快的对 Spring 进行入门体验，为 Spring 生态系统提供了一种固定的、约定优于配置风格的框架。</p>
-<p>Spring Boot 具有如下特性：</p>
-<p>（1）为基于 Spring 的开发提供更快的入门体验</p>
-<p>（2）开箱即用，没有代码生成，也无需 XML 配置。同时也可以修改默认值来满足特定的需求。</p>
-<p>（3）提供了一些大型项目中常见的非功能性特性，如嵌入式服务器、安全、指标，健康检测、外部配置等。</p>
-<p>（4）Spring Boot 并不是不对 Spring 功能上的增强，而是提供了一种快速使用 Spring 的方式。</p>
-<h1 id="2-Spring-Boot入门Demo"><a href="#2-Spring-Boot入门Demo" class="headerlink" title="2.Spring Boot入门Demo"></a>2.Spring Boot入门Demo</h1><h2 id="2-1起步依赖"><a href="#2-1起步依赖" class="headerlink" title="2.1起步依赖"></a>2.1起步依赖</h2><p>创建Maven工程 springboot_demo（打包方式jar）  </p>
-<p>在pom.xml中添加如下依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.0.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      </span><br><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>​     spring Boot会自动加载所需要的jar包,而这些jar包正式我们做开发时需要导入的jar包。因为这些jar包被我们刚才引入的spring-boot-starter-web所引用了，所以我们引用spring-boot-starter-web后会自动把依赖传递过来。</p>
-<h2 id="2-2-变更JDK版本"><a href="#2-2-变更JDK版本" class="headerlink" title="2.2 变更JDK版本"></a>2.2 变更JDK版本</h2><p>​       我们发现默认情况下工程的JDK版本是1.6 ,而我们通常用使用1.7的版本，所以我们需要在pom.xml中添加以下配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>添加后更新工程，会发现版本已经变更为1.7</p>
-<h2 id="2-3-引导类"><a href="#2-3-引导类" class="headerlink" title="2.3 引导类"></a>2.3 引导类</h2><p>我们需要创建一个引导类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(Application.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单解释一下，@SpringBootApplication其实就是以下三个注解的总和</p>
-<p>@Configuration： 用于定义一个配置类</p>
-<p>@EnableAutoConfiguration ：Spring Boot会自动根据你jar包的依赖来自动配置项目。</p>
-<p>@ComponentScan： 告诉Spring 哪个packages 的用注解标识的类 会被spring自动扫描并且装入bean容器。</p>
-<p>我们直接执行这个引导类，会发现控制台出现的这个标识</p>
-<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spring_boot/image4.png" alt="image4"></p>
-<h2 id="2-4-Spring-MVC实现Hello-World输出"><a href="#2-4-Spring-MVC实现Hello-World输出" class="headerlink" title="2.4 Spring MVC实现Hello World输出"></a>2.4 Spring MVC实现Hello World输出</h2><p>我们现在开始使用spring MVC框架，实现json数据的输出。如果按照我们原来的做法，需要在web.xml中添加一个DispatcherServlet的配置，再添加一个spring的配置文件，配置文件中需要添加如下配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">&lt;!-- 使用组件扫描，不用将controller在spring中配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"cn.itcast.demo.controller"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 使用注解驱动不用在下边定义映射器和适配置器 --&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">mvc:annotation-driven</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">mvc:message-converters</span> <span class="attr">register-defaults</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter"</span>&gt;</span>  </span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span> <span class="attr">value</span>=<span class="string">"application/json"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"features"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteMapNullValue<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>WriteDateUseDateFormat<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mvc:message-converters</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">mvc:annotation-driven</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>但是我们用SpringBoot，这一切都省了。我们直接写Controller类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.sms.demo.controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldController</span> </span>&#123;</span><br><span class="line">	<span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"HelloWorld"</span>;		</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们运行启动类来运行程序</p>
-<p>在浏览器地址栏输入 <a href="http://localhost:8080/info" target="_blank" rel="noopener">http://localhost:8080/info</a> 即可看到运行结果</p>
-<h1 id="3-springBoot支持修改配置文件"><a href="#3-springBoot支持修改配置文件" class="headerlink" title="3 springBoot支持修改配置文件"></a>3 springBoot支持修改配置文件</h1><h2 id="3-1-修改tomcat启动端口"><a href="#3-1-修改tomcat启动端口" class="headerlink" title="3.1 修改tomcat启动端口"></a>3.1 修改tomcat启动端口</h2><p>在src/main/resources下创建application.properties</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.port=8088</span><br></pre></td></tr></table></figure>
-<p>重新运行引导类。地址栏输入</p>
-<p><a href="http://localhost:8088/info" target="_blank" rel="noopener">http://localhost:8088/info</a></p>
-<h2 id="3-2-读取配置文件信息"><a href="#3-2-读取配置文件信息" class="headerlink" title="3.2 读取配置文件信息"></a>3.2 读取配置文件信息</h2><p>在src/main/resources下的application.properties 增加配置</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url=http://www.baidu.com</span><br></pre></td></tr></table></figure>
-<p>我要在类中读取这个配置信息，修改HelloWorldController  </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> Environment env;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/info"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">info</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"HelloWorld~~"</span>+env.getProperty(<span class="string">"url"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      
-        <categories>
-            
-            <category> springBoot </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> springBoot </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Spring Boot应用启动器]]></title>
-      <url>/2017/12/14/Spring%20Boot%E5%BA%94%E7%94%A8%E5%90%AF%E5%8A%A8%E5%99%A8/</url>
-      <content type="html"><![CDATA[<h1 id="Spring-Boot应用启动器"><a href="#Spring-Boot应用启动器" class="headerlink" title="Spring Boot应用启动器"></a>Spring Boot应用启动器</h1><h2 id="spring-Boot应用启动器基本的一共有44种，具体如下："><a href="#spring-Boot应用启动器基本的一共有44种，具体如下：" class="headerlink" title="spring Boot应用启动器基本的一共有44种，具体如下："></a>spring Boot应用启动器基本的一共有44种，具体如下：</h2><p>1）spring-boot-starter<br>这是Spring Boot的核心启动器，包含了自动配置、日志和YAML。</p>
-<p>2）spring-boot-starter-actuator<br>帮助监控和管理应用。</p>
-<p>3）spring-boot-starter-amqp<br>通过spring-rabbit来支持AMQP协议（Advanced Message Queuing Protocol）。</p>
-<p>4）spring-boot-starter-aop<br>支持面向方面的编程即AOP，包括spring-aop和AspectJ。</p>
-<p>5）spring-boot-starter-artemis<br>通过Apache Artemis支持JMS的API（<a href="http://lib.csdn.net/base/java" target="_blank" rel="noopener">Java </a>Message Service API）。</p>
-<p>6）spring-boot-starter-batch<br>支持Spring Batch，包括HSQLDB<a href="http://lib.csdn.net/base/mysql" target="_blank" rel="noopener">数据库</a>。</p>
-<p>7）spring-boot-starter-cache<br>支持Spring的Cache抽象。</p>
-<p>8）spring-boot-starter-cloud-connectors<br>支持Spring Cloud Connectors，简化了在像Cloud Foundry或Heroku这样的云平台上连接服务。</p>
-<p>9）spring-boot-starter-data-elasticsearch<br>支持ElasticSearch搜索和分析引擎，包括spring-data-elasticsearch。</p>
-<p>10）spring-boot-starter-data-gemfire<br>支持GemFire分布式数据存储，包括spring-data-gemfire。</p>
-<p>11）spring-boot-starter-data-jpa<br>支持JPA（<a href="http://lib.csdn.net/base/javase" target="_blank" rel="noopener">Java</a> Persistence API），包括spring-data-jpa、spring-orm、<a href="http://lib.csdn.net/base/javaee" target="_blank" rel="noopener">hibernate</a>。</p>
-<p>12）spring-boot-starter-data-<a href="http://lib.csdn.net/base/mongodb" target="_blank" rel="noopener">MongoDB</a><br>支持MongoDB数据，包括spring-data-mongodb。</p>
-<p>13）spring-boot-starter-data-rest<br>通过spring-data-rest-webmvc，支持通过REST暴露Spring Data数据仓库。</p>
-<p>14）spring-boot-starter-data-solr<br>支持Apache Solr搜索平台，包括spring-data-solr。</p>
-<p>15）spring-boot-starter-freemarker<br>支持FreeMarker模板引擎。</p>
-<p>16）spring-boot-starter-groovy-templates<br>支持Groovy模板引擎。</p>
-<p>17）spring-boot-starter-hateoas<br>通过spring-hateoas支持基于HATEOAS的RESTful Web服务。</p>
-<p>18）spring-boot-starter-hornetq<br>通过HornetQ支持JMS。</p>
-<p>19）spring-boot-starter-integration<br>支持通用的spring-integration模块。</p>
-<p>20）spring-boot-starter-jdbc<br>支持JDBC数据库。</p>
-<p>21）spring-boot-starter-jersey<br>支持Jersey RESTful Web服务框架。</p>
-<p>22）spring-boot-starter-jta-atomikos<br>通过Atomikos支持JTA分布式事务处理。</p>
-<p>23）spring-boot-starter-jta-bitronix<br>通过Bitronix支持JTA分布式事务处理。</p>
-<p>24）spring-boot-starter-mail<br>支持javax.mail模块。</p>
-<p>25）spring-boot-starter-mobile<br>支持spring-mobile。</p>
-<p>26）spring-boot-starter-mustache<br>支持Mustache模板引擎。</p>
-<p>27）spring-boot-starter-<a href="http://lib.csdn.net/base/redis" target="_blank" rel="noopener">Redis</a><br>支持Redis键值存储数据库，包括spring-redis。</p>
-<p>28）spring-boot-starter-security<br>支持spring-security。</p>
-<p>29）spring-boot-starter-social-facebook<br>支持spring-social-facebook</p>
-<p>30）spring-boot-starter-social-linkedin<br>支持pring-social-linkedin</p>
-<p>31）spring-boot-starter-social-twitter<br>支持pring-social-twitter</p>
-<p>32）spring-boot-starter-test<br>支持常规的<a href="http://lib.csdn.net/base/softwaretest" target="_blank" rel="noopener">测试</a>依赖，包括JUnit、Hamcrest、Mockito以及spring-test模块。</p>
-<p>33）spring-boot-starter-thymeleaf<br>支持Thymeleaf模板引擎，包括与Spring的集成。</p>
-<p>34）spring-boot-starter-velocity<br>支持Velocity模板引擎。</p>
-<p>35）spring-boot-starter-web<br>S支持全栈式Web开发，包括Tomcat和spring-webmvc。</p>
-<p>36）spring-boot-starter-websocket<br>支持WebSocket开发。</p>
-<p>37）spring-boot-starter-ws<br>支持Spring Web Services。</p>
-<h2 id="Spring-Boot应用启动器面向生产环境的还有2种，具体如下："><a href="#Spring-Boot应用启动器面向生产环境的还有2种，具体如下：" class="headerlink" title="Spring Boot应用启动器面向生产环境的还有2种，具体如下："></a>Spring Boot应用启动器面向生产环境的还有2种，具体如下：</h2><p>1）spring-boot-starter-actuator<br>增加了面向产品上线相关的功能，比如测量和监控。</p>
-<p>2）spring-boot-starter-remote-shell<br>增加了远程ssh shell的支持。</p>
-<h2 id="Spring-Boot应用启动器还有一些替换技术的启动器，具体如下："><a href="#Spring-Boot应用启动器还有一些替换技术的启动器，具体如下：" class="headerlink" title="Spring Boot应用启动器还有一些替换技术的启动器，具体如下："></a>Spring Boot应用启动器还有一些替换技术的启动器，具体如下：</h2><p>1）spring-boot-starter-jetty<br>引入了Jetty HTTP引擎（用于替换Tomcat）。</p>
-<p>2）spring-boot-starter-log4j<br>支持Log4J日志框架。</p>
-<p>3）spring-boot-starter-logging<br>引入了Spring Boot默认的日志框架Logback。</p>
-<p>4）spring-boot-starter-tomcat<br>引入了Spring Boot默认的HTTP引擎Tomcat。</p>
-<p>5）spring-boot-starter-undertow<br>引入了Undertow HTTP引擎（用于替换Tomcat）。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> springBoot </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> springBoot </tag>
             
         </tags>
         
@@ -1444,6 +1749,30 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
     </entry>
     
     <entry>
+      <title><![CDATA[快速排序]]></title>
+      <url>/2017/11/05/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+      <content type="html"><![CDATA[<h1 id="图解快速排序"><a href="#图解快速排序" class="headerlink" title="图解快速排序"></a>图解快速排序</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/WechatIMG9.jpeg" alt="kspx"></p>
+<h1 id="Java代码"><a href="#Java代码" class="headerlink" title="Java代码"></a>Java代码</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> _left,<span class="keyword">int</span> _right)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = _left;</span><br><span class="line">        <span class="keyword">int</span> right = _right;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(left &lt;= right)&#123;   <span class="comment">//待排序的元素至少有两个的情况</span></span><br><span class="line">            temp = arr[left];  <span class="comment">//待排序的第一个元素作为基准元素</span></span><br><span class="line">            <span class="keyword">while</span>(left != right)&#123;   <span class="comment">//从左右两边交替扫描，直到left = right</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span>(right &gt; left &amp;&amp; arr[right] &gt;= temp)  </span><br><span class="line">                     right --;        <span class="comment">//从右往左扫描，找到第一个比基准元素小的元素</span></span><br><span class="line">                  arr[left] = arr[right];  <span class="comment">//找到这种元素arr[right]后与arr[left]交换</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[left] &lt;= temp)</span><br><span class="line">                     left ++;         <span class="comment">//从左往右扫描，找到第一个比基准元素大的元素</span></span><br><span class="line">                  arr[right] = arr[left];  <span class="comment">//找到这种元素arr[left]后，与arr[right]交换</span></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            arr[right] = temp;    <span class="comment">//基准元素归位</span></span><br><span class="line">            quickSort(arr,_left,left-<span class="number">1</span>);  <span class="comment">//对基准元素左边的元素进行递归排序</span></span><br><span class="line">            quickSort(arr, right+<span class="number">1</span>,_right);  <span class="comment">//对基准元素右边的进行递归排序</span></span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> array[] = &#123;<span class="number">10</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">8</span>&#125;;</span><br><span class="line">        System.out.println(<span class="string">"排序之前："</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> element : array)&#123;</span><br><span class="line">            System.out.print(element+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        quickSort(array,<span class="number">0</span>,array.length-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"\n排序之后："</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> element : array)&#123;</span><br><span class="line">            System.out.print(element+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> java </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> java </tag>
+            
+            <tag> 复习 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[安装 Ruby, Rails 运行环境]]></title>
       <url>/2017/04/12/%E5%AE%89%E8%A3%85%20Ruby,%20Rails%20%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</url>
       <content type="html"><![CDATA[<h2 id="步骤1-－-安装-RVM"><a href="#步骤1-－-安装-RVM" class="headerlink" title="步骤1 － 安装 RVM"></a>步骤1 － 安装 RVM</h2><p>直接以如下命令行安装可能会不成功，因为rvm.io站点有时会被墙：</p>
@@ -1487,222 +1816,6 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
         <tags>
             
             <tag> redis </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[spark架构]]></title>
-      <url>/2017/01/11/spark%E6%9E%B6%E6%9E%84/</url>
-      <content type="html"><![CDATA[<p>Apache Spark是一个围绕速度、易用性和复杂分析构建的大数据处理框架，最初在2009年由加州大学伯克利分校的AMPLab开发，并于2010年成为Apache的开源项目之一，与Hadoop和Storm等其他大数据和MapReduce技术相比，Spark有如下优势：</p>
-<ul>
-<li>Spark提供了一个全面、统一的框架用于管理各种有着不同性质（文本数据、图表数据等）的数据集和数据源（批量数据或实时的流数据）的大数据处理的需求</li>
-<li><p>官方资料介绍Spark可以将Hadoop集群中的应用在内存中的运行速度提升100倍，甚至能够将应用在磁盘上的运行速度提升10倍</p>
-<p><strong>目标：</strong></p>
-</li>
-<li><p>架构及生态</p>
-</li>
-<li>spark 与 hadoop</li>
-<li>运行流程及特点</li>
-<li>常用术语</li>
-<li>standalone模式</li>
-<li>yarn集群</li>
-<li>RDD运行流程</li>
-</ul>
-<p><strong>架构及生态：</strong></p>
-<hr>
-<ul>
-<li>通常当需要处理的数据量超过了单机尺度(比如我们的计算机有4GB的内存，而我们需要处理100GB以上的数据)这时我们可以选择spark集群进行计算，有时我们可能需要处理的数据量并不大，但是计算很复杂，需要大量的时间，这时我们也可以选择利用spark集群强大的计算资源，并行化地计算，其架构示意图如下：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark1.png" alt="img"></li>
-<li>Spark Core：包含Spark的基本功能；尤其是定义RDD的API、操作以及这两者上的动作。其他Spark的库都是构建在RDD和Spark Core之上的</li>
-<li>Spark SQL：提供通过Apache Hive的SQL变体Hive查询语言（HiveQL）与Spark进行交互的API。每个数据库表被当做一个RDD，Spark SQL查询被转换为Spark操作。</li>
-<li>Spark Streaming：对实时数据流进行处理和控制。Spark Streaming允许程序能够像普通RDD一样处理实时数据</li>
-<li>MLlib：一个常用机器学习算法库，算法被实现为对RDD的Spark操作。这个库包含可扩展的学习算法，比如分类、回归等需要对大量数据集进行迭代的操作。</li>
-<li>GraphX：控制图、并行图操作和计算的一组算法和工具的集合。GraphX扩展了RDD API，包含控制图、创建子图、访问路径上所有顶点的操作</li>
-<li>Spark架构的组成图如下：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark2.png" alt="img"></li>
-<li>Cluster Manager：在standalone模式中即为Master主节点，控制整个集群，监控worker。在YARN模式中为资源管理器</li>
-<li>Worker节点：从节点，负责控制计算节点，启动Executor或者Driver。</li>
-<li>Driver： 运行Application 的main()函数</li>
-<li>Executor：执行器，是为某个Application运行在worker node上的一个进程</li>
-</ul>
-<p><strong>Spark与hadoop:</strong></p>
-<hr>
-<ul>
-<li>Hadoop有两个核心模块，分布式存储模块HDFS和分布式计算模块Mapreduce</li>
-<li>spark本身并没有提供分布式文件系统，因此spark的分析大多依赖于Hadoop的分布式文件系统HDFS</li>
-<li>Hadoop的Mapreduce与spark都可以进行数据计算，而相比于Mapreduce，spark的速度更快并且提供的功能更加丰富</li>
-<li>关系图如下：</li>
-<li><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark3.png" alt="img"></p>
-<p><strong>运行流程及特点：</strong></p>
-</li>
-</ul>
-<hr>
-<ul>
-<li>spark运行流程图如下：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark4.png" alt="img"></li>
-</ul>
-<ol>
-<li>构建Spark Application的运行环境，启动SparkContext</li>
-<li>SparkContext向资源管理器（可以是Standalone，Mesos，Yarn）申请运行Executor资源，并启动StandaloneExecutorbackend，</li>
-<li>Executor向SparkContext申请Task</li>
-<li>SparkContext将应用程序分发给Executor</li>
-<li>SparkContext构建成DAG图，将DAG图分解成Stage、将Taskset发送给Task Scheduler，最后由Task Scheduler将Task发送给Executor运行</li>
-<li>Task在Executor上运行，运行完释放所有资源</li>
-</ol>
-<p>​     <strong>Spark运行特点：</strong></p>
-<ol>
-<li>每个Application获取专属的executor进程，该进程在Application期间一直驻留，并以多线程方式运行Task。这种Application隔离机制是有优势的，无论是从调度角度看（每个Driver调度他自己的任务），还是从运行角度看（来自不同Application的Task运行在不同JVM中），当然这样意味着Spark Application不能跨应用程序共享数据，除非将数据写入外部存储系统</li>
-<li>Spark与资源管理器无关，只要能够获取executor进程，并能保持相互通信就可以了</li>
-<li>提交SparkContext的Client应该靠近Worker节点（运行Executor的节点），最好是在同一个Rack里，因为Spark Application运行过程中SparkContext和Executor之间有大量的信息交换</li>
-<li>Task采用了数据本地性和推测执行的优化机制</li>
-</ol>
-<p><strong>常用术语:</strong></p>
-<hr>
-<ul>
-<li><strong>Application:</strong> Appliction都是指用户编写的Spark应用程序，其中包括一个Driver功能的代码和分布在集群中多个节点上运行的Executor代码</li>
-<li><strong>Driver:</strong>  Spark中的Driver即运行上述Application的main函数并创建SparkContext，创建SparkContext的目的是为了准备Spark应用程序的运行环境，在Spark中有SparkContext负责与ClusterManager通信，<em>进行资源申请、任务的分配和监控</em>等，当Executor部分运行完毕后，Driver同时负责将SparkContext关闭，通常用SparkContext代表Driver</li>
-<li><strong>Executor:</strong>  某个Application运行在worker节点上的一个进程，  该进程负责运行某些Task， 并且负责将数据存到内存或磁盘上，每个Application都有各自独立的一批Executor， 在Spark on Yarn模式下，其进程名称为CoarseGrainedExecutor Backend。一个CoarseGrainedExecutor Backend有且仅有一个Executor对象， 负责将Task包装成taskRunner,并从线程池中抽取一个空闲线程运行Task， 这个每一个oarseGrainedExecutor Backend能并行运行Task的数量取决与分配给它的cpu个数</li>
-<li><strong>Cluter Manager：</strong>指的是在集群上获取资源的外部服务。目前有三种类型</li>
-</ul>
-<ol>
-<li><ol>
-<li>Standalon : spark原生的资源管理，由Master负责资源的分配</li>
-<li>Apache Mesos:与hadoop MR兼容性良好的一种资源调度框架</li>
-<li>Hadoop Yarn: 主要是指Yarn中的ResourceManager</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li><strong>Worker:</strong> 集群中任何可以运行Application代码的节点，在Standalone模式中指的是通过slave文件配置的Worker节点，在Spark on Yarn模式下就是NoteManager节点</li>
-<li><strong>Task:</strong> 被送到某个Executor上的工作单元，但hadoopMR中的MapTask和ReduceTask概念一样，是运行Application的基本单位，多个Task组成一个Stage，而Task的调度和管理等是由TaskScheduler负责</li>
-<li><strong>Job:</strong> 包含多个Task组成的并行计算，往往由Spark Action触发生成， 一个Application中往往会产生多个Job</li>
-<li><strong>Stage:</strong> 每个Job会被拆分成多组Task， 作为一个TaskSet， 其名称为Stage，Stage的划分和调度是有DAGScheduler来负责的，Stage有非最终的Stage（Shuffle Map Stage）和最终的Stage（Result Stage）两种，Stage的边界就是发生shuffle的地方</li>
-<li><strong>DAGScheduler:</strong> 根据Job构建基于Stage的DAG（Directed Acyclic Graph有向无环图)，并提交Stage给TASkScheduler。 其划分Stage的依据是RDD之间的依赖的关系找出开销最小的调度方法，如下图</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark5.png" alt="img"></li>
-<li><strong>TASKSedulter:</strong> 将TaskSET提交给worker运行，每个Executor运行什么Task就是在此处分配的. TaskScheduler维护所有TaskSet，当Executor向Driver发生心跳时，TaskScheduler会根据资源剩余情况分配相应的Task。另外TaskScheduler还维护着所有Task的运行标签，重试失败的Task。下图展示了TaskScheduler的作用</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark6.png" alt="img"></li>
-<li>在不同运行模式中任务调度器具体为：</li>
-</ul>
-<ol>
-<li><ol>
-<li>Spark on Standalone模式为TaskScheduler</li>
-<li>YARN-Client模式为YarnClientClusterScheduler</li>
-<li>YARN-Cluster模式为YarnClusterScheduler</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>将这些术语串起来的运行层次图如下：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark7.png" alt="img"></li>
-<li>Job=多个stage，Stage=多个同种task, Task分为ShuffleMapTask和ResultTask，Dependency分为ShuffleDependency和NarrowDependency</li>
-</ul>
-<p><strong>Spark运行模式：</strong></p>
-<hr>
-<ul>
-<li>Spark的运行模式多种多样，灵活多变，部署在单机上时，既可以用本地模式运行，也可以用伪分布模式运行，而当以分布式集群的方式部署时，也有众多的运行模式可供选择，这取决于集群的实际情况，底层的资源调度即可以依赖外部资源调度框架，也可以使用Spark内建的Standalone模式。</li>
-<li>对于外部资源调度框架的支持，目前的实现包括相对稳定的Mesos模式，以及hadoop YARN模式</li>
-<li><strong>本地模式：</strong>常用于本地开发测试，本地还分别 local 和 local cluster</li>
-</ul>
-<p><strong>standalone:</strong> 独立集群运行模式</p>
-<hr>
-<ul>
-<li>Standalone模式使用Spark自带的资源调度框架</li>
-<li>采用Master/Slaves的典型架构，选用ZooKeeper来实现Master的HA</li>
-<li>框架结构图如下:</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark8.png" alt="img"></li>
-<li>该模式主要的节点有Client节点、Master节点和Worker节点。其中Driver既可以运行在Master节点上中，也可以运行在本地Client端。当用spark-shell交互式工具提交Spark的Job时，Driver在Master节点上运行；当使用spark-submit工具提交Job或者在Eclips、IDEA等开发平台上使用”new SparkConf.setManager(“spark://master:7077”)”方式运行Spark任务时，Driver是运行在本地Client端上的</li>
-<li>运行过程如下图：（<em>参考至：<a href="http://blog.csdn.net/gamer_gyt/article/details/51833681" target="_blank" rel="noopener">http://blog.csdn.net/gamer_gyt/article/details/51833681</a></em>）</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark9.png" alt="img"></li>
-</ul>
-<ol>
-<li>SparkContext连接到Master，向Master注册并申请资源（CPU Core 和Memory）</li>
-<li>Master根据SparkContext的资源申请要求和Worker心跳周期内报告的信息决定在哪个Worker上分配资源，然后在该Worker上获取资源，然后启动StandaloneExecutorBackend；</li>
-<li>StandaloneExecutorBackend向SparkContext注册；</li>
-<li>SparkContext将Applicaiton代码发送给StandaloneExecutorBackend；并且SparkContext解析Applicaiton代码，构建DAG图，并提交给DAG Scheduler分解成Stage（当碰到Action操作时，就会催生Job；每个Job中含有1个或多个Stage，Stage一般在获取外部数据和shuffle之前产生），然后以Stage（或者称为TaskSet）提交给Task Scheduler，Task Scheduler负责将Task分配到相应的Worker，最后提交给StandaloneExecutorBackend执行；</li>
-<li>StandaloneExecutorBackend会建立Executor线程池，开始执行Task，并向SparkContext报告，直至Task完成</li>
-<li>所有Task完成后，SparkContext向Master注销，释放资源</li>
-</ol>
-<p><strong>yarn:</strong>  <em>（参考：<a href="http://blog.csdn.net/gamer_gyt/article/details/51833681）" target="_blank" rel="noopener">http://blog.csdn.net/gamer_gyt/article/details/51833681）</a></em></p>
-<hr>
-<ul>
-<li>Spark on YARN模式根据Driver在集群中的位置分为两种模式：一种是YARN-Client模式，另一种是YARN-Cluster（或称为YARN-Standalone模式）</li>
-<li>Yarn-Client模式中，Driver在客户端本地运行，这种模式可以使得Spark Application和客户端进行交互，因为Driver在客户端，所以可以通过webUI访问Driver的状态，默认是<a href="http://hadoop1:4040访问，而YARN通过http://" target="_blank" rel="noopener">http://hadoop1:4040访问，而YARN通过http://</a> hadoop1:8088访问</li>
-<li>YARN-client的工作流程步骤为：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark10.png" alt="img"></li>
-<li>Spark Yarn Client向YARN的ResourceManager申请启动Application Master。同时在SparkContent初始化中将创建DAGScheduler和TASKScheduler等，由于我们选择的是Yarn-Client模式，程序会选择YarnClientClusterScheduler和YarnClientSchedulerBackend</li>
-<li>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，与YARN-Cluster区别的是在该ApplicationMaster不运行SparkContext，只与SparkContext进行联系进行资源的分派</li>
-<li>Client中的SparkContext初始化完毕后，与ApplicationMaster建立通讯，向ResourceManager注册，根据任务信息向ResourceManager申请资源（Container）</li>
-<li>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向Client中的SparkContext注册并申请Task</li>
-<li>client中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向Driver汇报运行的状态和进度，以让Client随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务</li>
-<li>应用程序运行完成后，Client的SparkContext向ResourceManager申请注销并关闭自己</li>
-</ul>
-<p><strong>Spark Cluster模式:</strong></p>
-<ul>
-<li>在YARN-Cluster模式中，当用户向YARN中提交一个应用程序后，YARN将分两个阶段运行该应用程序：</li>
-</ul>
-<ol>
-<li><ol>
-<li>第一个阶段是把Spark的Driver作为一个ApplicationMaster在YARN集群中先启动；</li>
-<li>第二个阶段是由ApplicationMaster创建应用程序，然后为它向ResourceManager申请资源，并启动Executor来运行Task，同时监控它的整个运行过程，直到运行完成</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>YARN-cluster的工作流程分为以下几个步骤</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark11.png" alt="img"></li>
-<li>Spark Yarn Client向YARN中提交应用程序，包括ApplicationMaster程序、启动ApplicationMaster的命令、需要在Executor中运行的程序等</li>
-<li>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，其中ApplicationMaster进行SparkContext等的初始化</li>
-<li>ApplicationMaster向ResourceManager注册，这样用户可以直接通过ResourceManage查看应用程序的运行状态，然后它将采用轮询的方式通过RPC协议为各个任务申请资源，并监控它们的运行状态直到运行结束</li>
-<li>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向ApplicationMaster中的SparkContext注册并申请Task。这一点和Standalone模式一样，只不过SparkContext在Spark Application中初始化时，使用CoarseGrainedSchedulerBackend配合YarnClusterScheduler进行任务的调度，其中YarnClusterScheduler只是对TaskSchedulerImpl的一个简单包装，增加了对Executor的等待逻辑等</li>
-<li>ApplicationMaster中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向ApplicationMaster汇报运行的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务</li>
-<li>应用程序运行完成后，ApplicationMaster向ResourceManager申请注销并关闭自己</li>
-</ul>
-<p><strong>Spark Client 和 Spark Cluster的区别:</strong></p>
-<ul>
-<li>理解YARN-Client和YARN-Cluster深层次的区别之前先清楚一个概念：Application Master。在YARN中，每个Application实例都有一个ApplicationMaster进程，它是Application启动的第一个容器。它负责和ResourceManager打交道并请求资源，获取资源之后告诉NodeManager为其启动Container。从深层次的含义讲YARN-Cluster和YARN-Client模式的区别其实就是ApplicationMaster进程的区别</li>
-<li>YARN-Cluster模式下，Driver运行在AM(Application Master)中，它负责向YARN申请资源，并监督作业的运行状况。当用户提交了作业之后，就可以关掉Client，作业会继续在YARN上运行，因而YARN-Cluster模式不适合运行交互类型的作业</li>
-<li>YARN-Client模式下，Application Master仅仅向YARN请求Executor，Client会和请求的Container通信来调度他们工作，也就是说Client不能离开</li>
-</ul>
-<p>思考： 我们在使用Spark提交job时使用的哪种模式？</p>
-<p><strong>RDD运行流程：</strong></p>
-<hr>
-<ul>
-<li>RDD在Spark中运行大概分为以下三步：</li>
-</ul>
-<ol>
-<li><ol>
-<li>创建RDD对象</li>
-<li>DAGScheduler模块介入运算，计算RDD之间的依赖关系，RDD之间的依赖关系就形成了DAG</li>
-<li>每一个Job被分为多个Stage。划分Stage的一个主要依据是当前计算因子的输入是否是确定的，如果是则将其分在同一个Stage，避免多个Stage之间的消息传递开销</li>
-</ol>
-</li>
-</ol>
-<ul>
-<li>示例图如下：</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark12.png" alt="img"></li>
-<li>以下面一个按 A-Z 首字母分类，查找相同首字母下不同姓名总个数的例子来看一下 RDD 是如何运行起来的</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark13.png" alt="img"></li>
-<li>创建 RDD  上面的例子除去最后一个 collect 是个动作，不会创建 RDD 之外，前面四个转换都会创建出新的 RDD 。因此第一步就是创建好所有 RDD( 内部的五项信息 )？</li>
-<li>创建执行计划 Spark 会尽可能地管道化，并基于是否要重新组织数据来划分 阶段 (stage) ，例如本例中的 groupBy() 转换就会将整个执行计划划分成两阶段执行。最终会产生一个 DAG(directed acyclic graph ，有向无环图 ) 作为逻辑执行计划</li>
-<li><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/spark/spark14.png" alt="img"></li>
-<li>调度任务  将各阶段划分成不同的 任务 (task) ，每个任务都是数据和计算的合体。在进行下一阶段前，当前阶段的所有任务都要执行完成。因为下一阶段的第一个转换一定是重新组织数据的，所以必须等当前阶段所有结果数据都计算出来了才能继续</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> spark </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> spark </tag>
-            
-            <tag> 复习 </tag>
             
         </tags>
         
@@ -1809,33 +1922,9 @@ tar zxvf hadoop-2.7.4-with-centos-6.7.tar.gz
         
         <tags>
             
-            <tag> 复习 </tag>
-            
             <tag> java </tag>
             
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[快速排序]]></title>
-      <url>/2017/01/11/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-      <content type="html"><![CDATA[<h1 id="图解快速排序"><a href="#图解快速排序" class="headerlink" title="图解快速排序"></a>图解快速排序</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/WechatIMG9.jpeg" alt="kspx"></p>
-<h1 id="Java代码"><a href="#Java代码" class="headerlink" title="Java代码"></a>Java代码</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> _left,<span class="keyword">int</span> _right)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left = _left;</span><br><span class="line">        <span class="keyword">int</span> right = _right;</span><br><span class="line">        <span class="keyword">int</span> temp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(left &lt;= right)&#123;   <span class="comment">//待排序的元素至少有两个的情况</span></span><br><span class="line">            temp = arr[left];  <span class="comment">//待排序的第一个元素作为基准元素</span></span><br><span class="line">            <span class="keyword">while</span>(left != right)&#123;   <span class="comment">//从左右两边交替扫描，直到left = right</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span>(right &gt; left &amp;&amp; arr[right] &gt;= temp)  </span><br><span class="line">                     right --;        <span class="comment">//从右往左扫描，找到第一个比基准元素小的元素</span></span><br><span class="line">                  arr[left] = arr[right];  <span class="comment">//找到这种元素arr[right]后与arr[left]交换</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span>(left &lt; right &amp;&amp; arr[left] &lt;= temp)</span><br><span class="line">                     left ++;         <span class="comment">//从左往右扫描，找到第一个比基准元素大的元素</span></span><br><span class="line">                  arr[right] = arr[left];  <span class="comment">//找到这种元素arr[left]后，与arr[right]交换</span></span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            arr[right] = temp;    <span class="comment">//基准元素归位</span></span><br><span class="line">            quickSort(arr,_left,left-<span class="number">1</span>);  <span class="comment">//对基准元素左边的元素进行递归排序</span></span><br><span class="line">            quickSort(arr, right+<span class="number">1</span>,_right);  <span class="comment">//对基准元素右边的进行递归排序</span></span><br><span class="line">        &#125;        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> array[] = &#123;<span class="number">10</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">8</span>&#125;;</span><br><span class="line">        System.out.println(<span class="string">"排序之前："</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> element : array)&#123;</span><br><span class="line">            System.out.print(element+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        quickSort(array,<span class="number">0</span>,array.length-<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"\n排序之后："</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> element : array)&#123;</span><br><span class="line">            System.out.print(element+<span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      
-        <categories>
-            
-            <category> java </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
             <tag> 复习 </tag>
-            
-            <tag> java </tag>
             
         </tags>
         
