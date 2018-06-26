@@ -5,7 +5,7 @@
   <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
   
   
-  <title>  Idea操作 |   Min‘s blog</title>
+  <title>  Hive Sql |   Min‘s blog</title>
 
  
   
@@ -92,21 +92,21 @@
 	<div class="post-header slideDownMin center">
 
 	<span class="post-title">	
-		idea操作
+		Hive sql
 	</span>
 
 	
 	<div class="post-info">
 
 		<time class="post-time"><span class="iconfont icon-date"></span>
-		2018/02/12 	
+		2018/05/06 	
 		</time>
 		
 					
 
 				<span class="post-meta">		
 				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/java/">java</a>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
 				</span>
 		
 			
@@ -115,7 +115,7 @@
 				
 				<span class="post-meta">
 				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/java/">java</a>
+				<a class="tag-link" href="/tags/hive-sql/">hive sql</a> <a class="tag-link" href="/tags/复习/">复习</a>
 				</span>			
 			
 
@@ -123,7 +123,7 @@
 		
 
 		<span class="post-words"><span class="iconfont icon-words"></span>
-		259
+		1927
 		</span>		
 	
 	</div> 
@@ -136,9 +136,85 @@
 		
 
 
-	  <h1 id="1-idea操作"><a href="#1-idea操作" class="headerlink" title="1 idea操作"></a>1 idea操作</h1><h2 id="设置idea的eclipse模式的快捷键"><a href="#设置idea的eclipse模式的快捷键" class="headerlink" title="设置idea的eclipse模式的快捷键"></a>设置idea的eclipse模式的快捷键</h2><p>windows:Configure-&gt;setting-&gt;keymap-&gt;keymaps-&gt;eclipse<br>Mac:Configure-&gt;preferences-&gt;keymap-&gt;keymaps-&gt;eclipse(Mac OS X)<br><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/idea1.gif" alt="idea1"></p>
-<h2 id="设置idea的maven打包"><a href="#设置idea的maven打包" class="headerlink" title="设置idea的maven打包"></a>设置idea的maven打包</h2><p><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/idea2.gif" alt="idea2"></p>
-<h2 id="创建idea的web项目"><a href="#创建idea的web项目" class="headerlink" title="创建idea的web项目"></a>创建idea的web项目</h2><p><img src="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/idea/idea3.gif" alt="idea3"><br> 创建的项目没法创建Java类，需要右键项目-&gt;Mark Directoys-&gt;sources root<br><a href="http://mrblogimgs.oss-cn-qingdao.aliyuncs.com/video/idea/idea.avi" target="_blank" rel="noopener">idea操作完整视频下载</a></p>
+	  <h1 id="分组top-N"><a href="#分组top-N" class="headerlink" title="分组top N"></a>分组top N</h1><p>Hive在0.11.0版本开始加入了row_number、rank、dense_rank分析函数，可以查询分组排序后的top值</p>
+<p><strong>说明：</strong></p>
+<p>row_number() over ([partition col1] [order by col2])</p>
+<p>rank() over ([partition col1] [order by col2])</p>
+<p>dense_rank() over ([partition col1] [order by col2])</p>
+<p>它们都是根据col1字段分组，然后对col2字段进行排序，对排序后的每行生成一个行号，这个行号从1开始递增</p>
+<p>col1、col2都可以是多个字段，用’,’分隔</p>
+<p>区别：</p>
+<p>1）row_number：不管col2字段的值是否相等，行号一直递增，比如：有两条记录的值相等，但一个是第一，一个是第二</p>
+<p>3）dense_rank：上下两条记录的col2相等时，下一个col2值的行号递增1，比如：有两条并列第一，下一个是第二</p>
+<p>row_number可以实现分页查询</p>
+<p>实例：</p>
+<ol>
+<li><code>hive&gt; create table t(name string, sub string, score int) row format delimited fields terminated by &#39;\t&#39;;</code></li>
+</ol>
+<p>数据在附件的a.txt里</p>
+<ol>
+<li><code>a    chinese    98</code></li>
+<li><code>a    english    90</code></li>
+<li><code>d    chinese    88</code></li>
+<li><code>c    english    82</code></li>
+<li><code>c    math    98</code></li>
+<li><code>b    math    89</code></li>
+<li><code>b    chinese    79</code></li>
+<li><code>z    english    90</code></li>
+<li><code>z    math    89</code></li>
+<li><code>z    chinese    80</code></li>
+<li><code>e    math    99</code></li>
+<li><code>e    english    87</code></li>
+<li><code>d    english    90</code></li>
+</ol>
+<p><strong>1、row_number</strong></p>
+<ol>
+<li><code>hive (test)&gt; select *, row_number() over (partition by sub order by score) as od from t;</code></li>
+</ol>
+<p><strong>2、rank</strong></p>
+<ol>
+<li><code>hive (test)&gt; select *, rank() over (partition by sub order by score) as od from t;</code></li>
+</ol>
+<p><strong>3、dense_ran</strong></p>
+<ol>
+<li><code>hive (test)&gt; select *, dense_rank() over (partition by sub order by score desc) from t;</code></li>
+</ol>
+<p>业务实例：</p>
+<p>统计每个学科的前三名</p>
+<ol>
+<li><code>select * from (select *, row_number() over (partition by sub order by score desc) as od from t ) t where od&lt;=3;</code></li>
+</ol>
+<p>语文成绩是80分的排名是多少</p>
+<ol>
+<li><code>hive (test)&gt; select od from (select *, row_number() over (partition by sub order by score desc) as od from t )t where sub=&#39;chinese&#39; and score=80;</code></li>
+</ol>
+<p>分页查询</p>
+<ol>
+<li><code>hive (test)&gt; select * from (select *, row_number() over () as rn from t) t1 where rn between 1 and 5;</code></li>
+</ol>
+<h1 id="UV"><a href="#UV" class="headerlink" title="UV"></a>UV</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/20180312174642168.png" alt="img"></p>
+<p>select store,count(distinct uid) as uv from Visit group by store;</p>
+<h1 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/20180312174739253.png" alt="img"></p>
+<p>select * from Users order by age desc, total;</p>
+<h1 id="行转列"><a href="#行转列" class="headerlink" title="行转列"></a>行转列</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/20180312174821660.png" alt="img"></p>
+<p>select  stage_someone, count(distinct UID)  from  LifeStage  lateral  view  explode(split(stage,’,’))  LifeStage_tmp  as stage_someone  group  by  stage_someone;</p>
+<h1 id="列转行"><a href="#列转行" class="headerlink" title="列转行"></a>列转行</h1><p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/hive/2018031217492340.png" alt="img"></p>
+<p>select UID,concat_ws(‘,’,collect_set(stage)) as stages from LifeStage group by UID;</p>
+<h1 id="sql除法"><a href="#sql除法" class="headerlink" title="sql除法"></a>sql除法</h1><p>a    chinese    98</p>
+<p>a    english    90</p>
+<p>d    chinese    88</p>
+<p>c    english    82</p>
+<p>c    math    98</p>
+<p>b    math    89</p>
+<p>b    chinese    79</p>
+<p>z    english    90</p>
+<p>z    math    89</p>
+<p>z    chinese    80</p>
+<p>e    math    99</p>
+<p>e    english    87</p>
+<p>d    english    90</p>
+<p>求a的chinese成绩/english成绩</p>
+<p>select name,t1.score/t2.score from (select <em> from t where sub=’chinese’) t1 inner join (select </em> from t where sub=’english’) t2 on t1.name=t2.name where t1.name=’a’;</p>
   
 	  </div>     
 	  
@@ -153,25 +229,14 @@
 
       
        
-
-         
-
-      
-          <a href="/2018/05/06/Hive sql/">          
-
-            <span title="Hive sql">  上一篇 </span>
-
-          </a>
-    
-      
     
       
 
          
 
-          <a href="/2018/02/10/IDEA中pom常见错误及解决方法/">         
+          <a href="/2018/02/12/idea操作/">         
 
-           <span title="IDEA中pom常见错误及解决方法">下一篇 </span>  
+           <span title="idea操作">下一篇 </span>  
 
           </a>
 
