@@ -1,0 +1,747 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  ；垃圾收集器 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		；垃圾收集器
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/05 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		11400
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h2 id="1、垃圾收集器概述"><a href="#1、垃圾收集器概述" class="headerlink" title="1、垃圾收集器概述"></a><strong>1、垃圾收集器概述</strong></h2><blockquote>
+<p>​       垃圾收集器是垃圾回收算法（标记-清除算法、复制算法、标记-整理算法、火车算法）的具体实现，不同商家、不同版本的JVM所提供的垃圾收集器可能会有很在差别，本文主要介绍HotSpot虚拟机中的垃圾收集器。</p>
+</blockquote>
+<h3 id="1-1、垃圾收集器组合"><a href="#1-1、垃圾收集器组合" class="headerlink" title="1-1、垃圾收集器组合"></a><strong>1-1、垃圾收集器组合</strong></h3><blockquote>
+<p>​       JDK7/8后，HotSpot虚拟机所有收集器及组合（连线），如下图：</p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img1" alt="img"></p>
+<blockquote>
+<p>（A）、图中展示了<strong>7种</strong>不同分代的收集器：</p>
+<p>​       Serial、ParNew、Parallel Scavenge、Serial Old、Parallel Old、CMS、G1；</p>
+<p>（B）、而它们所处区域，则表明其是属于新生代收集器还是老年代收集器：</p>
+<p>​      <strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge；</p>
+<p>​      <strong>老年代收集器</strong>：Serial Old、Parallel Old、CMS；</p>
+<p>​      <strong>整堆收集器</strong>：G1；</p>
+<p>（C）、两个收集器间有连线，表明它们<strong>可以搭配使用</strong>：</p>
+<p>​       Serial/Serial Old、Serial/CMS、ParNew/Serial Old、ParNew/CMS、Parallel Scavenge/Serial Old、Parallel Scavenge/Parallel Old、G1；</p>
+<p>（D）、其中Serial Old作为CMS出现<strong>“Concurrent Mode Failure”失败</strong>的后备预案（后面介绍）；</p>
+</blockquote>
+<h3 id="1-2、并发垃圾收集和并行垃圾收集的区别"><a href="#1-2、并发垃圾收集和并行垃圾收集的区别" class="headerlink" title="1-2、并发垃圾收集和并行垃圾收集的区别"></a><strong>1-2、并发垃圾收集和并行垃圾收集的区别</strong></h3><blockquote>
+<p><strong>（A）、并行（Parallel）</strong></p>
+<p>​       指多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态；</p>
+<p>​       如<strong>ParNew、Parallel Scavenge、Parallel Old</strong>；</p>
+<p><strong>（B）、并发（Concurrent）</strong></p>
+<p>​       指用户线程与垃圾收集线程同时执行（但不一定是并行的，可能会交替执行）；</p>
+<p>​      用户程序在继续运行，而垃圾收集程序线程运行于另一个CPU上；    </p>
+<p>​       如<strong>CMS、G1</strong>（也有并行）；</p>
+</blockquote>
+<h3 id="1-3、Minor-GC和Full-GC的区别"><a href="#1-3、Minor-GC和Full-GC的区别" class="headerlink" title="1-3、Minor GC和Full GC的区别"></a><strong>1-3、Minor GC和Full GC的区别</strong></h3><blockquote>
+<p><strong>（A）、Minor GC</strong></p>
+<p>​       又称<strong>新生代GC</strong>，指发生在新生代的垃圾收集动作；</p>
+<p>​       因为Java对象大多是朝生夕灭，所以Minor GC非常频繁，一般回收速度也比较快；</p>
+<p><strong>（B）、Full GC</strong></p>
+<p>​       又称<strong>Major GC或老年代GC</strong>，指发生在老年代的GC；</p>
+<p>​       出现Full GC经常会伴随至少一次的Minor GC（不是绝对，Parallel Sacvenge收集器就可以选择设置Major GC策略）；</p>
+<p>​      Major GC速度一般比Minor GC慢10倍以上；</p>
+</blockquote>
+<p>​        </p>
+<blockquote>
+<p>下面将介绍这些收集器的特性、基本原理和使用场景，并重点分析CMS和G1这两款相对复杂的收集器；但需要明确一个观点：</p>
+<p>​       没有最好的收集器，更没有万能的收集；</p>
+<p>​      选择的只能是适合具体应用场景的收集器。</p>
+</blockquote>
+<h2 id="2、Serial收集器"><a href="#2、Serial收集器" class="headerlink" title="2、Serial收集器"></a><strong>2、Serial收集器</strong></h2><blockquote>
+<p>​       Serial（串行）垃圾收集器是最基本、发展历史最悠久的收集器；</p>
+<p>​       JDK1.3.1前是HotSpot新生代收集的唯一选择；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对新生代；</p>
+<p>​      采用复制算法；</p>
+<p>​      单线程收集；</p>
+<p>​       进行垃圾收集时，必须暂停所有工作线程，直到完成；            </p>
+<p>​       即会”Stop The World”；</p>
+<p>​      <strong>Serial/Serial Old组合收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img2" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      依然是HotSpot在Client模式下默认的新生代收集器；</p>
+<p>​      也有优于其他收集器的地方：</p>
+<blockquote>
+<p>​      简单高效（与其他收集器的单线程相比）；</p>
+<p>​      对于限定单个CPU的环境来说，Serial收集器没有线程交互（切换）开销，可以获得最高的单线程收集效率；</p>
+<p>​      在用户的桌面应用场景中，可用内存一般不大（几十M至一两百M），可以在较短时间内完成垃圾收集（几十MS至一百多MS）,只要不频繁发生，这是可以接受的</p>
+</blockquote>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseSerialGC”</strong>：添加该参数来显式的使用串行垃圾收集器；</p>
+<p><strong>4、Stop TheWorld说明</strong></p>
+<p>​      JVM在后台自动发起和自动完成的，在用户不可见的情况下，把用户正常的工作线程全部停掉，即<strong>GC停顿</strong>；</p>
+<p>​      会带给用户不良的体验；</p>
+<blockquote>
+<p>​      从JDK1.3到现在，从Serial收集器-》Parallel收集器-》CMS-》G1，用户线程停顿时间不断缩短，但仍然无法完全消除；</p>
+</blockquote>
+<p>​      更多”Stop The World”信息请参考：<a href="http://blog.csdn.net/tjiyu/article/details/53982412" target="_blank" rel="noopener">《Java虚拟机垃圾回收(一) 基础》</a>“2-2、可达性分析算法”</p>
+<p>更多Serial收集器请参考：</p>
+<p>​      《Memory Management in the Java HotSpot™ Virtual Machine》 4.3节 Serial Collector（内存管理白皮书）：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+<p>​      《Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection Tuning Guide》 第5节 Available Collectors（官方的垃圾收集调优指南）：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref27" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref27</a></p>
+</blockquote>
+<h2 id="3、ParNew收集器"><a href="#3、ParNew收集器" class="headerlink" title="3、ParNew收集器"></a><strong>3、ParNew收集器</strong></h2><blockquote>
+<p>​      ParNew垃圾收集器是<strong>Serial收集器的多线程版本</strong>。</p>
+<p><strong>1、特点</strong></p>
+<p>​      除了多线程外，其余的行为、特点和Serial收集器一样；</p>
+<p>​      如Serial收集器可用控制参数、收集算法、Stop The World、内存分配规则、回收策略等；</p>
+<p>​      两个收集器共用了不少代码；</p>
+<p>​      <strong>ParNew/Serial Old组合收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img3" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      在Server模式下，ParNew收集器是一个非常重要的收集器，因为除Serial外，目前只有它<strong>能与CMS收集器配合工作</strong>；</p>
+<p>​      但在单个CPU环境中，不会比Serail收集器有更好的效果，因为存在线程交互开销。</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseConcMarkSweepGC”</strong>：指定使用CMS后，会默认使用ParNew作为新生代收集器；</p>
+<p>​      <strong>“-XX:+UseParNewGC”</strong>：强制指定使用ParNew；    </p>
+<p>​      <strong>“-XX:ParallelGCThreads”</strong>：指定垃圾收集的线程数量，ParNew默认开启的收集线程与CPU的数量相同；</p>
+<p><strong>4、为什么只有ParNew能与CMS收集器配合</strong></p>
+<p>​      CMS是HotSpot在JDK1.5推出的第一款真正意义上的并发（Concurrent）收集器，第一次实现了让垃圾收集线程与用户线程（基本上）同时工作；</p>
+<p>​      CMS作为老年代收集器，但却无法与JDK1.4已经存在的新生代收集器Parallel Scavenge配合工作；</p>
+<p>​      因为Parallel Scavenge（以及G1）都没有使用传统的GC收集器代码框架，而另外独立实现；而其余几种收集器则共用了部分的框架代码；</p>
+<p>​      关于CMS收集器后面会详细介绍。</p>
+</blockquote>
+<h2 id="4、Parallel-Scavenge收集器"><a href="#4、Parallel-Scavenge收集器" class="headerlink" title="4、Parallel Scavenge收集器"></a><strong>4、Parallel Scavenge收集器</strong></h2><blockquote>
+<p>​      Parallel Scavenge垃圾收集器因为与吞吐量关系密切，也称为<strong>吞吐量收集器（Throughput Collector）</strong>。</p>
+<p><strong>1、特点</strong></p>
+<blockquote>
+<p><strong>（A）、</strong>有一些特点与<strong>ParNew收集器相似</strong></p>
+<p>​      新生代收集器；</p>
+<p>​      采用复制算法；</p>
+<p>​      多线程收集；</p>
+<p><strong>（B）、主要特点是：它的关注点与其他收集器不同</strong></p>
+<p>​      CMS等收集器的关注点是尽可能地缩短垃圾收集时用户线程的停顿时间；</p>
+<p>​      而Parallel Scavenge收集器的目标则是<strong>达一个可控制的吞吐量（Throughput）</strong>；</p>
+<p>​      <strong>关于吞吐量与收集器关注点说明详见本节后面；</strong></p>
+</blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      高吞吐量为目标，即减少垃圾收集时间，让用户代码获得更长的运行时间；</p>
+<p>​      当应用程序运行在具有多个CPU上，对暂停时间没有特别高的要求时，即程序主要在<strong>后台进行计算，而不需要与用户进行太多交互</strong>；</p>
+<p>​      例如，那些<strong>执行批量处理</strong>、订单处理、工资支付、科学计算的应用程序；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      Parallel Scavenge收集器提供两个参数用于精确控制吞吐量：</p>
+<blockquote>
+<p><strong>（A）、”-XX:MaxGCPauseMillis”</strong></p>
+<p>​      控制最大垃圾收集停顿时间，大于0的毫秒数；</p>
+<p>​      MaxGCPauseMillis设置得稍小，停顿时间可能会缩短，但也可能会使得吞吐量下降；</p>
+<p>​      因为可能导致垃圾收集发生得更频繁；</p>
+<p><strong>（B）、”-XX:GCTimeRatio”</strong></p>
+<p>​      设置垃圾收集时间占总时间的比率，0&lt;n&lt;100的整数；</p>
+<p>​      GCTimeRatio相当于设置吞吐量大小；</p>
+<p>​      垃圾收集执行时间占应用程序执行时间的比例的计算方法是：</p>
+<blockquote>
+<p>​      1 / (1 + n)</p>
+<p>​      例如，选项-XX:GCTimeRatio=19，设置了垃圾收集时间占总时间的5%–1/(1+19)；</p>
+</blockquote>
+<p>​      默认值是1%–1/(1+99)，即n=99；</p>
+<p>垃圾收集所花费的时间是年轻一代和老年代收集的总时间；</p>
+<p>如果没有满足吞吐量目标，则增加代的内存大小以尽量增加用户程序运行的时间；</p>
+</blockquote>
+<p>​      此外，还有一个值得关注的参数：</p>
+<blockquote>
+<p><strong>（C）、”-XX:+UseAdptiveSizePolicy”</strong></p>
+<p>​      开启这个参数后，就不用手工指定一些细节参数，如：</p>
+<blockquote>
+<p>​      新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRation）、晋升老年代的对象年龄（-XX:PretenureSizeThreshold）等；</p>
+</blockquote>
+<p>​      JVM会根据当前系统运行情况收集性能监控信息，动态调整这些参数，以提供最合适的停顿时间或最大的吞吐量，这种调节方式称为<strong>GC自适应的调节策略（GC Ergonomiscs）</strong>；    </p>
+<p>​      <strong>这是一种值得推荐的方式</strong>：</p>
+<blockquote>
+<p>​      (1)、只需设置好内存数据大小（如”-Xmx”设置最大堆）；</p>
+<p>​      (2)、然后使用”-XX:MaxGCPauseMillis”或”-XX:GCTimeRatio”给JVM设置一个优化目标；</p>
+<p>​      (3)、那些具体细节参数的调节就由JVM自适应完成；        </p>
+</blockquote>
+<p>​      这也是Parallel Scavenge收集器与ParNew收集器一个重要区别；    </p>
+</blockquote>
+<p>​      更多目标调优和GC自适应的调节策略说明请参考：            </p>
+<p>​      《Memory Management in the Java HotSpot™ Virtual Machine》 5节 Ergonomics – Automatic Selections and Behavior Tuning：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+<p>​      《Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection Tuning Guide》 第2节 Ergonomics：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html%23ergonomics" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html#ergonomics</a></p>
+<p><strong>4、吞吐量与收集器关注点说明</strong></p>
+<blockquote>
+<p><strong>（A）、吞吐量（Throughput）</strong></p>
+<p>​      CPU用于运行用户代码的时间与CPU总消耗时间的比值；</p>
+<p>​      即<strong>吞吐量=运行用户代码时间/（运行用户代码时间+垃圾收集时间）；</strong>    </p>
+<p>​      高吞吐量即减少垃圾收集时间，让用户代码获得更长的运行时间；</p>
+<p><strong>（B）、垃圾收集器期望的目标（关注点）</strong></p>
+<blockquote>
+<p><strong>（1）、停顿时间</strong>    </p>
+<p>​      停顿时间越短就适合需要与用户交互的程序；</p>
+<p>​      良好的响应速度能提升用户体验；</p>
+<p><strong>（2）、吞吐量</strong></p>
+<p>​      高吞吐量则可以高效率地利用CPU时间，尽快完成运算的任务；</p>
+<p>​      主要适合在后台计算而不需要太多交互的任务；</p>
+<p><strong>（3）、覆盖区（Footprint）</strong></p>
+<p>​      在达到前面两个目标的情况下，尽量减少堆的内存空间；</p>
+<p>​      可以获得更好的空间局部性；</p>
+</blockquote>
+</blockquote>
+<p>更多Parallel Scavenge收集器的信息请参考：</p>
+<p>​      官方的垃圾收集调优指南 第6节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html#parallel_collector</a></p>
+<p><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">
+</a></p>
+<p><strong>上面介绍的都是新生代收集器，接下来开始介绍老年代收集器；</strong><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">
+</a></p>
+</blockquote>
+<h2 id="5、Serial-Old收集器"><a href="#5、Serial-Old收集器" class="headerlink" title="5、Serial Old收集器"></a><strong>5、Serial Old收集器</strong></h2><blockquote>
+<p>​      Serial Old是 <strong>Serial收集器的老年代版本</strong>；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      采用”标记-整理”算法（还有压缩，Mark-Sweep-Compact）；</p>
+<p>​      单线程收集；</p>
+<p>​      Serial/Serial Old收集器运行示意图如下：</p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img4" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      主要用于Client模式；</p>
+<p>​      而在Server模式有两大用途：</p>
+<blockquote>
+<p>​      （A）、在JDK1.5及之前，与Parallel Scavenge收集器搭配使用（JDK1.6有Parallel Old收集器可搭配）；</p>
+<p>​      （B）、作为CMS收集器的后备预案，在并发收集发生Concurrent Mode Failure时使用（后面详解）；</p>
+</blockquote>
+<p>更多Serial Old收集器信息请参考：</p>
+<p>​      内存管理白皮书 4.3.2节：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="6、Parallel-Old收集器"><a href="#6、Parallel-Old收集器" class="headerlink" title="6、Parallel Old收集器"></a><strong>6、Parallel Old收集器</strong></h2><blockquote>
+<p>​      Parallel Old垃圾收集器是Parallel Scavenge收集器的老年代版本；</p>
+<p>​      JDK1.6中才开始提供；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      采用”标记-整理”算法；</p>
+<p>​      多线程收集；</p>
+<p>​      <strong>Parallel Scavenge/Parallel Old收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img5" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      JDK1.6及之后用来代替老年代的Serial Old收集器；</p>
+<p>​      特别是在Server模式，多CPU的情况下；</p>
+<p>​      这样在注重吞吐量以及CPU资源敏感的场景，就有了Parallel Scavenge加Parallel Old收集器的”给力”应用组合；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseParallelOldGC”：指定使用Parallel Old收集器；</strong></p>
+<p>更多Parallel Old收集器收集过程介绍请参考：</p>
+<p>​      《内存管理白皮书》 4.5.2节：    <a href="https://blog.csdn.net/tjiyu/article/details/53983650" target="_blank" rel="noopener">    http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="7、CMS收集器"><a href="#7、CMS收集器" class="headerlink" title="7、CMS收集器"></a><strong>7、CMS收集器</strong></h2><blockquote>
+<p>​      并发标记清理（Concurrent Mark Sweep，CMS）收集器也称为并发低停顿收集器（Concurrent Low Pause Collector）或低延迟（low-latency）垃圾收集器；</p>
+<p>​      在前面ParNew收集器曾简单介绍过其特点；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      基于”标记-清除”算法(不进行压缩操作，产生内存碎片)；            </p>
+<p>​      以获取最短回收停顿时间为目标；</p>
+<p>​      并发收集、低停顿；</p>
+<p>​      需要更多的内存（看后面的缺点）；</p>
+<p>​            </p>
+<p>​      是HotSpot在JDK1.5推出的第一款真正意义上的并发（Concurrent）收集器；</p>
+<p>​      第一次实现了让垃圾收集线程与用户线程（基本上）同时工作；</p>
+<p><strong>2、应用场景</strong></p>
+<p>​      <strong>与用户交互较多的场景</strong>；        </p>
+<p>​      希望系统停顿时间最短，注重服务的响应速度；</p>
+<p>​      以给用户带来较好的体验；</p>
+<p>​      如<strong>常见WEB、B/S系统的服务器上的应用</strong>；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseConcMarkSweepGC”：指定使用CMS收集器；</strong></p>
+<p><strong>4、CMS收集器运作过程</strong></p>
+<p>​      比前面几种收集器更复杂，可以分为4个步骤:</p>
+<blockquote>
+<p><strong>（A）、初始标记（CMS initial mark）</strong></p>
+<p>​      仅标记一下GC Roots能直接关联到的对象；</p>
+<p>​      速度很快；</p>
+<p>​      但需要”Stop The World”；</p>
+<p><strong>（B）、并发标记（CMS concurrent mark）</strong></p>
+<p>​      进行GC Roots Tracing的过程；</p>
+<p>​      刚才产生的集合中标记出存活对象；</p>
+<p>​      应用程序也在运行；</p>
+<p>​      并不能保证可以标记出所有的存活对象；</p>
+<p><strong>（C）、重新标记（CMS remark）</strong></p>
+<p>​      为了修正并发标记期间因用户程序继续运作而导致标记变动的那一部分对象的标记记录；</p>
+<p>​      需要”Stop The World”，且停顿时间比初始标记稍长，但远比并发标记短；</p>
+<p>​      采用多线程并行执行来提升效率；</p>
+<p><strong>（D）、并发清除（CMS concurrent sweep）</strong></p>
+<p>​      回收所有的垃圾对象；</p>
+</blockquote>
+<p>​      整个过程中耗时最长的并发标记和并发清除都可以与用户线程一起工作；</p>
+<p>​      所以总体上说，CMS收集器的内存回收过程与用户线程一起并发执行；</p>
+<p>​      <strong>CMS收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img6" alt="img1"></p>
+<p>​        <strong>5、CMS收集器3个明显的缺点</strong></p>
+<p>​                     <strong>（A）、对CPU资源非常敏感</strong></p>
+<blockquote>
+<blockquote>
+<p>​      并发收集虽然不会暂停用户线程，但因为占用一部分CPU资源，还是会导致应用程序变慢，总吞吐量降低。</p>
+<p>​      <strong>CMS的默认收集线程数量是=(CPU数量+3)/4；</strong></p>
+<p>​      当CPU数量多于4个，收集线程占用的CPU资源多于25%，对用户程序影响可能较大；不足4个时，影响更大，可能无法接受。</p>
+<p>​      <strong>增量式并发收集器：</strong></p>
+<blockquote>
+<p>​      针对这种情况，曾出现了”增量式并发收集器”（Incremental Concurrent Mark Sweep/i-CMS）；</p>
+<p>​      类似使用抢占式来模拟多任务机制的思想，让收集线程和用户线程交替运行，减少收集线程运行时间；</p>
+<p>​      但效果并不理想，<strong>JDK1.6后就官方不再提倡用户使用</strong>。</p>
+<p>更多请参考：</p>
+<p>​      官方的《垃圾收集调优指南》8.8节 Incremental Mode：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html%23CJAGIIEJ" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html#CJAGIIEJ</a></p>
+<p>​      《内存管理白皮书》 4.6.3节可以看到一些描述；</p>
+</blockquote>
+<p><strong>（B）、无法处理浮动垃圾,可能出现”Concurrent Mode Failure”失败</strong></p>
+<blockquote>
+<p><strong>（1）、浮动垃圾（Floating Garbage）</strong></p>
+<p>​      <strong>在并发清除时，用户线程新产生的垃圾</strong>，称为浮动垃圾；</p>
+<p>​      这使得并发清除时需要预留一定的内存空间，不能像其他收集器在老年代几乎填满再进行收集；</p>
+<p>​      也要可以认为CMS所需要的空间比其他垃圾收集器大；</p>
+<p>​      “-XX:CMSInitiatingOccupancyFraction”：设置CMS预留内存空间；</p>
+<p>​      JDK1.5默认值为68%；</p>
+<p>​      JDK1.6变为大约92%；               </p>
+<p><strong>（2）、”Concurrent Mode Failure”失败</strong></p>
+<p>​      如果CMS预留内存空间无法满足程序需要，就会出现一次”Concurrent Mode Failure”失败；</p>
+<p>​      这时JVM启用后备预案：临时启用Serail Old收集器，而导致另一次Full GC的产生；</p>
+<p>​      这样的代价是很大的，所以CMSInitiatingOccupancyFraction不能设置得太大。</p>
+</blockquote>
+<p><strong>（C）、产生大量内存碎片</strong></p>
+<p>​      由于<strong>CMS基于”标记-清除”算法，清除后不进行压缩操作</strong>；</p>
+<p>​      前面<a href="http://blog.csdn.net/tjiyu/article/details/53983064" target="_blank" rel="noopener">《Java虚拟机垃圾回收(二) 垃圾回收算法》</a>“标记-清除”算法介绍时曾说过：</p>
+<blockquote>
+<p>​      产生大量不连续的内存碎片会导致分配大内存对象时，无法找到足够的连续内存，从而需要提前触发另一次Full GC动作。</p>
+</blockquote>
+<p>​      解决方法：                </p>
+<blockquote>
+<p><strong>（1）、”-XX:+UseCMSCompactAtFullCollection”</strong></p>
+<p>​      使得CMS出现上面这种情况时不进行Full GC，而开启内存碎片的合并整理过程；</p>
+<p>​      但合并整理过程无法并发，停顿时间会变长；</p>
+<p>​      默认开启（但不会进行，结合下面的CMSFullGCsBeforeCompaction）；</p>
+<p><strong>（2）、”-XX:+CMSFullGCsBeforeCompaction”</strong></p>
+<p>​      设置执行多少次不压缩的Full GC后，来一次压缩整理；</p>
+<p>​      为减少合并整理过程的停顿时间；</p>
+<p>​      默认为0，也就是说每次都执行Full GC，不会进行压缩整理；</p>
+</blockquote>
+<p>​      由于空间不再连续，CMS需要使用可用”空闲列表”内存分配方式，这比简单实用”碰撞指针”分配内存消耗大；</p>
+<p>​      更多关于内存分配方式请参考：《<a href="http://blog.csdn.net/tjiyu/article/details/53923392" target="_blank" rel="noopener">Java对象在Java虚拟机中的创建过程</a>》</p>
+</blockquote>
+<p>​      <strong>总体来看，与Parallel Old垃圾收集器相比，CMS减少了执行老年代垃圾收集时应用暂停的时间；</strong></p>
+<p>​      <strong>但却增加了新生代垃圾收集时应用暂停的时间、降低了吞吐量而且需要占用更大的堆空间；</strong></p>
+<p>更多CMS收集器信息请参考：</p>
+<p>​      《垃圾收集调优指南》 8节 Concurrent Mark Sweep (CMS) Collector：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html%23concurrent_mark_sweep_cms_collector" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html#concurrent_mark_sweep_cms_collector</a></p>
+<p>​      《内存管理白皮书》 4.6节 Concurrent Mark-Sweep (CMS) Collector：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="8、G1收集器"><a href="#8、G1收集器" class="headerlink" title="8、G1收集器"></a><strong>8、G1收集器</strong></h2><blockquote>
+<p>​      G1（<strong>Garbage-First</strong>）是<strong>JDK7-u4</strong>才推出商用的收集器；</p>
+<p><strong>1、特点</strong></p>
+<blockquote>
+<p><strong>（A）、并行与并发</strong></p>
+<p>​      能充分利用多CPU、多核环境下的硬件优势；</p>
+<p>​      可以并行来缩短”Stop The World”停顿时间；</p>
+<p>​      也可以并发让垃圾收集与用户程序同时进行；</p>
+<p><strong>（B）、分代收集，收集范围包括新生代和老年代</strong>    </p>
+<p>​      能独立管理整个GC堆（新生代和老年代），而不需要与其他收集器搭配；</p>
+<p>​      能够采用不同方式处理不同时期的对象；</p>
+<p>​                </p>
+<p>​      虽然保留分代概念，但Java堆的内存布局有很大差别；</p>
+<p>​      将整个堆划分为多个大小相等的独立区域（Region）；</p>
+<p>​      新生代和老年代不再是物理隔离，它们都是一部分Region（不需要连续）的集合；</p>
+<p>​      更多G1内存布局信息请参考：</p>
+<blockquote>
+<p>​      《垃圾收集调优指南》 9节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html%23garbage_first_garbage_collection" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html#garbage_first_garbage_collection</a></p>
+</blockquote>
+<p><strong>（C）、结合多种垃圾收集算法，空间整合，不产生碎片</strong></p>
+<p>​      从整体看，是基于标记-整理算法；</p>
+<p>​      从局部（两个Region间）看，是基于复制算法；</p>
+<p>​      这是一种类似火车算法的实现；</p>
+<p>​      都不会产生内存碎片，有利于长时间运行；</p>
+<p><strong>（D）、可预测的停顿：低停顿的同时实现高吞吐量</strong></p>
+<p>​      G1除了追求低停顿处，还能建立可预测的停顿时间模型；</p>
+<p>​      可以明确指定M毫秒时间片内，垃圾收集消耗的时间不超过N毫秒；</p>
+</blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      面向服务端应用，针对具有大内存、多处理器的机器；</p>
+<p>​      最主要的应用是为需要低GC延迟，并具有大堆的应用程序提供解决方案；</p>
+<p>​      如：在堆大小约6GB或更大时，可预测的暂停时间可以低于0.5秒；</p>
+<p>​            </p>
+<p>​      用来替换掉JDK1.5中的CMS收集器；</p>
+<p>​      <strong>在下面的情况时，使用G1可能比CMS好</strong>：</p>
+<blockquote>
+<p>​      （1）、超过50％的Java堆被活动数据占用；</p>
+<p>​      （2）、对象分配频率或年代提升频率变化很大；</p>
+<p>​      （3）、GC停顿时间过长（长于0.5至1秒）。</p>
+</blockquote>
+<p>​      <strong>是否一定采用G1呢？也未必：</strong></p>
+<blockquote>
+<p>​      如果现在采用的收集器没有出现问题，不用急着去选择G1；</p>
+<p>​      如果应用程序追求低停顿，可以尝试选择G1；</p>
+<p>​      是否代替CMS需要实际场景测试才知道。</p>
+</blockquote>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseG1GC”：指定使用G1收集器；</strong></p>
+<p>​      <strong>“-XX:InitiatingHeapOccupancyPercent”：当整个Java堆的占用率达到参数值时，开始并发标记阶段；默认为45；</strong></p>
+<p>​      <strong>“-XX:MaxGCPauseMillis”：为G1设置暂停时间目标，默认值为200毫秒；</strong></p>
+<p>​      <strong>“-XX:G1HeapRegionSize”：设置每个Region大小，范围1MB到32MB；目标是在最小Java堆时可以拥有约2048个Region；</strong></p>
+<p>​      更多关于G1参数设置请参考：</p>
+<blockquote>
+<p>​      《垃圾收集调优指南》 10.5节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc_tuning.html%23important_defaults" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc_tuning.html#important_defaults</a></p>
+</blockquote>
+<p><strong>4、为什么G1收集器可以实现可预测的停顿</strong></p>
+<p>​      G1可以建立可预测的停顿时间模型，是因为：</p>
+<blockquote>
+<p>​      可以有计划地避免在Java堆的进行全区域的垃圾收集；</p>
+<p>​      G1跟踪各个Region获得其收集价值大小，在后台维护一个优先列表；</p>
+<p>​      每次根据允许的收集时间，优先回收价值最大的Region（名称Garbage-First的由来）；</p>
+<p>​      这就保证了在有限的时间内可以获取尽可能高的收集效率；</p>
+</blockquote>
+<p><strong>5、一个对象被不同区域引用的问题</strong></p>
+<p>​      一个Region不可能是孤立的，一个Region中的对象可能被其他任意Region中对象引用，判断对象存活时，是否需要扫描整个Java堆才能保证准确？</p>
+<p>​      在其他的分代收集器，也存在这样的问题（而G1更突出）：</p>
+<blockquote>
+<p>​      回收新生代也不得不同时扫描老年代？</p>
+</blockquote>
+<p>​      这样的话会降低Minor GC的效率；</p>
+<p>​      <strong>解决方法：</strong></p>
+<blockquote>
+<p>​      无论G1还是其他分代收集器，JVM都是使用Remembered Set来避免全局扫描：</p>
+<blockquote>
+<p>​      每个Region都有一个对应的Remembered Set；</p>
+<p>​      每次Reference类型数据写操作时，都会产生一个Write Barrier暂时中断操作；</p>
+<p>​      然后检查将要写入的引用指向的对象是否和该Reference类型数据在不同的Region（其他收集器：检查老年代对象是否引用了新生代对象）；</p>
+<p>​      如果不同，通过CardTable把相关引用信息记录到引用指向对象的所在Region对应的Remembered Set中；</p>
+<p>​                    </p>
+<p>​      当进行垃圾收集时，在GC根节点的枚举范围加入Remembered Set；</p>
+<p>​      就可以保证不进行全局扫描，也不会有遗漏。</p>
+</blockquote>
+</blockquote>
+<p><strong>6、G1收集器运作过程</strong></p>
+<p>​      不计算维护Remembered Set的操作，可以分为4个步骤（与CMS较为相似）。</p>
+<blockquote>
+<p><strong>（A）、初始标记（Initial Marking）</strong></p>
+<p>​      仅标记一下GC Roots能直接关联到的对象；</p>
+<p>​      且修改TAMS（Next Top at Mark Start）,让下一阶段并发运行时，用户程序能在正确可用的Region中创建新对象；</p>
+<p>​      需要”Stop The World”，但速度很快；</p>
+<p><strong>（B）、并发标记（Concurrent Marking）</strong></p>
+<p>​      进行GC Roots Tracing的过程；</p>
+<p>​      刚才产生的集合中标记出存活对象；</p>
+<p>​      耗时较长，但应用程序也在运行；</p>
+<p>​      并不能保证可以标记出所有的存活对象；</p>
+<p><strong>（C）、最终标记（Final Marking）</strong></p>
+<p>​      为了修正并发标记期间因用户程序继续运作而导致标记变动的那一部分对象的标记记录；</p>
+<p>​      上一阶段对象的变化记录在线程的Remembered Set Log；</p>
+<p>​      这里把Remembered Set Log合并到Remembered Set中；</p>
+<p>​                    </p>
+<p>​      需要”Stop The World”，且停顿时间比初始标记稍长，但远比并发标记短；</p>
+<p>​      采用多线程并行执行来提升效率；</p>
+<p><strong>（D）、筛选回收（Live Data Counting and Evacuation）</strong></p>
+<p>​      首先排序各个Region的回收价值和成本；</p>
+<p>​      然后根据用户期望的GC停顿时间来制定回收计划；</p>
+<p>​      最后按计划回收一些价值高的Region中垃圾对象；</p>
+<p>​                    </p>
+<p>​      回收时采用”复制”算法，从一个或多个Region复制存活对象到堆上的另一个空的Region，并且在此过程中压缩和释放内存；</p>
+<p>​      可以并发进行，降低停顿时间，并增加吞吐量；</p>
+</blockquote>
+<p>​      <strong>G1收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img7" alt="img"></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/11/支持多文件监控和断点续传/">          
+
+            <span title="支持多文件监控和断点续传">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/05/Redis使用/">         
+
+           <span title="Redis使用">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

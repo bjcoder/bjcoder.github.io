@@ -115,95 +115,6 @@
 	   
 	<div class="article-header">
 	    
-	     <a class="article-title"  href="/2018/05/06/spark on yarn/">spark on yarn</a>  
-	       
-		 
-
-		 <time>2018-05-06 </time>    
-	</div>
-
-
-    <div class="article-excerpt">	
-	
-  	
-
-	  
-
-	  	<p><strong>摘要</strong></p>
-<p>在Spark中，有Yarn-Client和Yarn-Cluster两种模式可以运行在Yarn上，通常Yarn-Cluster适用于生产环境，而Yarn-Clientr更适用于交互，调试模式，以下是它们的区别</p>
-<p><strong>Spark插拨式资源管理</strong></p>
-<p>Spark支持Yarn,Mesos,Standalone三种集群部署模式，它们的共同点：Master服务(Yarn ResourceManager,Mesos master,Spark standalone)来决定哪些应用可以运行以及在哪什么时候运行，Slave服务(Yarn NodeManger)运行在每个节点上，节点上实际运行着Executor进程，此外还监控着它们的运行状态以及资源的消耗</p>
-<p><strong>Spark On Yarn的优势</strong></p>
-<p>\1. Spark支持资源动态共享，运行于Yarn的框架都共享一个集中配置好的资源池</p>
-<p>\2. 可以很方便的利用Yarn的资源调度特性来做分类·，隔离以及优先级控制负载，拥有更灵活的调度策略</p>
-<p>3.Yarn可以自由地选择executor数量</p>
-<p>4.Yarn是唯一支持Spark安全的集群管理器，使用Yarn，Spark可以运行于Kerberized Hadoop之上，在它们进程之间进行安全认证 </p>
-<p><strong>Yarn-cluster VS Yarn-client</strong></p>
-<p>当在Spark On Yarn模式下，每个Spark Executor作为一个Yarn container在运行，同时支持多个任务在同一个container中运行，极大地节省了任务的启动时间</p>
-<p><strong>Appliaction Master</strong></p>
-<p>为了更好的理解这两种模式的区别先了解下Yarn的Application Master概念，在Yarn中，每个application都有一个Application Master进程，它是Appliaction启动的第一个容器，它负责从ResourceManager中申请资源，分配资源，同时通知NodeManager来为Application启动container，Application Master避免了需要一个活动的client来维持，启动Applicatin的client可以随时退出，而由Yarn管理的进程继续在集群中运行</p>
-<p><strong>Yarn-cluster</strong></p>
-<p>在Yarn-cluster模式下，driver运行在Appliaction Master上，Appliaction Master进程同时负责驱动Application和从Yarn中申请资源，该进程运行在Yarn container内，所以启动Application Master的client可以立即关闭而不必持续到Application的生命周期，下图是yarn-cluster模式</p>
-<p><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165742332-1159110454.png" alt="img"></p>
-<p><strong>Yarn-cluster模式下作业执行流程：</strong></p>
-<p>\1. 客户端生成作业信息提交给ResourceManager(RM)</p>
-<p>\2. RM在某一个NodeManager(由Yarn决定)启动container并将Application Master(AM)分配给该NodeManager(NM)</p>
-<p>\3. NM接收到RM的分配，启动Application Master并初始化作业，此时这个NM就称为Driver</p>
-<p>\4. Application向RM申请资源，分配资源同时通知其他NodeManager启动相应的Executor</p>
-<p><strong>Yarn-client</strong></p>
-<p>在Yarn-client中，Application Master仅仅从Yarn中申请资源给Executor，之后client会跟container通信进行作业的调度，下图是Yarn-client模式</p>
-<p><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165804926-17816733.png" alt="img"></p>
-<p><strong>Yarn-client模式下作业执行流程：</strong></p>
-<p>\1. 客户端生成作业信息提交给ResourceManager(RM)</p>
-<p>\2. RM在本地NodeManager启动container并将Application Master(AM)分配给该NodeManager(NM)</p>
-<p>\3. NM接收到RM的分配，启动Application Master并初始化作业，此时这个NM就称为Driver</p>
-<p>\4. Application向RM申请资源，分配资源同时通知其他NodeManager启动相应的Executor</p>
-<p>\5. Executor向本地启动的Application Master注册汇报并完成相应的任务</p>
-<p> <img src="file:///D:/%E4%B8%BA%E7%9F%A5%E7%AC%94%E8%AE%B0%E6%95%B0%E6%8D%AE/temp/87e4b7ac-f143-47b6-9b6e-20b5ea662ce9/128/index_files/de48a141-d70f-4b25-b1ea-08f2a17a4ea6.png" alt="img"><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165822723-1513641104.png" alt="img"></p>
-<p>参考资料：<a href="http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/" target="_blank" rel="noopener">Apache Spark Resource Management and YARN App Models</a></p>
- 
-
-	    
-</div>
-
-<div class="center">
-			
-
-				<span class="post-meta">		
-				<span class="iconfont icon-category"></span>
-				<a class="category-link" href="/categories/大数据/">大数据</a>
-				</span>
-		
-			
-
-		
-				
-				<span class="post-meta">
-				<span class="iconfont icon-tag"></span>
-				<a class="tag-link" href="/tags/spark/">spark</a> <a class="tag-link" href="/tags/复习/">复习</a>
-				</span>			
-			
-
-
-		
-
-		<span class="post-words"><span class="iconfont icon-words"></span>
-		1832
-		</span>		
-</div>		
-
-		
-    <a class="article-readmore" href="/2018/05/06/spark on yarn/">阅读更多</a> 
-    	
-</article>     
-     	
-      	  	
-
-  		
-    	<article class="article">		
-	   
-	<div class="article-header">
-	    
 	     <a class="article-title"  href="/2018/05/06/Hive sql/">Hive sql</a>  
 	       
 		 
@@ -330,6 +241,95 @@
 
 		
     <a class="article-readmore" href="/2018/05/06/Hive sql/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2018/05/06/spark on yarn/">spark on yarn</a>  
+	       
+		 
+
+		 <time>2018-05-06 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<p><strong>摘要</strong></p>
+<p>在Spark中，有Yarn-Client和Yarn-Cluster两种模式可以运行在Yarn上，通常Yarn-Cluster适用于生产环境，而Yarn-Clientr更适用于交互，调试模式，以下是它们的区别</p>
+<p><strong>Spark插拨式资源管理</strong></p>
+<p>Spark支持Yarn,Mesos,Standalone三种集群部署模式，它们的共同点：Master服务(Yarn ResourceManager,Mesos master,Spark standalone)来决定哪些应用可以运行以及在哪什么时候运行，Slave服务(Yarn NodeManger)运行在每个节点上，节点上实际运行着Executor进程，此外还监控着它们的运行状态以及资源的消耗</p>
+<p><strong>Spark On Yarn的优势</strong></p>
+<p>\1. Spark支持资源动态共享，运行于Yarn的框架都共享一个集中配置好的资源池</p>
+<p>\2. 可以很方便的利用Yarn的资源调度特性来做分类·，隔离以及优先级控制负载，拥有更灵活的调度策略</p>
+<p>3.Yarn可以自由地选择executor数量</p>
+<p>4.Yarn是唯一支持Spark安全的集群管理器，使用Yarn，Spark可以运行于Kerberized Hadoop之上，在它们进程之间进行安全认证 </p>
+<p><strong>Yarn-cluster VS Yarn-client</strong></p>
+<p>当在Spark On Yarn模式下，每个Spark Executor作为一个Yarn container在运行，同时支持多个任务在同一个container中运行，极大地节省了任务的启动时间</p>
+<p><strong>Appliaction Master</strong></p>
+<p>为了更好的理解这两种模式的区别先了解下Yarn的Application Master概念，在Yarn中，每个application都有一个Application Master进程，它是Appliaction启动的第一个容器，它负责从ResourceManager中申请资源，分配资源，同时通知NodeManager来为Application启动container，Application Master避免了需要一个活动的client来维持，启动Applicatin的client可以随时退出，而由Yarn管理的进程继续在集群中运行</p>
+<p><strong>Yarn-cluster</strong></p>
+<p>在Yarn-cluster模式下，driver运行在Appliaction Master上，Appliaction Master进程同时负责驱动Application和从Yarn中申请资源，该进程运行在Yarn container内，所以启动Application Master的client可以立即关闭而不必持续到Application的生命周期，下图是yarn-cluster模式</p>
+<p><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165742332-1159110454.png" alt="img"></p>
+<p><strong>Yarn-cluster模式下作业执行流程：</strong></p>
+<p>\1. 客户端生成作业信息提交给ResourceManager(RM)</p>
+<p>\2. RM在某一个NodeManager(由Yarn决定)启动container并将Application Master(AM)分配给该NodeManager(NM)</p>
+<p>\3. NM接收到RM的分配，启动Application Master并初始化作业，此时这个NM就称为Driver</p>
+<p>\4. Application向RM申请资源，分配资源同时通知其他NodeManager启动相应的Executor</p>
+<p><strong>Yarn-client</strong></p>
+<p>在Yarn-client中，Application Master仅仅从Yarn中申请资源给Executor，之后client会跟container通信进行作业的调度，下图是Yarn-client模式</p>
+<p><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165804926-17816733.png" alt="img"></p>
+<p><strong>Yarn-client模式下作业执行流程：</strong></p>
+<p>\1. 客户端生成作业信息提交给ResourceManager(RM)</p>
+<p>\2. RM在本地NodeManager启动container并将Application Master(AM)分配给该NodeManager(NM)</p>
+<p>\3. NM接收到RM的分配，启动Application Master并初始化作业，此时这个NM就称为Driver</p>
+<p>\4. Application向RM申请资源，分配资源同时通知其他NodeManager启动相应的Executor</p>
+<p>\5. Executor向本地启动的Application Master注册汇报并完成相应的任务</p>
+<p> <img src="file:///D:/%E4%B8%BA%E7%9F%A5%E7%AC%94%E8%AE%B0%E6%95%B0%E6%8D%AE/temp/87e4b7ac-f143-47b6-9b6e-20b5ea662ce9/128/index_files/de48a141-d70f-4b25-b1ea-08f2a17a4ea6.png" alt="img"><img src="https://images2015.cnblogs.com/blog/776259/201609/776259-20160909165822723-1513641104.png" alt="img"></p>
+<p>参考资料：<a href="http://blog.cloudera.com/blog/2014/05/apache-spark-resource-management-and-yarn-app-models/" target="_blank" rel="noopener">Apache Spark Resource Management and YARN App Models</a></p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/spark/">spark</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		1832
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2018/05/06/spark on yarn/">阅读更多</a> 
     	
 </article>     
      	
@@ -1174,7 +1174,7 @@
 	   
 	<div class="article-header">
 	    
-	     <a class="article-title"  href="/2018/01/08/spark资料转载/">spark资料转载</a>  
+	     <a class="article-title"  href="/2018/01/08/机器学习和深入学习资料转载/">机器学习和深入学习资料转载</a>  
 	       
 		 
 
@@ -1188,12 +1188,9 @@
 
 	  
 
-	  	<h1 id="大数据资料转载"><a href="#大数据资料转载" class="headerlink" title="大数据资料转载"></a>大数据资料转载</h1><p><a href="http://spark.apachecn.org/docs/cn/2.2.0/index.html" target="_blank" rel="noopener">spark中文官网</a></p>
-<p><a href="https://cloud.tencent.com/developer/article/1005705?fromSource=gwzcw.700962.700962.700962" target="_blank" rel="noopener">Spark MLlib 算法系列之 FM</a></p>
-<p><a href="http://shujuren.org/article/420.html" target="_blank" rel="noopener">大数据框架对比：Hadoop、Storm、Samza、Spark和Flink</a></p>
-<p><a href="https://cloud.tencent.com/developer/article/1030060" target="_blank" rel="noopener">大数据奇葩说：盘点10个有趣的大数据</a></p>
-<p><a href="https://cloud.tencent.com/developer/article/1030050" target="_blank" rel="noopener">大数据实时推荐-不只是统计</a></p>
-<p><a href="https://cloud.tencent.com/developer/article/1004886" target="_blank" rel="noopener">Spark Cache 性能测试</a></p>
+	  	<h1 id="1-数据集转载"><a href="#1-数据集转载" class="headerlink" title="1.数据集转载"></a>1.数据集转载</h1><p><a href="http://blog.csdn.net/yangdashi888/article/details/70503874" target="_blank" rel="noopener">深度学习常用的数据集，包括各种数据跟图像数据</a></p>
+<p><a href="http://blog.csdn.net/c2a2o2/article/details/74942545" target="_blank" rel="noopener">机器学习数据集</a></p>
+<p><a href="https://site.douban.com/146782/widget/notes/15524697/note/519440833/" target="_blank" rel="noopener">公开的海量数据集 Public Research-Quality Datasets</a></p>
  
 
 	    
@@ -1221,12 +1218,12 @@
 		
 
 		<span class="post-words"><span class="iconfont icon-words"></span>
-		122
+		77
 		</span>		
 </div>		
 
 		
-    <a class="article-readmore" href="/2018/01/08/spark资料转载/">阅读更多</a> 
+    <a class="article-readmore" href="/2018/01/08/机器学习和深入学习资料转载/">阅读更多</a> 
     	
 </article>     
      	

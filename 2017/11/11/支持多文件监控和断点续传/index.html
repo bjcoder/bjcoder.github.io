@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  支持多文件监控和断点续传 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		支持多文件监控和断点续传
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/11 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/大数据/">大数据</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/集群/">集群</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		1608
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a><strong>问题</strong></h1><p>但是官方的 taildirSource 组件貌似是支持nginx 日志，对于log4j 日志好像不太管用。<br>因为log4j 日志会自动切分，log4j 切分日志其实就是新建一个文件，然后把原来的日志文件都改名。但是 taildirSource 组件时不支持文件改名的。如果文件改名会认为是新文件，就会重新读取，这就导致了日志文件重读。</p>
+<hr>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a><strong>解决</strong></h1><p>为了解决这个问题，我去读了 taildirSource 的源码。</p>
+<p>发现了两个地方 需要修改</p>
+<h1 id="1-修改-ReliableTaildirEventReader"><a href="#1-修改-ReliableTaildirEventReader" class="headerlink" title="1.修改 ReliableTaildirEventReader"></a>1.修改 ReliableTaildirEventReader</h1><p>修改ReliableTaildirEventReader 类的 updateTailFiles 方法。</p>
+<p>将其中的 tf.getPath().equals(f.getAbsolutePath()) 判断条件去除。<br>只用判断文件不为空即可，不用判断文件的名字，因为log4j 日志切分文件被重命名了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//        if (tf == null || !tf.getPath().equals(f.getAbsolutePath())) &#123;</span><br><span class="line">                if (tf == null) &#123;//文件不存在 position 中则全读。123</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="2-修改TailFile"><a href="#2-修改TailFile" class="headerlink" title="2.修改TailFile"></a>2.修改TailFile</h1><p>修改TailFile 类的 updatePos 方法</p>
+<p>此处同样的原因，inode 已经能够确定唯一的 文件了，所以不用加 path 作为判定条件了。所以去掉该条件就支持了文件重命名情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   //     if (this.inode == inode &amp;&amp; this.path.equals(path)) </span><br><span class="line">          if (this.inode == inode) </span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<p>修改这两个地方就支持了文件重命名 的问题，实现了目录下多文件监控，断点续传。</p>
+<hr>
+<p>添加自定义source入口，也就是将源码拷贝过来，然后将修改过的代码打包为自定义source的jar 包运行flume 。</p>
+<p>参考 ： <a href="http://blog.csdn.net/u012373815/article/details/54352177" target="_blank" rel="noopener">flume自定义组件的 jar 包管理</a></p>
+<hr>
+<h1 id="3-配置文件"><a href="#3-配置文件" class="headerlink" title="3.配置文件"></a>3.配置文件</h1><p>提供 taildirsource 的配置文件如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line"></span><br><span class="line">a1.sources.r1.type = com.xx.xx.source.taildir.TaildirSource</span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sources.r1.positionFile = /opt/apps/log4j/taildir_position.json</span><br><span class="line">a1.sources.r1.filegroups = f1</span><br><span class="line">a1.sources.r1.filegroups.f1 = /opt/apps/log4j/logs/*.log.*</span><br><span class="line">a1.sources.r1.fileHeader = true12345678</span><br></pre></td></tr></table></figure>
+<p>通过这些修改就 实现了多文件监控和断点续传。支持log4j 日志监控。</p>
+<h1 id="4-监控多个文件夹下的多个文件"><a href="#4-监控多个文件夹下的多个文件" class="headerlink" title="4. 监控多个文件夹下的多个文件"></a>4. 监控多个文件夹下的多个文件</h1><p>监控多个文件夹下的多个文件，只用 配置多个filegroups 即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line"></span><br><span class="line">a1.sources.r1.type = com.xx.xx.source.taildir.TaildirSource</span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sources.r1.positionFile = /opt/apps/log4j/taildir_position.json</span><br><span class="line"></span><br><span class="line">a1.sources.r1.filegroups = f1 f2</span><br><span class="line">a1.sources.r1.filegroups.f1=/opt/apps/log4j/test*.log</span><br><span class="line">a1.sources.r1.filegroups.f2=/opt/apps/log4j2/test*.log</span><br><span class="line">a1.sources.r1.fileHeader = true</span><br><span class="line"></span><br><span class="line">123456789101112</span><br></pre></td></tr></table></figure>
+<p>参考： <a href="http://blog.csdn.net/test103/article/details/55096786#reply" target="_blank" rel="noopener">http://blog.csdn.net/test103/article/details/55096786#reply</a></p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/11/Linux集群资源监控/">          
+
+            <span title="Linux集群资源监控">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/05/垃圾收集器/">         
+
+           <span title="；垃圾收集器">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

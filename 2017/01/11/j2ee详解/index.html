@@ -1,0 +1,944 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  J2ee详解 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		j2ee详解
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/01/11 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		31086
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <ol>
+<li><p>九种基本数据类型的大小，以及他们的封装类。</p>
+<p>| 基本类型 | 大小(字节) | 默认值       | 封装类  |<br>| ——– | ———- | ———— | ——- |<br>| byte     | 1          | (byte)0      | Byte    |<br>| short    | 2          | (short)0     | Short   |<br>| int      | 4          | 0            | Integer |<br>| long     | 8          | 0L           | Long    |<br>| float    | 4          | 0.0f         | Float   |<br>| double   | 8          | 0.0d         | Double  |<br>| boolean  | -          | false        | Boolean |<br>| char     | 2          | \u0000(null) |         |<br>| void     | -          | -            | Void    |</p>
+</li>
+</ol>
+<ol>
+<li><p>Switch能否用string做参数？</p>
+<p>在jdk 7 之前，switch 只能支持 byte、short、char、int 这几个基本数据类型和其对应的封装类型。switch后面的括号里面只能放int类型的值，但由于byte，short，char类型，它们会 自动 转换为int类型（精精度小的向大的转化），所以它们也支持。</p>
+<p>为什么jdk1.7后又可以用string类型作为switch参数呢？</p>
+<p>其实，jdk1.7并没有新的指令来处理switch string，而是通过调用switch中string.hashCode,将string转换为int从而进行判断。</p>
+</li>
+</ol>
+<ol>
+<li><p>equals与==的区别。</p>
+<p><strong>= 比较的是变量(栈)内存中存放的对象的(堆)内存地址，用来判断两个对象的地址是否相同，即是否是指相同一个对象。比较的是真正意义上的指针操作。</strong></p>
+<p>1、比较的是操作符两端的操作数是否是同一个对象。<br>2、两边的操作数必须是同一类型的（可以是父子类之间）才能编译通过。<br>3、比较的是地址，如果是具体的阿拉伯数字的比较，值相等则为true，如：<br>int a=10 与 long b=10L 与 double c=10.0都是相同的（为true），因为他们都指向地址为10的堆。</p>
+<h2 id="equals："><a href="#equals：" class="headerlink" title="equals："></a><strong>equals：</strong></h2><p>　　<strong>equals用来比较的是两个对象的内容是否相等，由于所有的类都是继承自java.lang.Object类的，所以适用于所有对象，如果没有对该方法进行覆盖的话，调用的仍然是Object类中的方法，而Object中的equals方法返回的却是==的判断。</strong></p>
+<p>　　String s=”abce”是一种非常特殊的形式,和new 有本质的区别。它是java中唯一不需要new 就可以产生对象的途径。以String s=”abce”;形式赋值在java中叫直接量,它是在常量池中而不是象new一样放在压缩堆中。这种形式的字符串，在JVM内部发生字符串拘留，即当声明这样的一个字符串后，JVM会在常量池中先查找有有没有一个值为”abcd”的对象,如果有,就会把它赋给当前引用.即原来那个引用和现在这个引用指点向了同一对象,如果没有,则在常量池中新创建一个”abcd”,下一次如果有String s1 = “abcd”;又会将s1指向”abcd”这个对象,即以这形式声明的字符串,只要值相等,任何多个引用都指向同一对象.<br>　　而String s = new String(“abcd”);和其它任何对象一样.每调用一次就产生一个对象，只要它们调用。</p>
+<p>　　也可以这么理解: String str = “hello”; 先在内存中找是不是有”hello”这个对象,如果有，就让str指向那个”hello”.如果内存里没有”hello”，就创建一个新的对象保存”hello”. String str=new String (“hello”) 就是不管内存里是不是已经有”hello”这个对象，都新建一个对象保存”hello”。</p>
+</li>
+<li><p>Object有哪些公用方法？</p>
+<p>Object是所有类的父类，任何类都默认继承Object。</p>
+<h4 id="clone"><a href="#clone" class="headerlink" title="clone"></a><strong>clone</strong></h4><p>保护方法，实现对象的浅复制，只有实现了Cloneable接口才可以调用该方法，否则抛出CloneNotSupportedException异常</p>
+<h4 id="equals"><a href="#equals" class="headerlink" title="equals"></a><strong>equals</strong></h4><p>在Object中与==是一样的，子类一般需要重写该方法</p>
+<h4 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a><strong>hashCode</strong></h4><p>该方法用于哈希查找，重写了equals方法一般都要重写hashCode方法。这个方法在一些具有哈希功能的Collection中用到</p>
+<h4 id="getClass"><a href="#getClass" class="headerlink" title="getClass"></a><strong>getClass</strong></h4><p>final方法，获得运行时类型</p>
+<h4 id="wait"><a href="#wait" class="headerlink" title="wait"></a><strong>wait</strong></h4><p>使当前线程等待该对象的锁，当前线程必须是该对象的拥有者，也就是具有该对象的锁。wait()方法一直等待，直到获得锁或者被中断。wait(long timeout)设定一个超时间隔，如果在规定时间内没有获得锁就返回。<br>调用该方法后当前线程进入睡眠状态，直到以下事件发生：<br>\1. 其他线程调用了该对象的notify方法<br>\2. 其他线程调用了该对象的notifyAll方法<br>\3. 其他线程调用了interrupt中断该线程<br>\4. 时间间隔到了<br>此时该线程就可以被调度了，如果是被中断的话就抛出一个InterruptedException异常</p>
+<h4 id="notify"><a href="#notify" class="headerlink" title="notify"></a><strong>notify</strong></h4><p>唤醒在该对象上等待的某个线程</p>
+<h4 id="notifyAll"><a href="#notifyAll" class="headerlink" title="notifyAll"></a><strong>notifyAll</strong></h4><p>唤醒在该对象上等待的所有线程</p>
+<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a><strong>toString</strong></h4><p>转换成字符串，一般子类都有重写，否则打印句柄</p>
+</li>
+</ol>
+<ol>
+<li>Java的四种引用，强弱软虚，用到的场景。</li>
+</ol>
+<p>   我们知道java语言提供了4种引用类型：强引用、软引用(SoftReference)、弱引用（WeakReference）和幽灵引用（PhantomReference），与引用密切相关的，还有一个引用队列ReferenceQueue。引用和引用队列的关系，对于垃圾回收来说非常重要，学习垃圾回收机制，必须要先了解引用和引用队列的使用方法。本文主要参考网上的一些理论，同时配合自己的一些测试代码，更好的理解这些概念。这篇博客也解决了 <strong>System.gc()和-XX:+DisableExplicitGC启动参数，以及DirectByteBuffer的内存释放</strong> 中遗留的幽灵引用的问题。</p>
+<p>   <strong>1、强引用</strong></p>
+<p>   强引用不会被GC回收，并且在java.lang.ref里也没有实际的对应类型，平时工作接触的最多的就是强引用。<br>   　 Object obj = new Object();这里的obj引用便是一个强引用。如果一个对象具有强引用，那就类似于必不可少的生活用品，<strong>垃圾回收器绝不会回收它</strong>。当内存空 间不足，Java虚拟机宁愿抛出OutOfMemoryError错误，使程序异常终止，也不会靠随意回收具有强引用的对象来解决内存不足问题。</p>
+<p>   <strong>2、软引用</strong></p>
+<p>   如果一个对象只具有软引用，那就类似于可有可物的生活用品。如果<strong>内存空间足够，垃圾回收器就不会回收它，如果内存空间不足了，就会回收这些对象的内存</strong>。只 要垃圾回收器没有回收它，该对象就可以被程序使用。软引用可用来实现内存敏感的高速缓存。 软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收，Java虚拟机就会把这个软引用加入到与之关联的引用队列中。</p>
+<p>   /<em>* </em> 只有当内存不够的时候，才回收这类内存，因此在内存足够的时候，它们通常不被回收 <em> </em></p>
+<p>   * 无论是否发送GC,执行结果都是: <em> java.lang.Object@f9f9d8 </em> null <em> java.lang.Object@f9f9d8 </em> null *</p>
+<p>   * <em> 可以看到:只有发送了GC,将对于从内存中释放的时候,JVM才会将reference假如引用队列 </em>/ public static void soft() throws Exception { Object obj = new Object(); ReferenceQueue refQueue = new ReferenceQueue(); SoftReference softRef = new SoftReference(obj, refQueue); System.out.println(softRef.get()); // java.lang.Object@f9f9d8 System.out.println(refQueue.poll());// null // 清除强引用,触发GC obj = null; System.gc(); System.out.println(softRef.get()); Thread.sleep(200); System.out.println(refQueue.poll()); }</p>
+<p>   这里有几点需要说明：</p>
+<p>   1、System.gc()告诉JVM这是一个执行GC的好时机，但具体执不执行由JVM决定（事实上这段代码一般都会执行GC)</p>
+<p>   2、Thread.sleep(200); 这是因为从对象被回收到JVM将引用加入refQueue队列，需要一定的时间。而且poll并不是一个阻塞方法，如果没有数据会返回null，所以我们选择等待一段时间。</p>
+<p>   <strong>3、弱引用</strong></p>
+<p>   如果一个对象只具有弱引用，那就类似于可有可物的生活用品。弱引用与软引用的区别在于：只具有弱引用的对象拥有更短暂的生命周期。在垃圾回收器线程扫描它所管辖的内存区域的过程中，<strong>一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存</strong>。不过，由于垃圾回收器是一个优先级很低的线程， 因此不一定会很快发现那些只具有弱引用的对象。 弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被垃圾回 收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。</p>
+<p>   /<em>* </em> 弱引用: 当发生GC的时候,Weak引用对象总是会内回收回收。因此Weak引用对象会更容易、更快被GC回收。 <em> Weak引用对象常常用于Map数据结构中，引用占用内存空间较大的对象 </em> *</p>
+<p>   * 如果不发生垃圾回收： <em> java.lang.Object@f9f9d8 </em> null <em> java.lang.Object@f9f9d8 </em> null <em> </em> 如果发生垃圾回收: <em> java.lang.Object@f9f9d8 </em> null <em> null </em> java.lang.ref.WeakReference@422ede <em> </em></p>
+<p>   */ public static void weak() throws Exception { Object obj = new Object(); ReferenceQueue refQueue = new ReferenceQueue(); WeakReference weakRef = new WeakReference(obj, refQueue); System.out.println(weakRef.get()); // java.lang.Object@f9f9d8 System.out.println(refQueue.poll());// null // 清除强引用,触发GC obj = null; System.gc(); System.out.println(weakRef.get()); // 这里特别注意:poll是非阻塞的,remove是阻塞的. // JVM将弱引用放入引用队列需要一定的时间,所以这里先睡眠一会儿 // System.out.println(refQueue.poll());// 这里有可能是null Thread.sleep(200); System.out.println(refQueue.poll()); // System.out.println(refQueue.poll());//这里一定是null,因为已经从队列中移除 // System.out.println(refQueue.remove()); }</p>
+<p>   这里需要注意下：</p>
+<p>   1、remove这是一个阻塞方法，类似于J.U.C并发包下的阻塞队列，如果没有队列没有数据，那么当前线程一直等待。<br>   2、如果队列有数据，那么remove和pool都会将第一个元素出队。</p>
+<p>   <strong>4、幽灵引用(虚引用)</strong><br>   虚引用主要用来跟踪对象被垃圾回收器回收的活动。虚引用与软引用和弱引用的一个区别在于：虚引用必须和引用队列 （ReferenceQueue）联合使用。当垃圾回收器准备回收一个对象时，如果<strong>发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之关联的引用队列</strong>中。程序可以通过判断引用队列中是否已经加入了虚引用，来了解被引用的对象是否将要被垃圾回收。如果程序发现某个虚引用已经被加入到引用队列，那么就可以在所引用的对象的内存被回收之前采取必要的行动。由于Object.finalize()方法的不安全性、低效性，常常使用虚引用完成对象回收前的资源释放工作。参考我的另一篇博客：<strong>解释为什么finalize是不安全的，不建议使用</strong> </p>
+<p>   /<em>* </em> 当GC一但发现了虚引用对象，将会将PhantomReference对象插入ReferenceQueue队列. <em> 而此时PhantomReference所指向的对象并没有被GC回收，而是要等到ReferenceQueue被你真正的处理后才会被回收. </em> *</p>
+<p>   这里特别需要注意：当JVM将虚引用插入到引用队列的时候，虚引用执行的对象内存还是存在的。但是PhantomReference并没有暴露API返回对象。所以如果我想做清理工作，需要继承PhantomReference类，以便访问它指向的对象。如NIO直接内存的自动回收，就使用到了sun.misc.Cleaner</p>
+<ol>
+<li><p>Hashcode的作用。</p>
+<p><strong>Hash</strong></p>
+<p>先用一张图看下什么是Hash</p>
+<p><img src="http://images2015.cnblogs.com/blog/801753/201509/801753-20150927112453678-436094926.jpg" alt="img"></p>
+<p>Hash是散列的意思，就是把任意长度的输入，通过散列算法变换成固定长度的输出，该输出就是散列值。关于散列值，有以下几个关键结论：</p>
+<p>1、如果散列表中存在和散列原始输入K相等的记录，那么K必定在f(K)的存储位置上</p>
+<p>2、<strong>不同关键字经过散列算法变换后可能得到同一个散列地址，这种现象称为碰撞</strong></p>
+<p>3、<strong>如果两个Hash值不同（前提是同一Hash算法），那么这两个Hash值对应的原始输入必定不同</strong></p>
+<p><strong>HashCode</strong></p>
+<p>然后讲下什么是HashCode，总结几个关键点：</p>
+<p>1、HashCode的存在主要是为了查找的快捷性，HashCode是用来在散列存储结构中确定对象的存储地址的</p>
+<p>2、如果两个对象equals相等，那么这两个对象的HashCode一定也相同</p>
+<p>3、如果对象的equals方法被重写，那么对象的HashCode方法也尽量重写</p>
+<p>4、如果两个对象的HashCode相同，不代表两个对象就相同，只能说明这两个对象在散列存储结构中，存放于同一个位置</p>
+<p><strong>HashCode有什么用</strong></p>
+<p>回到最关键的问题，HashCode有什么用？不妨举个例子：</p>
+<p>1、假设内存中有0 1 2 3 4 5 6 7 8这8个位置，如果我有个字段叫做ID，那么我要把这个字段存放在以上8个位置之一，如果不用HashCode而任意存放，那么当查找时就需要到8个位置中去挨个查找</p>
+<p>2、使用HashCode则效率会快很多，把ID的HashCode%8，然后把ID存放在取得余数的那个位置，然后每次查找该类的时候都可以通过ID的HashCode%8求余数直接找到存放的位置了</p>
+<p>3、如果ID的HashCode%8算出来的位置上本身已经有数据了怎么办？这就取决于算法的实现了，比如ThreadLocal中的做法就是从算出来的位置向后查找第一个为空的位置，放置数据；HashMap的做法就是通过链式结构连起来。反正，只要保证放的时候和取的时候的算法一致就行了。</p>
+<p>4、如果ID的HashCode%8相等怎么办（这种对应的是第三点说的链式结构的场景）？这时候就需要定义equals了。先通过HashCode%8来判断类在哪一个位置，再通过equals来在这个位置上寻找需要的类。对比两个类的时候也差不多，先通过HashCode比较，假如HashCode相等再判断equals。<strong>如果两个类的HashCode都不相同，那么这两个类必定是不同的</strong>。</p>
+<p>举个实际的例子Set。我们知道Set里面的元素是不可以重复的，那么如何做到？Set是根据equals()方法来判断两个元素是否相等的。比方说Set里面已经有1000个元素了，那么第1001个元素进来的时候，最多可能调用1000次equals方法，如果equals方法写得复杂，对比的东西特别多，那么效率会大大降低。使用HashCode就不一样了，比方说HashSet，底层是基于HashMap实现的，先通过HashCode取一个模，这样一下子就固定到某个位置了，如果这个位置上没有元素，那么就可以肯定HashSet中必定没有和新添加的元素equals的元素，就可以直接存放了，都不需要比较；如果这个位置上有元素了，逐一比较，比较的时候先比较HashCode，HashCode都不同接下去都不用比了，肯定不一样，HashCode相等，再equals比较，没有相同的元素就存，有相同的元素就不存。如果原来的Set里面有相同的元素，只要HashCode的生成方式定义得好（不重复），不管Set里面原来有多少元素，只需要执行一次的equals就可以了。这样一来，实际调用equals方法的次数大大降低，提高了效率。</p>
+</li>
+</ol>
+<ol>
+<li><p>ArrayList、LinkedList、Vector的区别。</p>
+<p>1.这三个类都实现了List接口（List接口继承了Collection接口），但是也有以下区别</p>
+<p>ArrayList和Vector</p>
+<p>1&gt;.他们都是有序集合，即存储在这两个集合中的元素的位置都是有顺序即连续的，相当于一种动态的数组，我们以后可以按位置索引号取出某个元素，，并且其中的数据是允许重复的。</p>
+<p>2&gt;.简单的说是ArrayList 和Vector 的底层数据是数组的结构</p>
+<p><strong>ArrayList**</strong>和<strong>**Vector、LinkList</strong></p>
+<p>3&gt;.LinkList<strong>即存储在这两个集合中的元素的位置是不连续的，底层数据结构是列表结构</strong></p>
+<p>4&gt;.ArrayList和Vector都是使用数组方式存储数据，此数组元素数大于实际存储的数据以便增加和插入元素，它们都允许直接按序号索引元素，查询速度快，</p>
+<p>但是插入元素要涉及数组元素移动等内存操作，所以索引数据快而插入数据慢</p>
+<p>5&gt;.LinkedList使用双向链表实现存储，按序号索引数据需要进行前向或后向遍历，但是插入数据时只需要记录本项的前后项即可，所以插入,修改，删除 速度较快.</p>
+<p>6&gt;.Vector是同步处理,性能较低；ArrayList是使用异步处理，性能高。</p>
+<p>7&gt;.Vector是线程安全的，ArrayList是非线程安全。<strong>LinkedList是非线程安全</strong></p>
+<p><strong>8&gt;.</strong>一般情况都用ArrayList，ArrayList占据内存小</p>
+<p>2.还有数据方面（<strong>但是很少用到</strong>）的区别：</p>
+<p>1&gt;.ArrayList与Vector都有一个初始的容量大小，当存储进它们里面的元素的个数超过了容量时，就需要增加ArrayList与Vector的存储空间(每次增加的存储单元的个数在内存空间利用与程序效率之间要取得一定的平衡);</p>
+<p>2&gt;.Vector默认增长为原来两倍，而ArrayList的增长策略在文档中没有明确规定（从源代码看到的是增长为原来的1.5倍）</p>
+<p>3&gt;.ArrayList与Vector都可以设置初始的空间大小，Vector还可以设置增长的空间大小，而ArrayList没有提供设置增长空间的方法</p>
+</li>
+</ol>
+<ol>
+<li><p>String、StringBuffer与StringBuilder的区别。</p>
+<ol>
+<li>首先说运行速度，或者说是执行速度，<strong>在这方面运行速度快慢为：StringBuilder &gt; StringBuffer &gt; String</strong></li>
+</ol>
+<p>　　<strong>String最慢的原因：</strong></p>
+<p>　　<strong>String为字符串常量，而StringBuilder和StringBuffer均为字符串变量，即String对象一旦创建之后该对象是不可更改的，但后两者的对象是变量，是可以更改的。</strong>以下面一段代码为例：</p>
+</li>
+</ol>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 String str=&quot;abc&quot;;</span><br><span class="line">2 System.out.println(str);</span><br><span class="line">3 str=str+&quot;de&quot;;</span><br><span class="line">4 System.out.println(str);</span><br></pre></td></tr></table></figure>
+<p>   　　如果运行这段代码会发现先输出“abc”，然后又输出“abcde”，好像是str这个对象被更改了，其实，这只是一种假象罢了，JVM对于这几行代码是这样处理的，首先创建一个String对象str，并把“abc”赋值给str，然后在第三行中，其实JVM又创建了一个新的对象也名为str，然后再把原来的str的值和“de”加起来再赋值给新的str，而原来的str就会被JVM的垃圾回收机制（GC）给回收掉了，所以，str实际上并没有被更改，也就是前面说的String对象一旦创建之后就不可更改了。所以，Java中对String对象进行的操作实际上是一个不断创建新的对象并且将旧的对象回收的一个过程，所以执行速度很慢。</p>
+<p>   　　而StringBuilder和StringBuffer的对象是变量，对变量进行操作就是直接对该对象进行更改，而不进行创建和回收的操作，所以速度要比String快很多。</p>
+<p>   　　另外，有时候我们会这样对字符串进行赋值</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 String str=&quot;abc&quot;+&quot;de&quot;;</span><br><span class="line">2 StringBuilder stringBuilder=new StringBuilder().append(&quot;abc&quot;).append(&quot;de&quot;);</span><br><span class="line">3 System.out.println(str);</span><br><span class="line">4 System.out.println(stringBuilder.toString());</span><br></pre></td></tr></table></figure>
+<p>   　　这样输出结果也是“abcde”和“abcde”，但是String的速度却比StringBuilder的反应速度要快很多，这是因为第1行中的操作和</p>
+<p>   　　String str=”abcde”;</p>
+<p>   　　是完全一样的，所以会很快，而如果写成下面这种形式</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 String str1=&quot;abc&quot;;</span><br><span class="line">2 String str2=&quot;de&quot;;</span><br><span class="line">3 String str=str1+str2;</span><br></pre></td></tr></table></figure>
+<p>   　　那么JVM就会像上面说的那样，不断的创建、回收对象来进行这个操作了。速度就会很慢。</p>
+<p>   　　2. 再来说线程安全</p>
+<p>   　　<strong>在线程安全上，StringBuilder是线程不安全的，而StringBuffer是线程安全的</strong></p>
+<p>   　　如果一个StringBuffer对象在字符串缓冲区被多个线程使用时，StringBuffer中很多方法可以带有synchronized关键字，所以可以保证线程是安全的，但StringBuilder的方法则没有该关键字，所以不能保证线程安全，有可能会出现一些错误的操作。所以如果要进行的操作是多线程的，那么就要使用StringBuffer，但是在单线程的情况下，还是建议使用速度比较快的StringBuilder。</p>
+<p>   　　3. 总结一下<br>   　　<strong>String：适用于少量的字符串操作的情况</strong></p>
+<p>   　　<strong>StringBuilder：适用于单线程下在字符缓冲区进行大量操作的情况</strong></p>
+<p>   　　<strong>StringBuffer：适用多线程下在字符缓冲区进行大量操作的情况</strong></p>
+<ol>
+<li><p>Map、Set、List、Queue、Stack的特点与用法。</p>
+<ul>
+<li>Map</li>
+</ul>
+<blockquote>
+<p>键映射到值的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值。</p>
+<p>某些映射实现可明确保证其顺序，如 TreeMap 类；另一些映射实现则不保证顺序，如 HashMap 类。</p>
+<p>Map中元素，可以将key序列、value序列单独抽取出来。<br>使用keySet()抽取key序列，将map中的所有keys生成一个Set。<br>使用values()抽取value序列，将map中的所有values生成一个Collection。<br>为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。</p>
+</blockquote>
+<ul>
+<li>Set</li>
+</ul>
+<blockquote>
+<p>一个不包含重复元素的 collection。更确切地讲，set 不包含满足 e1.equals(e2) 的元素对 e1 和 e2，并且最多包含一个 null 元素。</p>
+<p>不可随机访问包含的元素</p>
+<p>只能用Iterator实现单向遍历</p>
+<p>Set 没有同步方法</p>
+</blockquote>
+<ul>
+<li>List</li>
+</ul>
+<blockquote>
+<p>可随机访问包含的元素<br>元素是有序的<br>可在任意位置增、删元素<br>不管访问多少次，元素位置不变<br>允许重复元素<br>用Iterator实现单向遍历，也可用ListIterator实现双向遍历</p>
+</blockquote>
+<ul>
+<li>Queue</li>
+</ul>
+<blockquote>
+<p>先进先出</p>
+<p>Queue使用时要尽量避免Collection的add()和remove()方法，而是要使用offer()来加入元素，使用poll()来获取并移出元素。它们的优点是通过返回值可以判断成功与否，add()和remove()方法在失败的时候会抛出异常。 如果要使用前端而不移出该元素，使用element()或者peek()方法。<br>值得注意的是LinkedList类实现了Queue接口，因此我们可以把LinkedList当成Queue来用。</p>
+<p>Queue 实现通常不允许插入 null 元素，尽管某些实现（如 LinkedList）并不禁止插入 null。即使在允许 null 的实现中，也不应该将 null 插入到 Queue 中，因为 null 也用作 poll 方法的一个特殊返回值，表明队列不包含元素。</p>
+</blockquote>
+<ul>
+<li>Stack</li>
+</ul>
+<blockquote>
+<p>后进先出</p>
+<p>Stack继承自Vector（可增长的对象数组），也是同步的<br>它通过五个操作对类 Vector 进行了扩展 ，允许将向量视为堆栈。它提供了通常的 push 和 pop 操作，以及取堆栈顶点的 peek 方法、测试堆栈是否为空的 empty 方法、在堆栈中查找项并确定到<strong>堆栈顶</strong>距离的 search 方法。</p>
+</blockquote>
+<ul>
+<li>用法</li>
+</ul>
+<blockquote>
+<p>如果涉及到堆栈、队列等操作，应该考虑用List；</p>
+<p>对于需要快速插入，删除元素，应该使用LinkedList；</p>
+<p>如果需要快速随机访问元素，应该使用ArrayList。</p>
+<p>如果程序在单线程环境中，或者访问仅仅在一个线程中进行，考虑非同步的类，其效率较高</p>
+</blockquote>
+</li>
+<li><p>HashMap和HashTable的区别。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HashMap是Hashtable的轻量级实现(非线程安全的实现)，他们都完成了Map接口，主要区别在于HashMap允许空(null)键值(key),由于非线程安全，效率上可能高于Hashtable。</span><br><span class="line">HashMap允许将null作为一个entry的key或者value，而Hashtable不允许。</span><br><span class="line">HashMap把Hashtable的contains方法去掉了，改成containsvalue和containsKey。因为contains方法容易让人引起误解。</span><br><span class="line">Hashtable继承自Dictionary类，而HashMap是Java1.2引进的Map interface的一个实现。</span><br><span class="line">最大的不同是，Hashtable的方法是Synchronize的，而HashMap不是，在多个线程访问Hashtable时，不需要自己为它的方法实现同步，而HashMap 就必须为之提供外同步(如果是ArrayList：List lst = Collections.synchronizedList(new ArrayList());如果是HashMap：Map map = Collections.synchronizedMap(new HashMap());)。</span><br><span class="line">Hashtable和HashMap采用的hash/rehash算法都大概一样，所以性能不会有很大的差异</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>HashMap和ConcurrentHashMap的区别，HashMap的底层源码。</p>
+<p>　　Hashmap本质是数组加链表。根据key取得hash值，然后计算出数组下标，如果多个key对应到同一个下标，就用链表串起来，新插入的在前面。</p>
+<p>　　ConcurrentHashMap：在hashMap的基础上，ConcurrentHashMap将数据分为多个segment，默认16个（concurrency level），然后每次操作对一个segment加锁，避免多线程锁的几率，提高并发效率。</p>
+<h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><p><strong>一、HashMap概述</strong></p>
+<h1 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h1><p>　　HashMap基于哈希表的 <code>Map</code> 接口的实现。此实现提供所有可选的映射操作，并允许使用 <code>null</code> 值和 <code>null</code> 键。（除了不同步和允许使用 null 之外，<code>HashMap</code> 类与 <code>Hashtable</code> 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</p>
+<h1 id="-2"><a href="#-2" class="headerlink" title=" "></a> </h1><p>　　值得注意的是HashMap不是线程安全的，如果想要线程安全的HashMap，可以通过Collections类的静态方法synchronizedMap获得线程安全的HashMap。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1  Map map = Collections.synchronizedMap(new HashMap());</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>**二、HashMap的数据结构**
+
+　HashMap的底层主要是基于数组和链表来实现的，它之所以有相当快的查询速度主要是因为它是通过计算散列码来决定存储的位置，能够很快的计算出对象所存储的位置。HashMap中主要是通过key的hashCode来计算hash值的，只要hashCode相同，计算出来的hash值就一样。如果存储的对象对多了，就有可能不同的对象所算出来的hash值是相同的，这就出现了所谓的hash冲突。学过数据结构的同学都知道，解决hash冲突的方法有很多，HashMap底层是通过链表来解决hash冲突的。
+
+​                                      **![技术分享](https://images2015.cnblogs.com/blog/679904/201510/679904-20151025192734520-1277367181.png)**
+
+从上图中可以看出，HashMap底层就是一个数组结构，数组中存放的是一个Entry对象，如果产生的hash冲突，也就是说要存储的那个位置上面已经存储了对象了，这时候该位置存储的就是一个链表了。我们看看HashMap中Entry类的代码：
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> 1 static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; &#123;</span><br><span class="line"> 2         final K key;</span><br><span class="line"> 3         V value;</span><br><span class="line"> 4         Entry&lt;K,V&gt; next;</span><br><span class="line"> 5         final int hash;</span><br><span class="line"> 6 </span><br><span class="line"> 7         /**</span><br><span class="line"> 8          * Creates new entry.</span><br><span class="line"> 9          */</span><br><span class="line">10         Entry(int h, K k, V v, Entry&lt;K,V&gt; n) &#123;</span><br><span class="line">11             value = v;</span><br><span class="line">12             next = n; //hash值冲突后存放在链表的下一个</span><br><span class="line">13             key = k;</span><br><span class="line">14             hash = h;</span><br><span class="line">15         &#125;</span><br><span class="line">16 </span><br><span class="line">17         .........</span><br><span class="line">18     &#125;</span><br></pre></td></tr></table></figure>
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+HashMap其实就是一个Entry数组，Entry对象中包含了键和值，其中next也是一个Entry对象，它就是用来处理hash冲突的，形成一个链表。
+
+**三、HashMap源码分析**
+
+　　先看看HashMap类中的一些关键属性：
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1 transient Entry[] table;//存储元素的实体数组</span><br><span class="line">2 </span><br><span class="line">3 transient int size;//存放元素的个数</span><br><span class="line">4 </span><br><span class="line">5 int threshold; //临界值   当实际大小超过临界值时，会进行扩容threshold = 加载因子*容量</span><br><span class="line">6 </span><br><span class="line">7 final float loadFactor; //加载因子</span><br><span class="line">8 </span><br><span class="line">9 transient int modCount;//被修改的次数</span><br></pre></td></tr></table></figure>
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+　   其中加载因子是表示Hash表中元素的填满的程度.若:加载因子越大,填满的元素越多,好处是,空间利用率高了,但:冲突的机会加大了.反之,加载因子越小,填满的元素越少,
+好处是:冲突的机会减小了,但:空间浪费多了.冲突的机会越大,则查找的成本越高.反之,查找的成本越小.因而,查找时间就越小.因此,必须在 &quot;冲突的机会&quot;与&quot;空间利用率&quot;之间寻找一种平衡与折衷. 这种平衡与折衷本质上是数据结构中有名的&quot;时-空&quot;矛盾的平衡与折衷.
+
+　　如果机器内存足够，并且想要提高查询速度的话可以将加载因子设置小一点；相反如果机器内存紧张，并且对查询速度没有什么要求的话可以将加载因子设置大一点。不过一般我们都不用去设置它，让它取默认值0.75就好了。
+
+　　下面看看HashMap的几个构造方法：
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> 1 public HashMap(int initialCapacity, float loadFactor) &#123;</span><br><span class="line"> 2         //确保数字合法</span><br><span class="line"> 3         if (initialCapacity &lt; 0)</span><br><span class="line"> 4             throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +</span><br><span class="line"> 5                                                initialCapacity);</span><br><span class="line"> 6         if (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line"> 7             initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line"> 8         if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))</span><br><span class="line"> 9             throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +</span><br><span class="line">10                                                loadFactor);</span><br><span class="line">11 </span><br><span class="line">12         // Find a power of 2 &gt;= initialCapacity</span><br><span class="line">13         int capacity = 1;   //初始容量</span><br><span class="line">14         while (capacity &lt; initialCapacity)   //确保容量为2的n次幂，使capacity为大于initialCapacity的最小的2的n次幂</span><br><span class="line">15             capacity &lt;&lt;= 1;</span><br><span class="line">16 </span><br><span class="line">17         this.loadFactor = loadFactor;</span><br><span class="line">18         threshold = (int)(capacity * loadFactor);</span><br><span class="line">19         table = new Entry[capacity];</span><br><span class="line">20         init();</span><br><span class="line">21     &#125;</span><br><span class="line">22 </span><br><span class="line">23     public HashMap(int initialCapacity) &#123;</span><br><span class="line">24         this(initialCapacity, DEFAULT_LOAD_FACTOR);</span><br><span class="line">25     &#125;</span><br><span class="line">26 </span><br><span class="line">27     public HashMap() &#123;</span><br><span class="line">28         this.loadFactor = DEFAULT_LOAD_FACTOR;</span><br><span class="line">29         threshold = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);</span><br><span class="line">30         table = new Entry[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">31         init();</span><br><span class="line">32     &#125;</span><br></pre></td></tr></table></figure>
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+　　我们可以看到在构造HashMap的时候如果我们指定了加载因子和初始容量的话就调用第一个构造方法，否则的话就是用默认的。默认初始容量为16，默认加载因子为0.75。我们可以看到上面代码中13-15行，这段代码的作用是确保容量为2的n次幂，使capacity为大于initialCapacity的最小的2的n次幂，至于为什么要把容量设置为2的n次幂，我们等下再看。
+
+　　下面看看HashMap存储数据的过程是怎样的，首先看看HashMap的put方法：
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> 1 public V put(K key, V value) &#123;</span><br><span class="line"> 2         if (key == null) //如果键为null的话，调用putForNullKey(value)</span><br><span class="line"> 3             return putForNullKey(value);</span><br><span class="line"> 4         int hash = hash(key.hashCode());//根据键的hashCode计算hash码</span><br><span class="line"> 5         int i = indexFor(hash, table.length);</span><br><span class="line"> 6         for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) &#123; //处理冲突的，如果hash值相同，则在该位置用链表存储</span><br><span class="line"> 7             Object k;</span><br><span class="line"> 8             if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123; //如果key相同则覆盖并返回旧值</span><br><span class="line"> 9                 V oldValue = e.value;</span><br><span class="line">10                 e.value = value;</span><br><span class="line">11                 e.recordAccess(this);</span><br><span class="line">12                 return oldValue;</span><br><span class="line">13             &#125;</span><br><span class="line">14         &#125;</span><br><span class="line">15 </span><br><span class="line">16         modCount++;</span><br><span class="line">17         addEntry(hash, key, value, i);</span><br><span class="line">18         return null;</span><br><span class="line">19     &#125;</span><br></pre></td></tr></table></figure>
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+当我们往hashmap中put元素的时候，先根据key的hash值得到这个元素在数组中的位置（即下标），然后就可以把这个元素放到对应的位置中了。如果这个元素所在的位子上已经存放有其他元素了，那么在同一个位子上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。从hashmap中get元素时，首先计算key的hashcode，找到数组中对应位置的某一元素，然后通过key的equals方法在对应位置的链表中找到需要的元素。
+
+具体的实现是：
+
+当你的key为null时，会调用**putForNullKey,HashMap允许key为null,这样的对像是放在table[0]中。**
+
+如果不为空，则调用int hash = hash(key.hashCode());这是hashmap的一个自定义的hash,在key.hashCode()基础上进行二次hash
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 static int hash(int h) &#123;  </span><br><span class="line">2         h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);  </span><br><span class="line">3         return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);  </span><br><span class="line">4   &#125;</span><br></pre></td></tr></table></figure>
+
+得到hash码之后就会通过hash码去计算出应该存储在数组中的索引，计算索引的函数如下：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 static int indexFor(int h, int length) &#123;  </span><br><span class="line">2        return h &amp; (length-1);  </span><br><span class="line">3    &#125;</span><br></pre></td></tr></table></figure>
+
+　这个方法非常巧妙，它通过 h &amp; (table.length -1) 来得到该对象的保存位，而HashMap底层数组的长度总是 2 的n 次方，这是HashMap在速度上的优化。当length总是 2 的n次方时，h&amp; (length-1)运算等价于对length取模，也就是h%length，但是&amp;比%具有更高的效率。当数组长度为2的n次幂的时候，不同的key算得得index相同的几率较小，那么数据在数组上分布就比较均匀，也就是说碰撞的几率小，相对的，查询的时候就不用遍历某个位置上的链表，这样查询效率也就较高了。
+
+下面我们继续回到put方法里面，前面已经计算出索引的值了，看到第6到14行，如果数组中该索引的位置的链表已经存在key相同的对象，则将其覆盖掉并返回原先的值。如果没有与key相同的键，则调用addEntry方法创建一个Entry对象，addEntry方法如下：
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1 void addEntry(int hash, K key, V value, int bucketIndex) &#123;</span><br><span class="line">2         Entry&lt;K,V&gt; e = table[bucketIndex]; //如果要加入的位置有值，将该位置原先的值设置为新entry的next,也就是新entry链表的下一个节点</span><br><span class="line">3         table[bucketIndex] = new Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">4         if (size++ &gt;= threshold) //如果大于临界值就扩容</span><br><span class="line">5             resize(2 * table.length); //以2的倍数扩容</span><br><span class="line">6     &#125;</span><br></pre></td></tr></table></figure>
+
+参数bucketIndex就是indexFor函数计算出来的索引值，第2行代码是取得数组中索引为bucketIndex的Entry对象，第3行就是用hash、key、value构建一个新的Entry对象放到索引为bucketIndex的位置，并且将该位置原先的对象设置为新对象的next构成链表。
+
+　　第4行和第5行就是判断put后size是否达到了临界值threshold，如果达到了临界值就要进行扩容，HashMap扩容是扩为原来的两倍。resize()方法如下：
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> 1 void resize(int newCapacity) &#123;</span><br><span class="line"> 2         Entry[] oldTable = table;</span><br><span class="line"> 3         int oldCapacity = oldTable.length;</span><br><span class="line"> 4         if (oldCapacity == MAXIMUM_CAPACITY) &#123;</span><br><span class="line"> 5             threshold = Integer.MAX_VALUE;</span><br><span class="line"> 6             return;</span><br><span class="line"> 7         &#125;</span><br><span class="line"> 8 </span><br><span class="line"> 9         Entry[] newTable = new Entry[newCapacity];</span><br><span class="line">10         transfer(newTable);//用来将原先table的元素全部移到newTable里面</span><br><span class="line">11         table = newTable;  //再将newTable赋值给table</span><br><span class="line">12         threshold = (int)(newCapacity * loadFactor);//重新计算临界值</span><br><span class="line">13     &#125;</span><br></pre></td></tr></table></figure>
+
+[![复制代码](https://common.cnblogs.com/images/copycode.gif)](javascript:void(0);)
+
+扩容是需要进行数组复制的，上面代码中第10行为复制数组，复制数组是非常消耗性能的操作，所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。
+</code></pre><ol>
+<li><p>TreeMap、HashMap、LindedHashMap的区别。</p>
+<p>Map主要用于存储健值对，根据键得到值，因此不允许键重复(重复了覆盖了),但允许值重复。<br>Hashmap 是一个最常用的Map,它根据键的HashCode 值存储数据,根据键可以直接获取它的值，具有很快的访问速度，遍历时，取得数据的顺序是完全随机的。HashMap最多只允许一条记录的键为Null;允许多条记录的值为 Null;HashMap不支持线程的同步，即任一时刻可以有多个线程同时写HashMap;可能会导致数据的不一致。如果需要同步，可以用 Collections的synchronizedMap方法使HashMap具有同步的能力，或者使用ConcurrentHashMap。<br>Hashtable与 HashMap类似,它继承自Dictionary类，不同的是:它不允许记录的键或者值为空;它支持线程的同步，即任一时刻只有一个线程能写Hashtable,因此也导致了 Hashtable在写入时会比较慢。<br>LinkedHashMap保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的.也可以在构造时用带参数，按照应用次数排序。在遍历的时候会比HashMap慢，不过有种情况例外，当HashMap容量很大，实际数据较少时，遍历起来可能会比LinkedHashMap慢，因为LinkedHashMap的遍历速度只和实际数据有关，和容量无关，而HashMap的遍历速度和他的容量有关。<br>TreeMap实现SortMap接口，能够把它保存的记录根据键排序,默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator 遍历TreeMap时，得到的记录是排过序的。</p>
+<p>一般情况下，我们用的最多的是HashMap,HashMap里面存入的键值对在取出的时候是随机的,它根据键的HashCode值存储数据,根据键可以直接获取它的值，具有很快的访问速度。在Map 中插入、删除和定位元素，HashMap 是最好的选择。<br>TreeMap取出来的是排序后的键值对。但如果您要<strong>按自然顺序或自定义顺序遍历键</strong>，那么TreeMap会更好。<br>LinkedHashMap 是HashMap的一个子类，如果需要<strong>输出的顺序和输入的相同</strong>,那么用LinkedHashMap可以实现,它还可以按读取顺序来排列，像连接池中可以应用。</p>
+</li>
+</ol>
+<pre><code>\1. HashSet是通过HashMap实现的,TreeSet是通过TreeMap实现的,只不过Set用的只是Map的key
+\2. Map的key和Set都有一个共同的特性就是集合的唯一性.TreeMap更是多了一个排序的功能.
+\3. hashCode和equal()是HashMap用的, 因为无需排序所以只需要关注定位和唯一性即可.
+   a. hashCode是用来计算hash值的,hash值是用来确定hash表索引的.
+   b. hash表中的一个索引处存放的是一张链表, 所以还要通过equal方法循环比较链上的每一个对象
+       才可以真正定位到键值对应的Entry.
+   c. put时,如果hash表中没定位到,就在链表前加一个Entry,如果定位到了,则更换Entry中的value,并返回旧value
+\4. 由于TreeMap需要排序,所以需要一个Comparator为键值进行大小比较.当然也是用Comparator定位的.
+   a. Comparator可以在创建TreeMap时指定
+   b. 如果创建时没有确定,那么就会使用key.compareTo()方法,这就要求key必须实现Comparable接口.
+   c. TreeMap是使用Tree数据结构实现的,所以使用compare接口就可以完成定位了.
+
+
+
+
+
+注意： 
+1、Collection没有get()方法来取得某个元素。只能通过iterator()遍历元素。 
+2、Set和Collection拥有一模一样的接口。 
+3、List，可以通过get()方法来一次取出一个元素。使用数字来选择一堆对象中的一个，get(0)...。(add/get) 
+4、一般使用ArrayList。用LinkedList构造堆栈stack、队列queue。 
+5、Map用 put(k,v) / get(k)，还可以使用containsKey()/containsValue()来检查其中是否含有某个key/value。 
+      HashMap会利用对象的hashCode来快速找到key。 
+    *     hashing 
+          哈希码就是将对象的信息经过一些转变形成一个独一无二的int值，这个值存储在一个array中。 
+          我们都知道所有存储结构中，array查找速度是最快的。所以，可以加速查找。 
+          发生碰撞时，让array指向多个values。即，数组每个位置上又生成一个梿表。 
+6、Map中元素，可以将key序列、value序列单独抽取出来。 
+使用keySet()抽取key序列，将map中的所有keys生成一个Set。 
+使用values()抽取value序列，将map中的所有values生成一个Collection。 
+为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。 
+</code></pre><ol>
+<li><p>Collection包结构，与Collections的区别。</p>
+<p> Collection是集合类的一个顶级接口，其直接继承接口有List与Set</p>
+<p>而Collections则是集合类的一个工具类/帮助类，其中提供了一系列静态方法，用于对集合中元素进行排序、搜索以及线程安全等各种操作。</p>
+<p>Collection是个java.util下的接口，它是各种集合结构的父接口。</p>
+<p>Collections是个java.util下的类，它包含有各种有关集合操作的静态方法。</p>
+<p>Collection 层次结构中的根接口。Collection 表示一组对象，这些对象也称为 collection的<em>元素</em>。一些 collection 允许有重复的元素，而另一些则不允许。一些 collection 是有序的，而另一些则是无序的。JDK 不提供此接口的任何<em>直接</em> 实现：它提供更具体的子接口（如 <code>Set</code> 和 <code>List</code>）实现。此接口通常用来传递 collection，并在需要最大普遍性的地方操作这些 collection。</p>
+<p>Collection<br>├List<br>│├LinkedList<br>│├ArrayList<br>│└Vector<br>│　└Stack<br>└Set </p>
+<p>collections 此类完全由在 collection 上进行操作或返回 collection 的静态方法组成。它包含在 collection 上操作的多态算法，即“包装器”，包装器返回由指定 collection 支持的新 collection，以及少数其他内容。 如果为此类的方法所提供的 collection 或类对象为 null，则这些方法都会抛出 <code>NullPointerException</code>。</p>
+</li>
+</ol>
+<ol>
+<li><p>try catch finally，try里有return，finally还执行么？</p>
+<p><strong>肯定会执行。finally{}块的代码只有在try{}块中包含遇到System.exit(0);之类的导致Java虚拟机直接退出的语句才会不执行。</strong></p>
+<p><em>*当程序执行try{}遇到return时，程序会先执行return语句，但并不会立即返回——也就是把return语句要做的一切事情都准备好，也就是在将要返回、但并未返回的时候，程序把执行流程转去执行finally块，当finally块执行完成后就直接返回刚才return语句已经准备好的结果。</em></p>
+</li>
+</ol>
+<ol>
+<li><p>Excption与Error包结构。OOM你遇到过哪些情况，SOF你遇到过哪些情况。</p>
+<p>Java异常架构图</p>
+<p><img src="http://image.mamicode.com/info/201510/20180110170633684739.jpg" alt="技术分享"></p>
+<p><strong>1. Throwable</strong><br>Throwable是 Java 语言中所有错误或异常的超类。<br>Throwable包含两个子类: <strong>Error</strong> 和 <strong>Exception</strong> 。它们通常用于指示发生了异常情况。<br>Throwable包含了其线程创建时线程执行堆栈的快照，它提供了printStackTrace()等接口用于获取堆栈跟踪数据等信息。</p>
+<p><strong>2. Exception</strong><br>Exception及其子类是 Throwable 的一种形式，它指出了合理的应用程序想要捕获的条件。</p>
+<p><strong>3. RuntimeException</strong><br>RuntimeException是那些可能在 Java 虚拟机正常运行期间抛出的异常的超类。<br>编译器不会检查RuntimeException异常。 例如，除数为零时，抛出ArithmeticException异常。RuntimeException是ArithmeticException的超类。当代码发生除数为零的情况时，倘若既”没有通过throws声明抛出ArithmeticException异常”，也”没有通过try…catch…处理该异常”，也能通过编译。这就是我们所说的”编译器不会检查RuntimeException异常”！<br>如果代码会产生RuntimeException异常，则需要通过修改代码进行避免。 例如，若会发生除数为零的情况，则需要通过代码避免该情况的发生！</p>
+<p><strong>4. Error</strong><br>和Exception一样， Error也是Throwable的子类。 它用于指示合理的应用程序不应该试图捕获的严重问题，大多数这样的错误都是异常条件。<br>和RuntimeException一样， 编译器也不会检查Error。</p>
+<p>Java将可抛出(Throwable)的结构分为三种类型： <strong>被检查的异常(Checked Exception)，运行时异常(RuntimeException)和错误(Error)。</strong></p>
+<p><strong>(01) 运行时异常</strong><br><strong>定义</strong> : RuntimeException及其子类都被称为运行时异常。<br><strong>特点</strong> : Java编译器不会检查它。 也就是说，当程序中可能出现这类异常时，倘若既”没有通过throws声明抛出它”，也”没有用try-catch语句捕获它”，还是会编译通过。例如，除数为零时产生的ArithmeticException异常，数组越界时产生的IndexOutOfBoundsException异常，fail-fail机制产生的ConcurrentModificationException异常等，都属于运行时异常。<br>虽然Java编译器不会检查运行时异常，但是我们也可以通过throws进行声明抛出，也可以通过try-catch对它进行捕获处理。<br>如果产生运行时异常，则需要通过修改代码来进行避免。 例如，若会发生除数为零的情况，则需要通过代码避免该情况的发生！</p>
+<p><strong>(02) 被检查的异常</strong><br><strong>定义</strong> :  Exception类本身，以及Exception的子类中除了”运行时异常”之外的其它子类都属于被检查异常。<br><strong>特点</strong> : Java编译器会检查它。 此类异常，要么通过throws进行声明抛出，要么通过try-catch进行捕获处理，否则不能通过编译。例如，CloneNotSupportedException就属于被检查异常。当通过clone()接口去克隆一个对象，而该对象对应的类没有实现Cloneable接口，就会抛出CloneNotSupportedException异常。<br>被检查异常通常都是可以恢复的。</p>
+<p><strong>(03) 错误</strong><br><strong>定义</strong> : Error类及其子类。<br><strong>特点</strong> : 和运行时异常一样，编译器也不会对错误进行检查。<br>当资源不足、约束失败、或是其它程序无法继续运行的条件发生时，就产生错误。程序本身无法修复这些错误的。例如，VirtualMachineError就属于错误。<br>按照Java惯例，我们是不应该是实现任何新的Error子类的！</p>
+<p>对于上面的3种结构，我们在抛出异常或错误时，到底该哪一种？《Effective Java》中给出的建议是： 对于可以恢复的条件使用被检查异常，对于程序错误使用运行时异常。</p>
+</li>
+</ol>
+<pre><code>OOM：
+
+1，   OutOfMemoryError异常
+
+除了程序计数器外，虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(OOM)异常的可能，
+
+Java Heap 溢出
+
+一般的异常信息：java.lang.OutOfMemoryError:Java heap spacess
+
+java堆用于存储对象实例，我们只要不断的创建对象，并且保证GC Roots到对象之间有可达路径来避免垃圾回收机制清除这些对象，就会在对象数量达到最大堆容量限制后产生内存溢出异常。
+
+出现这种异常，一般手段是先通过内存映像分析工具(如Eclipse Memory Analyzer)对dump出来的堆转存快照进行分析，重点是确认内存中的对象是否是必要的，先分清是因为内存泄漏(Memory Leak)还是内存溢出(Memory Overflow)。
+
+如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链。于是就能找到泄漏对象时通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收。
+
+如果不存在泄漏，那就应该检查虚拟机的参数(-Xmx与-Xms)的设置是否适当。
+
+2，   虚拟机栈和本地方法栈溢出
+
+如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。
+
+如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常
+
+这里需要注意当栈的大小越大可分配的线程数就越少。
+
+3，   运行时常量池溢出
+
+异常信息：java.lang.OutOfMemoryError:PermGen space
+
+如果要向运行时常量池中添加内容，最简单的做法就是使用String.intern()这个Native方法。该方法的作用是：如果池中已经包含一个等于此String的字符串，则返回代表池中这个字符串的String对象；否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。由于常量池分配在方法区内，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接限制其中常量池的容量。
+
+4，   方法区溢出
+
+方法区用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。
+
+异常信息：java.lang.OutOfMemoryError:PermGen space
+
+方法区溢出也是一种常见的内存溢出异常，一个类如果要被垃圾收集器回收，判定条件是很苛刻的。在经常动态生成大量Class的应用中，要特别注意这点。
+</code></pre><ol>
+<li><p>Java面向对象的三个特征与含义。</p>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>属性的封装和方法的封装。把属性定义为私有的， get(),set()方法。 好处是信息隐藏和模块化，提高安全性。封装的主要作用在于对外隐藏内 部实现细节，增强程序的安全性。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>子类可以继承父类的成员变量和成员方法。继承可以提高代码的复用性。</p>
+<p>继承的特性： </p>
+<p>​        1.单一继承。 </p>
+<p>​        2.子类只能继承父类的非私有成员变量和方法。 </p>
+<p>​        3.成员变量的隐藏和方法的覆盖。 </p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>当同一个操作作用在不同对象时，会产生不同的结果。</p>
+<p>有 2 种方式来实现多态，一种是编译时多态，另外一种是运行时多态；编译时多态是通过方法的重载来实现的，运行时多态是通过方法的重写来实现的。 方法的重载，指的是同一个类中有多个同名的方法，但这些方法有着不同 的参数。在编译时就可以确定到底调用哪个方法。 方法的重写，子类重写父类中的方法。父类的引用变量不仅可以指向父类 的实例对象，还可以指向子类的实例对象。当父类的引用指向子类的对象时， 只有在运行时才能确定调用哪个方法。 特别注意：只有类中的方法才有多态的概念，类中成员变量没有多态的概念。</p>
+<p>Override（覆盖、重写）和 Overload（重载）的区别。 </p>
+<p>重载和覆盖是 java 多态性的不同表现方式。 重载是在一个类中多态性的一种表现，是指在一个类中定义了多个同名的 方法，但是他们有不同的参数个数或有不同的参数类型。 在使用重载时要注意以下几点： </p>
+<p>​        1.重载只能通过不同的方法参数来区分。例如不同的参数类型，不同的 参数个数，不同的参数顺序。 </p>
+<p>​        2.不能通过访问权限、返回类型、抛出的异常进行重载。 </p>
+<p>覆盖是指子类函数覆盖父类中的函数。 在覆盖时要注意以下几点（重点！！）： </p>
+<p>​        1.覆盖的方法的函数名和参数必须要和被覆盖的方法的函数名和参数完全匹配，才能达到覆盖的效果；</p>
+<p>​        2.覆盖的方法的返回值必须和被覆盖的方法的返回值类型一致； </p>
+<p>​        3.覆盖的方法所抛出的异常必须和被覆盖方法的所抛出的异常一致，或者 是其子类； </p>
+<p>​        4.被覆盖的方法不能为 private，否则在其子类中只是新定义了一个方法， 并没有对其进行覆盖。 </p>
+<p>​        5. 子类函数的访问修饰权限要大于等于父类的 （public&gt;protected&gt;default&gt;private） 。（重要！！！） </p>
+<p>​        特别注意：Java 中，子类无法覆盖父类的 static 方法或 private 方法。</p>
+</li>
+</ol>
+<ol>
+<li><p>Override和Overload的含义去区别。</p>
+<p>重写(Override)也称覆盖，它是父类与子类之间多态性的一种表现，而重载(Overload)是一个类中多态性的一种表现。 override从字面就可以知道，它是覆盖了一个方法并且对其重写，以求达到不同的作用。overload它是指我们可以定义一些名称相同的方法，通过定义不同的输入参数来区分这些方法，然后再调用时，VM就会根据不同的参数样式，来选择合适的方法执行。</p>
+<p>2、override（重写，覆盖）<br>（1）方法名、参数、返回值相同。<br>（2）子类方法不能缩小父类方法的访问权限。<br>（3）子类方法不能抛出比父类方法更多的异常(但子类方法可以不抛出异常)。<br>（4）存在于父类和子类之间。<br>（5）方法被定义为final不能被重写。<br>（6）被覆盖的方法不能为private，否则在其子类中只是新定义了一个方法，并没有对其进行覆盖。</p>
+<p>3、overload（重载，过载）<br>（1）参数类型、个数、顺序至少有一个不相同。<br>（2）不能重载只有返回值不同的方法名。<br>（3）针对于一个类而言。<br>（4）不能通过访问权限、返回类型、抛出的异常进行重载；<br>（5）方法的异常类型和数目不会对重载造成影响；</p>
+<p>4、override应用：<br>（1）最熟悉的覆盖就是对接口方法的实现，在接口中一般只是对方法进行了声明，而我们在实现时，就需要实现接口声明的所有方法。<br>（2）除了这个典型的用法以外，我们在继承中也可能会在子类覆盖父类中的方法。</p>
+<p>5、总结<br>　　override是在不同类之间的行为，overload是在同一个类中的行为。</p>
+</li>
+</ol>
+<ol>
+<li><p>Interface与abstract类的区别。</p>
+<p>　　含有abstract修饰符的class即为抽象类，abstract 类不能创建的实例对象。含有abstract方法的类必须定义为abstract class，abstract class类中的方法不必是抽象的。abstract class类中定义抽象方法必须在具体(Concrete)子类中实现，所以，不能有抽象构造方法或抽象静态方法。如果的子类没有实现抽象父类中的所有抽象方法，那么子类也必须定义为abstract类型。</p>
+<p>　　接口（interface）可以说成是抽象类的一种特例，接口中的所有方法都必须是抽象的。<strong>接口中的方法定义默认为public abstract类型，接口中的成员变量类型默认为public static final</strong>。</p>
+</li>
+</ol>
+<pre><code>下面比较一下两者的语法区别：
+
+1.抽象类可以有构造方法，接口中不能有构造方法。
+
+2.抽象类中可以有普通成员变量，接口中没有普通成员变量
+
+3.抽象类中可以包含非抽象的普通方法，接口中的所有方法必须都是抽象的，不能有非抽象的普通方法。
+
+\4. 抽象类中的抽象方法的访问类型可以是public，protected和（默认类型,虽然
+
+eclipse下不报错，但应该也不行），但接口中的抽象方法只能是public类型的，并且默认即为public abstract类型。
+
+\5. 抽象类中可以包含静态方法，接口中不能包含静态方法
+
+\6. 抽象类和接口中都可以包含静态成员变量，抽象类中的静态成员变量的访问类型可以任意，但接口中定义的变量只能是public static final类型，并且默认即为public static final类型。
+
+\7. 一个类可以实现多个接口，但只能继承一个抽象类。
+
+
+
+下面接着再说说两者在应用上的区别：
+
+　　接口更多的是在系统架构设计方法发挥作用，主要用于定义模块之间的通信契约。而抽象类在代码实现方面发挥作用，可以实现代码的重用，例如，模板方法设计模式是抽象类的一个典型应用，假设某个项目的所有Servlet类都要用相同的方式进行权限判断、记录访问日志和处理异常，那么就可以定义一个抽象的基类，让所有的Servlet都继承这个抽象基类，在抽象基类的service方法中完成权限判断、记录访问日志和处理异常的代码，在各个子类中只是完成各自的业务逻辑代码。
+</code></pre><ol>
+<li><p>Static class 与non static class的区别。</p>
+<p>| static class                                                 | non static class                                             |<br>| ———————————————————— | ———————————————————— |<br>| 1、用static修饰的是内部类，此时这个内部类变为静态内部类；对测试有用；2、内部静态类不需要有指向外部类的引用；3、静态类只能访问外部类的静态成员，不能访问外部类的非静态成员； | 1、非静态内部类需要持有对外部类的引用；2、非静态内部类能够访问外部类的静态和非静态成员；3、一个非静态内部类不能脱离外部类实体被创建；4、一个非静态内部类可以访问外部类的数据和方法； |</p>
+</li>
+<li><p>java多态的实现原理。</p>
+<p><strong>1．Java多态概述</strong></p>
+<p>多态是面向对象编程语言的重要特性，它允许基类的指针或引用指向派生类的对象，而在具体访问时实现方法的动态绑定。Java 对于方法调用动态绑定的实现主要依赖于方法表，但通过类引用调用(invokevitual)和接口引用调用(invokeinterface)的实现则有所不同。</p>
+<p>类引用调用的大致过程为：Java编译器将Java源代码编译成class文件，在编译过程中，会根据静态类型将调用的符号引用写到class文件中。在执行时，JVM根据class文件找到调用方法的符号引用，然后在静态类型的方法表中找到偏移量，然后根据this指针确定对象的实际类型，使用实际类型的方法表，偏移量跟静态类型中方法表的偏移量一样，如果在实际类型的方法表中找到该方法，则直接调用，否则，认为没有重写父类该方法。按照继承关系从下往上搜索。 </p>
+<p>接口引用调用后面再说吧。</p>
+</li>
+</ol>
+<pre><code>从上图可以看出，当程序运行时，需要某个类时，类载入子系统会将相应的class文件载入到JVM中，并在内部建立该类的类型信息（这个类型信息其实就是class文件在JVM中存储的一种数据结构），包含java类定义的所有信息，包括方法代码，类变量、成员变量、以及本博文要重点讨论的方法表。这个类型信息就存储在方法区。 
+注意，这个方法区中的类型信息跟在堆中存放的class对象是不同的。在方法区中，这个class的类型信息只有唯一的实例（所以是各个线程共享的内存区域），而在堆中可以有多个该class对象。可以通过堆中的class对象访问到方法区中类型信息。就像在java反射机制那样，通过class对象可以访问到该类的所有信息一样。
+
+【重点】 
+
+方法表是实现动态调用的核心。上面讲过方法表存放在方法区中的类型信息中。为了优化对象调用方法的速度，方法区的类型信息会增加一个指针，该指针指向一个记录该类方法的方法表，方法表中的每一个项都是对应方法的指针。
+这些方法中包括从父类继承的所有方法以及自身重写（override）的方法。
+
+【拓展】
+
+方法区：方法区和JAVA堆一样，是各个线程共享的内存区域，用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。 
+运行时常量池：它是方法区的一部分，Class文件中除了有类的版本、方法、字段等描述信息外，还有一项信息是常量池，用于存放编译器生成的各种符号引用，这部分信息在类加载时进入方法区的运行时常量池中。 
+方法区的内存回收目标是针对常量池的回收及对类型的卸载。
+
+**3****．****Java** **的方法调用方式（拓展知识，可以不看）**
+
+Java 的方法调用有两类，动态方法调用与静态方法调用。
+
+静态方法调用是指对于类的静态方法的调用方式，是静态绑定的；而动态方法调用需要有方法调用所作用的对象，是动态绑定的。
+
+类调用 (invokestatic) 是在编译时就已经确定好具体调用方法的情况。
+
+实例调用 (invokevirtual)则是在调用的时候才确定具体的调用方法，这就是动态绑定，也是多态要解决的核心问题。
+
+JVM 的方法调用指令有四个，分别是 invokestatic，invokespecial，invokesvirtual 和 invokeinterface。前两个是静态绑定，后两个是动态绑定的。本文也可以说是对于JVM后两种调用实现的考察。
+
+**4．方法表与方法调用**
+
+如有类定义 Person, Girl, Boy
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a person.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void eat()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Boy extends Person&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a boy&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void fight()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Girl extends Person&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a girl&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void sing()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+当这三个类被载入到
+
+ Java 
+
+虚拟机之后，方法区中就包含了各自的类的信息。
+
+Girl 
+
+和
+
+ Boy 
+
+在方法区中的方法表可表示如下：
+
+![img](https://img-blog.csdn.net/20160812143114843)
+
+可以看到，Girl 和 Boy 的方法表包含继承自 Object 的方法，继承自直接父类 Person 的方法及各自新定义的方法。注意方法表条目指向的具体的方法地址，如 Girl 继承自 Object 的方法中，只有 toString() 指向自己的实现（Girl 的方法代码），其余皆指向 Object 的方法代码；其继承自于 Person 的方法 eat() 和 speak() 分别指向 Person 的方法实现和本身的实现。
+
+如果子类改写了父类的方法，那么子类和父类的那些同名的方法共享一个方法表项。
+
+因此，方法表的偏移量总是固定的。所有继承父类的子类的方法表中，其父类所定义的方法的偏移量也总是一个定值。
+Person 或 Object中的任意一个方法，在它们的方法表和其子类 Girl 和 Boy 的方法表中的位置 (index) 是一样的。这样 JVM 在调用实例方法其实只需要指定调用方法表中的第几个方法即可。
+
+如调用如下:
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Party&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void happyHour()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Person girl = new Girl();   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">girl.speak(); &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+当编译 Party 类的时候，生成 girl.speak()的方法调用假设为：
+
+Invokevirtual #12
+
+设该调用代码对应着 girl.speak(); #12 是 Party 类的常量池的索引。JVM 执行该调用指令的过程如下所示：
+
+
+
+（1）
+
+在常量池（这里有个错误，上图为ClassReference常量池而非Party的常量池）中找到方法
+
+调用的符号引用
+
+
+
+。
+
+（2）查看
+
+Person的方法表，
+
+得到
+
+speak
+
+方法在该方法表的偏移量
+
+（假设为15），这样就得到该方法的直接引用。 
+
+
+
+（3）根据this指针得到
+
+具体的对象
+
+（即 girl 所指向的位于堆中的对象）。
+
+
+
+（4）
+
+根据对象得到该对象对应的方法表
+
+，根据偏移量15查看有无重写（override）该方法，
+
+如果重写，则可以直接调用（
+
+Girl
+
+的方法表的
+
+speak
+
+项指向自身的方法而非父类）；如果没有重写，则需要拿到按照继承关系从下往上的基类（这里是
+
+Person
+
+类）的方法表，同样按照这个偏移量
+
+15
+
+查看有无该方法。
+
+
+
+**5．接口调用**
+
+因为 Java 类是可以同时实现多个接口的，而当用接口引用调用某个方法的时候，情况就有所不同了。
+
+Java 允许一个类实现多个接口，从某种意义上来说相当于多继承，这样同样的方法在基类和派生类的方法表的位置就可能不一样了
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">interface IDance&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   void dance();   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Person &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;I&apos;m a person.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void eat()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Dancer extends Person   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> implements IDance &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;I&apos;m a dancer.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void dance()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Snake implements IDance&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;A snake.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void dance()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> //snake dance   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+可以看到，由于接口的介入，继承自于接口 IDance 的方法 dance()在类 Dancer 和 Snake 的方法表中的位置已经不一样了，显然我们无法仅根据偏移量来进行方法的调用。
+
+Java 对于接口方法的调用是采用搜索方法表的方式，如，要在Dancer的方法表中找到dance()方法，必须搜索Dancer的整个方法表。
+
+因为每次接口调用都要搜索方法表，所以从效率上来说，接口方法的调用总是慢于类方法的调用的。
+</code></pre><ol>
+<li>实现多线程的两种方法：Thread与Runable。</li>
+</ol>
+<ol>
+<li>线程同步的方法：sychronized、lock、reentrantLock等。</li>
+</ol>
+<ol>
+<li>锁的等级：方法锁、对象锁、类锁。</li>
+</ol>
+<ol>
+<li>写出生产者消费者模式。</li>
+</ol>
+<ol>
+<li>ThreadLocal的设计理念与作用。</li>
+</ol>
+<ol>
+<li>ThreadPool用法与优势。</li>
+</ol>
+<ol>
+<li>Concurrent包里的其他东西：ArrayBlockingQueue、CountDownLatch等等。</li>
+</ol>
+<ol>
+<li>wait()和sleep()的区别。</li>
+</ol>
+<ol>
+<li><p>foreach与正常for循环效率对比。</p>
+</li>
+<li><p>Java IO与NIO。</p>
+</li>
+<li><p>反射的作用于原理。</p>
+</li>
+<li><p>泛型常用特点，List<string>能否转为List<object>。</object></string></p>
+</li>
+<li><p>解析XML的几种方式的原理与特点：DOM、SAX、PULL。</p>
+</li>
+<li><p>Java与C++对比。</p>
+</li>
+<li><p>Java1.7与1.8新特性。</p>
+</li>
+<li><p><a href="http://www.amazon.cn/gp/product/B001130JN8/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;tag=importnew-23&amp;linkCode=as2&amp;camp=536&amp;creative=3200&amp;creativeASIN=B001130JN8" target="_blank" rel="noopener">设计模式</a>：单例、工厂、适配器、责任链、观察者等等。</p>
+</li>
+<li><p>JNI的使用。</p>
+</li>
+</ol>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/01/11/jvm虚拟机/">          
+
+            <span title="jvm虚拟机">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2016/10/05/mongoDB文档数据库/">         
+
+           <span title="mongoDB文档数据库">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>
