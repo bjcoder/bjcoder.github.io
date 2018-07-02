@@ -123,7 +123,7 @@
 		
 
 		<span class="post-words"><span class="iconfont icon-words"></span>
-		31086
+		43773
 		</span>		
 	
 	</div> 
@@ -722,16 +722,233 @@ Java 对于接口方法的调用是采用搜索方法表的方式，如，要在
 
 因为每次接口调用都要搜索方法表，所以从效率上来说，接口方法的调用总是慢于类方法的调用的。
 </code></pre><ol>
-<li>实现多线程的两种方法：Thread与Runable。</li>
+<li><p>实现多线程的两种方法：Thread与Runable。</p>
+<ul>
+<li>l 创建线程的第一种方式：继承Thread类。</li>
+</ul>
+<p>步骤：</p>
+<p>1，定义类继承Thread。</p>
+<p>2，复写Thread类中的run方法。</p>
+<p>目的：将自定义代码存储在run方法。让线程运行。//run();仅仅是对象调用方法。而线程创建了，并没有运行。</p>
+<p>3，调用线程的start方法，</p>
+<p>该方法两个作用：启动线程，调用run方法。</p>
+<p>Demo d = new Demo();//创建好一个线程。</p>
+<p>//d.start();//开启线程并执行该线程的run方法。</p>
+<p>d.run();//仅仅是对象调用方法。而线程创建了，并没有运行。</p>
+<ul>
+<li>l 创建线程的第二种方式：实现Runable接口</li>
+</ul>
+<p>步骤：</p>
+<p>1，定义类实现Runnable接口</p>
+<p>2，覆盖Runnable接口中的run方法。</p>
+<p>将线程要运行的代码存放在该run方法中。</p>
+<p>3，通过Thread类建立线程对象。</p>
+<p>4，将Runnable接口的子类对象作为实际参数传递给Thread类的构造函数。</p>
+<p>为什么要将Runnable接口的子类对象传递给Thread的构造函数。</p>
+<p>因为，自定义的run方法所属的对象是Runnable接口的子类对象。</p>
+<p>所以要让线程去指定指定对象的run方法。就必须明确该run方法所属对象。</p>
+<p>5，调用Thread类的start方法开启线程并调用Runnable接口子类的run方法。</p>
+</li>
+</ol>
+<pre><code>- l 实现方式和继承方式有什么区别呢？
+
+
+
+实现方式好处：避免了单继承的局限性。
+
+在定义线程时，建立使用实现方式。
+
+
+
+两种方式区别：
+
+继承Thread: 线程代码存放Thread子类run方法中。
+
+实现Runnable，线程代码存在接口的子类的run方法。
+
+
+
+
+
+
+
+实现Runnable接口相对于继承Thread类来说，有如下的显著优势：
+   1.适合多个相同代码的线程去处理同一个资源的情况
+   2.可以避免由于java的单继承特性带来的局限
+   3.增强了程序的健壮性，代码能够被多个线程共享，代码与数据时独立的
+给你个例子，你自己取运行就知道了，好好对比下
+
+![复制代码](http://common.cnblogs.com/images/copycode.gif)
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> 1 class MyThread extends Thread&#123;        // 继承Thread类，作为线程的实现类</span><br><span class="line"> 2         private int ticket = 5 ;                // 表示一共有5张票</span><br><span class="line"> 3         public void run()&#123;        // 覆写run()方法，作为线程 的操作主体</span><br><span class="line"> 4                 for(int i=0;i&lt;100;i++)&#123;</span><br><span class="line"> 5                         if(this.ticket&gt;0)&#123;</span><br><span class="line"> 6                                 System.out.println(&quot;卖票：ticket = &quot; + ticket--) ;</span><br><span class="line"> 7                         &#125;</span><br><span class="line"> 8                 &#125;</span><br><span class="line"> 9         &#125;</span><br><span class="line">10 &#125;;</span><br><span class="line">11 public class ThreadDemo0&#123;</span><br><span class="line">12         public static void main(String args[])&#123;</span><br><span class="line">13                 MyThread mt1 = new MyThread() ;         // 实例化对象</span><br><span class="line">14                 MyThread mt2 = new MyThread() ;         // 实例化对象</span><br><span class="line">15                 MyThread mt3 = new MyThread() ;         // 实例化对象</span><br><span class="line">16                 mt1.run() ;        // 调用线程主体</span><br><span class="line">17                 mt2.run() ;        // 调用线程主体</span><br><span class="line">18                 mt3.run() ;        // 调用线程主体</span><br><span class="line">19         &#125;</span><br><span class="line">20 &#125;;</span><br><span class="line">21 </span><br><span class="line">22 </span><br><span class="line">23 class MyThread implements Runnable&#123;        // 继承Thread类，作为线程的实现类</span><br><span class="line">24         private int ticket = 5 ;                // 表示一共有5张票</span><br><span class="line">25         public void run()&#123;        // 覆写run()方法，作为线程 的操作主体</span><br><span class="line">26                 for(int i=0;i&lt;100;i++)&#123;</span><br><span class="line">27                         if(this.ticket&gt;0)&#123;</span><br><span class="line">28                                 System.out.println(&quot;卖票：ticket = &quot; + ticket--) ;</span><br><span class="line">29                         &#125;</span><br><span class="line">30                 &#125;</span><br><span class="line">31         &#125;</span><br><span class="line">32 &#125;;</span><br><span class="line">33 public class RunnableDemo0&#123;</span><br><span class="line">34         public static void main(String args[])&#123;</span><br><span class="line">35                 MyThread mt = new MyThread() ;         // 实例化对象</span><br><span class="line">36                 new Thread(mt).run() ;        // 调用线程主体</span><br><span class="line">37                 new Thread(mt).run() ;        // 调用线程主体</span><br><span class="line">38                 new Thread(mt).run() ;        // 调用线程主体</span><br><span class="line">39         &#125;</span><br><span class="line">40 &#125;;</span><br></pre></td></tr></table></figure>
+
+![复制代码](http://common.cnblogs.com/images/copycode.gif)
+
+简单的来说，就是继承和实现接口的区别。
+1、当使用继承的时候，主要是为了不必重新开发，并且在不必了解实现细节的情况下拥有了父类我所需要的特征。它也有一个很大的缺点，那就是如果我们的类已经从一个类继承（如小程序必须继承自 Applet 类），则无法再继承 Thread 类，
+2、java只能单继承，因此如果是采用继承Thread的方法，那么在以后进行代码重构的时候可能会遇到问题，因为你无法继承别的类了，在其他的方面，两者之间并没什么太大的区别。
+3、implement Runnable是面向接口，扩展性等方面比extends Thread好。
+4、使用 Runnable 接口来实现多线程使得我们能够在一个类中包容所有的代码，有利于封装，它的缺点在于，我们只能使用一套代码，若想创建多个线程并使各个线程执行不同的代码，则仍必须额外创建类，如果这样的话，在大多数情况下也许还不如直接用多个类分别继承 Thread 来得紧凑。
+</code></pre><ol>
+<li><p>线程同步的方法：sychronized、lock、reentrantLock等。</p>
+<p>当使用多线程访问同一个资源时，非常容易出现线程安全问题（例如，当多个线程同时对一个数据进行修改时，会导致某些线程对数据的修改丢失）。因此，需要采用同步机制来解决这个问题。同步方法如下：</p>
+<p><strong>1.  Synchronized关键字</strong></p>
+<p>在Java语言中，每个对象都有一个对象锁与之相关联，该锁表明对象在任何时候只允许被一个线程所拥有，当一个线程调用对象的一段Synchronized代码时，需要首先获取这个锁，然后去执行相应的代码，执行结束后，释放锁。</p>
+<p>Synchronized关键字主要有两种用法（Synchronized方法和Synchronized块），此外该关键字还可以作用于静态方法（此时如果调用该静态方法，将会锁住整个类。）、类或者某个实例，但这都对程序的效率有着很大的影响。</p>
+<p>1)  Synchronized方法。该方法在声明前加入了Synchronized关键字。把需要被同步的资源放到该方法中，就能保证这个方法在同一时刻只能被一个线程所访问，从而保证了多线程访问的安全性。然而，当一个方法的方法体规模非常大时，把该方法声明为Synchronized会大大影响程序的执行效率。为了提高程序的执行效率，java提供了Synchronized块。线程在执行同步方法时是具有排它性的。当任意一个线程进入到一个对象的任意一个同步方法时，这个对象的所有同步方法都被锁定了，在此期间，其他任何线程都不能访问这个对象的任意一个同步方法，直到这个线程执行完它所调用的同步方法并从中退出，从而导致它释放了该对象的同步锁之后。在一个对象被某个线程锁定之后，其他线程是可以访问这个对象的所有非同步方法的。</p>
+<p>2)  Synchronized块。Synchronized块既可以把任意的代码段声明为Synchronized，也可以指定上锁的对象，有非常高的灵活性。如果一个对象既有同步方法，又有同步块，那么当其中任意一个同步方法或者同步块被某个线程执行时，这个对象就被锁定了，其他线程无法在此时访问这个对象的同步方法，也不能执行同步块。</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s0.png" alt="img"></p>
+<p><strong>2.  wait与notify</strong></p>
+<p>当使用Synchronized来修饰某个共享资源时，如果线程A1在执行Synchronized代码，另外一个线程A2也要同时执行同一对象的同一Synchronized代码时，线程A2将要等到线程A1执行完成后，才能继续执行。在这种情况下可以使用wait和notify方法。</p>
+<p>在Synchronized代码被执行期间，线程可以调用对象的wait方法，释放对象锁，进入等待状态，并且可以调用notify方法或者notifyAll方法通知正在等待的其他线程。notify方法仅唤醒一个线程（等待队列中的第一个线程）并允许他去获得锁。notifyAll方法唤醒所有等待这个对象的线程并允许他们去获得锁（并不是让所有被唤醒的线程去获得锁，而是让他们去竞争）。</p>
+<p><strong>3.  Lock</strong></p>
+<p>Jdk5新增了Lock接口以及他的一个实现类ReentrantLock（重入锁），以及ReadWriteLock接口和他的唯一实现类ReentrantReadWriteLock.这个类有两个锁，一个是读操作锁，一个是写操作锁。使用读操作锁时可以允许多个线程同时访问，使用写操作锁时只允许一个线程进行。在一个线程执行写操作时，其他线程不能够执行读操作。Lock也可以用来实现多线程的同步，具体而言，他提供了如下一些方法来实现多线程的同步：</p>
+<p>1)  lock()。以阻塞方式来获取锁，如果获取到了锁，立即返回；如果别的线程持有锁，则当前线程等待，直到获取锁后返回。</p>
+<p>2)  tryLock()。以非阻塞的方式获取锁。只是尝试性的去获取一下锁，如果获取到锁，立即返回true，立即否则返回false。</p>
+<p>3)  tryLock(longtimeout,TimeUnit unit)。如果获取到了锁，立即返回true，否则会等待参数给定的时间单元，在等待的过程中，如果获取到了锁，就立即返回true。如果等待超时，返回false。</p>
+<p>4)  lockInterruptibly（）。如果获取到了锁，立即返回；如果没有获取到锁，当前线程处于休眠状态，或者当前线程会被别的线程中断（会受到InterruptedException异常）。他与lock()方法的区别在于lock优先考虑获取锁，如果没有获取到锁，会一直处于阻塞状态，忽略interrupt（）方法，待获取锁成功后，才响应中断。lockInterruptibly 优先考虑响应中断，而不是响应锁的普通获取或重入获取。</p>
+<p>5)  ReentrantLock()。创建一个ReentrantLock实例。</p>
+<p>6)  Unlock()。释放锁</p>
+<p>前面讲到了可重入锁，可重入锁就是当前持有该锁的线程能够多次获取该锁，无需等待。下面介绍一下可重入锁。举个例子：村里面有一口井，村民都想到井里面打水，村里人太多，要制定一个打水的规则。井边安排一个看井人，维护打水的秩序。打水时，以家庭为单位，哪个家庭任何人先到井边，就可以先打水，而且如果一个家庭占到了打水权，其家人这时候过来打水不用排队。而那些没有抢占到打水权的人，一个一个挨着在井边排成一队，先到的排在前面。打水示意图如下：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s1.png" alt="img"></p>
+</li>
+</ol>
+<pre><code>是不是感觉很和谐，如果打水的人打完了，他会跟看井人报告，看井人会让第二个人接着打水。这样大家总都能够打到水。是不是看起来挺公平的，先到的人先打水，当然不是绝对公平的，自己看看下面这个场景 :
+
+ ![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s2.png)
+
+看着，一个有娃的父亲正在打水，他的娃也到井边了，所以女凭父贵直接排到最前面打水，羡煞旁人了。
+
+以上这个故事模型就是所谓的公平锁模型，当一个人想到井边打水，而现在打水的人又不是自家人，这时候就得乖乖在队列后面排队。
+
+然而总有些人不想排队，新来打水的人，他们看到有人排队打水的时候，他们不会那么乖巧的就排到最后面去排队，反之，他们会看看现在有没有人正在打水，如果有人在打水，没辄了，只好排到队列最后面，但如果这时候前面打水的人刚刚打完水，正在交接中，排在队头的人还没有完成交接工作，这时候，新来的人可以尝试抢打水权，如果抢到了，呵呵，其他人也只能睁一只眼闭一只眼，因为大家都默认这个规则了。这就是所谓的非公平锁模型。新来的人不一定总得乖乖排队，这也就造成了原来队列中排队的人可能要等很久很久。这就是所谓的非公平锁模型。
+
+ReentrantLock支持两种获取锁的方式，一种是公平模型，一种是非公平模型。我们先把故事元素转换为程序元素。
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s3.png)
+
+首先说说**公平模型**：初始化时，state=0，表示无人抢占了打水权。这时候，村民A来打水(A线程请求锁)，占了打水权，把state+1，如下所示：
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s4.png)
+
+线程A取得了锁，把 state原子性+1,这时候state被改为1，A线程继续执行其他任务，然后来了村民B也想打水（线程B请求锁），线程B无法获取锁，生成节点进行排队，如下图所示：
+
+ ![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s5.png)
+
+
+
+初始化的时候，会生成一个空的头节点，然后才是B线程节点，这时候，如果线程A又请求锁，是否需要排队？答案当然是否定的，否则就直接死锁了。当A再次请求锁，就相当于是打水期间，同一家人也来打水了，是有特权的，这时候的状态如下图所示：
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s6.png)
+
+这就可重入锁。就是一个线程在获取了锁之后，再次去获取了同一个锁，这时候仅仅是把状态值进行累加。如果线程A释放了一次锁，就成这样了：
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s7.png)
+
+仅仅是把状态值减了，只有线程A把此锁全部释放了，状态值减到0了，其他线程才有机会获取锁。当A把锁完全释放后，state恢复为0，然后会通知队列唤醒B线程节点，使B可以再次竞争锁。当然，如果B线程后面还有C线程，C线程继续休眠，除非B执行完了，通知了C线程。注意，当一个线程节点被唤醒然后取得了锁，对应节点会从队列中删除。
+
+**非公平锁模型**：当线程A执行完之后，要唤醒线程B是需要时间的，而且线程B醒来后还要再次竞争锁，所以如果在切换过程当中，来了一个线程C，那么线程C是有可能获取到锁的，如果C获取到了锁，B就只能继续乖乖休眠了。
+
+代码如下：
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s8.png)
+
+ReentrantLock（CAS,AQS,java内存可见性（voliate））是可重入的独占锁或者叫排他锁。同时只能有一个线程获取该锁，其实现分为公平实现和非公平实现。读写锁解决了ReentrantLock同时只有一个线程可以获取该锁的缺点，我们实际情况下会有写少读多的场景，显然ReentrantLock满足不了要求需求，读写锁应运而生。
+
+java5中添加了一个并发包， java.util.concurrent，里面提供了各种并发的工具类，通过此工具包，可以在java当中实现功能非常强大的多线程并发操作。
+
+**4.  使用特殊域变量(volatile)实现线程同步**
+
+在java语言编写的程序中，有时为了提高程序的运行效率，编译器会自动对其进行优化，把经常被访问的变量缓存起来，程序在读取这个变量时有可能会直接从缓存中（例如寄存器）来读取这个值，而不会去内存中读取。这样做的一个好处是提高了程序的运行效率，但当遇到多线程编程时，变量的值可能因为别的线程而改变了，而缓存里面的值不会相应改变，从而造成应用程序读取的值和实际的变量值不一致。
+
+Volatile是一个类型修饰符，它是用来修饰被不同线程访问和修改的变量。被Volatile类型定义的变量，系统每次用他的时候都是直接从对应的内存中提取，而不会利用缓存。在使用了Volatile修饰成员变量后，所有线程在任何时候所看到的的变量的值都是相同的。
+
+由于Volatile不能保证操作的原子性，因此，一般情况下，Volatile不能代替Synchronized。此外，使用Volatile会阻止编译器对代码的优化，因此会降低程序的执行效率。除非迫不得已，一般能不用就不要用。
+
+Volatile为什么不能保证操作的原子性：当需要使用被volatile修饰的变量时，线程会从主内存中重新获取该变量的值，但当该线程修改完该变量的值写入主内存的时候，并没有判断主内存内该变量是否已经变化，故可能出现非预期的结果。如主内存内有被volatile修饰变量 a，值为3，某线程使用该变量时，重新从主存内读取该变量的值，为3，然后对其进行+1操作，此时该线程内a变量的副本值为4。但此时该线程的时间片时间到了，等该线程再次获得时间片的时候，主存内a的值已经是另外的值，如5，但是该线程并不知道，该线程继续完成其未完成的工作，将线程内的a副本的值4写入主存，这时，主存内a的值就是4了。这样，之前修改a的值为5的操作就相当于没有发生了，a的值出现了意料之外的结果。
+
+被synchronize修饰的变量则可以保证变量操作的原子性，因为当某线程使用变量a时，其他线程无法使用变量a，只能等该线程对a操作结束，释放a的锁后才能对a进行操作。
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s9.png)
+
+**5.  使用局部变量实现线程同步**
+
+如果使用ThreadLocal管理变量，则每一个使用该变量的线程都获得该变量的副本，副本之间相互独立，这样每一个线程都可以随意修改自己的变量副本，而不会对其他线程产生影响。ThreadLocal 类的常用方法：
+
+ThreadLocal() : 创建一个线程本地变量
+
+get() : 返回此线程局部变量的当前线程副本中的值
+
+initialValue() : 返回此线程局部变量的当前线程的&quot;初始值&quot;
+
+set(T value) : 将此线程局部变量的当前线程副本中的值设置为value
+
+![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s10.png) 
+
+**6.  使用阻塞队列实现线程同步**
+
+前面5种同步方式都是在底层实现的线程同步，但是我们在实际开发当中，应当尽量远离底层结构。使用java5版本中新增的java.util.concurrent包将有助于简化开发。使用LinkedBlockingQueue&lt;E&gt;来实现线程的同步，BlockingQueue通常用于一个线程生产对象，而另外一个线程消费这些对象的场景。LinkedBlockingQueue&lt;E&gt;是一个基于已连接节点的，范围任意的blockingqueue。 队列是先进先出的顺序（FIFO），LinkedBlockingQueue类常用方法 LinkedBlockingQueue() : 创建一个容量为Integer.MAX_VALUE的LinkedBlockingQueue，put(E e) : 在队尾添加一个元素，如果队列满则阻塞，size() : 返回队列中的元素个数，take() : 移除并返回队头元素，如果队列空则阻塞代码实例： 实现商家生产商品和买卖商品的同步。
+
+**7.  使用原子变量实现线程同步**
+
+需要使用线程同步的根本原因在于对普通变量的操作不是原子的。
+
+那么什么是原子操作呢？原子操作就是指将读取变量值、修改变量值、保存变量值看成一个整体来操作。这几种行为要么同时完成，要么都不完成。在java的util.concurrent.atomic包中提供了创建原子类型变量的工具类，使用该类可以简化线程同步。其中AtomicInteger 表可以用原子方式更新int的值，可用在应用程序中(如以原子方式增加的计数器)，但不能用于替换Integer。 AtomicInteger类常用方法：AtomicInteger(int initialValue) : 创建具有给定初始值的变量。AtomicIntegeraddAddGet(int dalta) : 以原子方式将给定值与当前值相加。get() : 获取当前值。
+
+ ![img](https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/s11.png)
+</code></pre><ol>
+<li><p>锁的等级：方法锁、对象锁、类锁。</p>
+<p>对象锁(方法锁)，是针对一个对象的，它只在该对象的某个内存位置声明一个标识该对象是否拥有锁，所有它只会锁住当前的对象，一般一个对象锁是对一个非静态成员变量进行synchronized修饰，或者对一个非静态成员方法进行synchronized进行修饰，对于对象锁，不同对象访问同一个被synchronized修饰的方法的时候不会阻塞</p>
+<p>类锁是锁住整个类，当有多个线程来声明这个类的对象时候将会被阻塞，直到拥有这个类锁的对象呗销毁或者主动释放了类锁，这个时候在被阻塞的线程被挑选出一个占有该类锁，声明该类的对象。其他线程继续被阻塞住。</p>
+<p>无论是类锁还是对象锁，父类和子类之间是否阻塞没有直接关系。当对一个父类加了类锁，子类是不会受到影响的，相反也是如此。因为synchronized关键字并不是方法签名的一部分，它是对方法进行修饰的。当子类覆写父类中的同步方法或是接口中声明的同步方法的时候，synchronized修饰符是不会被自动继承的，所以相应的阻塞问题不会出现。</p>
+<p>注意：这里的阻塞问题是指的按照正常情况下应该阻塞，而因为synchronized是父类与子类之间不可传递导致不会阻塞。那正常情况下阻塞是什么那，下面会详细介绍。但是，当一个子类没有覆盖父类的方法的时候，这时候通过子类访问方法则会产生阻塞。</p>
+<p>插入一句：构造方法不可能是真正同步的（尽管可以在构造方法中使用同步块）。下面截图给出了如何声明一个对象锁和如何声明一个类锁：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1 void myMethod()&#123;</span><br><span class="line"> 2     synchronized(this)&#123;</span><br><span class="line"> 3         //code</span><br><span class="line"> 4     &#125;</span><br><span class="line"> 5 &#125;</span><br><span class="line"> 6 </span><br><span class="line"> 7 /*is equvilant to*/</span><br><span class="line"> 8 void synchronized myMethod()&#123;</span><br><span class="line"> 9     //code</span><br><span class="line">10 &#125;</span><br></pre></td></tr></table></figure>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>当同一个对象在线程1中访问一个方法，在线程2中再去访问另外一个加锁方法，则同样也会被阻塞.</p>
+<p>对于类锁，则会把整个类锁住，也就说只能有一个对象拥有当前类的锁。当一个对象拥有了类锁之后，另外一个对象还想竞争锁的话则会被阻塞。两个对象A，B，如果A正在访问一个被类锁修饰的方法function，那么B则不能访问。因为类锁只能在同一时刻被一个对象拥有。相对于对象锁，则是不同。还是A，B两个对象，如果A正在访问对象锁修饰的function，那么这个时候B也可以同时访问。</p>
+<p>对于对象锁，当一个对象拥有锁之后，访问一个加了对象锁的方法，而该方法中又调用了该类中其他加了对象锁的方法，那么这个时候是不会阻塞住的。这是java通过可重入锁机制实现的。可重入锁指的是当一个对象拥有对象锁之后，可以重复获取该锁。因为synchronized块是可重入的，所以当你访问一个对象锁的方法的时候，在该方法中继续访问其他对象锁方法是不会被阻塞的。</p>
+</li>
 </ol>
 <ol>
-<li>线程同步的方法：sychronized、lock、reentrantLock等。</li>
+<li><p>写出生产者消费者模式。</p>
+<h2 id="生产者消费者模式说明："><a href="#生产者消费者模式说明：" class="headerlink" title="生产者消费者模式说明："></a>生产者消费者模式说明：</h2><ol>
+<li>生产者只在仓库未满时进行生产，仓库满时生产者进程被阻塞；</li>
+<li>消费者只在仓库非空时进行消费，仓库为空时消费者进程被阻塞；</li>
+<li>当消费者发现仓库为空时会通知生产者生产；</li>
+<li>当生产者发现仓库满时会通知消费者消费；</li>
 </ol>
-<ol>
-<li>锁的等级：方法锁、对象锁、类锁。</li>
-</ol>
-<ol>
-<li>写出生产者消费者模式。</li>
+<h2 id="实现的关键："><a href="#实现的关键：" class="headerlink" title="实现的关键："></a>实现的关键：</h2><p>共享内存中的两个同步方法，及同步方法中wait()方法的调用。</p>
+<ul>
+<li>synchronized 保证了对象只能被一个线程占用。</li>
+<li>wait 保证了当线程在等待过程中释放锁，使得其他对象有机会获得锁。</li>
+</ul>
+<blockquote>
+<p><a href="https://link.jianshu.com?t=http://www.2cto.com/kf/ware/Java/" target="_blank" rel="noopener">Java</a>中有一个同步模型-监视器，负责管理线程对对象中的同步方法的访问，它的原理是：赋予该对象唯一一把’钥匙’，当多个线程进入对象，只有取得该对象钥匙的线程才可以访问同步方法，其它线程在该对象中等待，直到该线程用wait()方法放弃这把钥匙，其它等待的线程抢占该钥匙，抢占到钥匙的线程后才可得以执行，而没有取得钥匙的线程仍被阻塞在该对象中等待。 总而言之，synchonized使得只有一个线程能进入临界代码区。</p>
+<p>由于wait( )所等待的对象必须先锁住，因此，它只能用在同步化程序段或者同步化方法内，否则，会抛出异常java.lang.IllegalMonitorStateException.</p>
+</blockquote>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ul>
+<li>仓库（缓冲区），用于管理产品的生产、消费和存储</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 仓库类，用于管理产品的生产、消费和存储。</span><br><span class="line"> */</span><br><span class="line">public class Storage&lt;T&gt; &#123;</span><br><span class="line">    private int index = 0;</span><br><span class="line">    private static final int MAX = 10;//最大容量</span><br><span class="line">    private List&lt;T&gt; storages = new ArrayList&lt;T&gt;(MAX);//存储集合</span><br><span class="line"></span><br><span class="line">    public synchronized void produce(T item) &#123;</span><br><span class="line">        while (index &gt;= MAX) &#123;// 判断仓库满了，则等待。</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(&quot;仓库满了，等待中...&quot;);</span><br><span class="line">                this.wait();</span><br><span class="line">                System.out.println(&quot;仓库不满了，开始生产&quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;生产&gt;&gt;&quot; + item.toString());</span><br><span class="line">        storages.add(item);</span><br><span class="line">        index++;   //先添加item，在进行加1操作</span><br><span class="line">        notify();  //唤醒在此对象监视器上等待的单个线程，即消费者线程</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public synchronized T consume() &#123;</span><br><span class="line">        while (index &lt;= 0) &#123;// 判断仓库空了，则等待。</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(&quot;仓库为空，等待中...&quot;);</span><br><span class="line">                this.wait();</span><br><span class="line">                System.out.println(&quot;仓库不为空，开始消费&quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        index--;//先进行减1操作，再remove</span><br><span class="line">        T item = storages.remove(index);</span><br><span class="line">        System.out.println(&quot;消费&gt;&gt;&quot; + item.toString());</span><br><span class="line">        notify();</span><br><span class="line">        return item;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>产品</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Phone &#123;</span><br><span class="line"></span><br><span class="line">    private int id;// 手机编号</span><br><span class="line"></span><br><span class="line">    public Phone(int id) &#123;</span><br><span class="line">        this.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return &quot;手机编号：&quot; + id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>生产者</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Producer implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">    private Storage&lt;Phone&gt; storage;</span><br><span class="line">    </span><br><span class="line">    public Producer(Storage&lt;Phone&gt; storage) &#123;</span><br><span class="line">        this.storage = storage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void run() &#123;</span><br><span class="line">        for(int i = 0;i&lt;20;i++)&#123;</span><br><span class="line">            storage.produce(new Phone(i));</span><br><span class="line">            </span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(10);//每隔10毫秒生产一个产品</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                // TODO Auto-generated catch block</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>消费者</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class Consumer implements Runnable &#123;</span><br><span class="line"></span><br><span class="line">    private Storage&lt;Phone&gt; storage;</span><br><span class="line">    </span><br><span class="line">    public Consumer(Storage&lt;Phone&gt; storage) &#123;</span><br><span class="line">        this.storage = storage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void run() &#123;</span><br><span class="line">        for(int i = 0;i&lt;20;i++)&#123;</span><br><span class="line">            storage.consume();</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(100);//每隔100毫秒消费一个</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>客户端</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class ProducerAndConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Storage&lt;Phone&gt; storage = new Storage&lt;Phone&gt;();</span><br><span class="line">        </span><br><span class="line">        new Thread(new Producer(storage)).start();</span><br><span class="line">        new Thread(new Consumer(storage)).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <ol>
 <li>ThreadLocal的设计理念与作用。</li>

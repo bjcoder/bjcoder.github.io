@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Java多态的实现原理 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		java多态的实现原理
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/05 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		4065
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <p><strong>1．Java多态概述</strong></p>
+<p>多态是面向对象编程语言的重要特性，它允许基类的指针或引用指向派生类的对象，而在具体访问时实现方法的动态绑定。Java 对于方法调用动态绑定的实现主要依赖于方法表，但通过类引用调用(invokevitual)和接口引用调用(invokeinterface)的实现则有所不同。</p>
+<p>类引用调用的大致过程为：Java编译器将Java源代码编译成class文件，在编译过程中，会根据静态类型将调用的符号引用写到class文件中。在执行时，JVM根据class文件找到调用方法的符号引用，然后在静态类型的方法表中找到偏移量，然后根据this指针确定对象的实际类型，使用实际类型的方法表，偏移量跟静态类型中方法表的偏移量一样，如果在实际类型的方法表中找到该方法，则直接调用，否则，认为没有重写父类该方法。按照继承关系从下往上搜索。 </p>
+<p>接口引用调用后面再说吧。</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/d1" alt="img"></p>
+<p>从上图可以看出，当程序运行时，需要某个类时，类载入子系统会将相应的class文件载入到JVM中，并在内部建立该类的类型信息（这个类型信息其实就是class文件在JVM中存储的一种数据结构），包含java类定义的所有信息，包括方法代码，类变量、成员变量、以及本博文要重点讨论的方法表。这个类型信息就存储在方法区。<br>注意，这个方法区中的类型信息跟在堆中存放的class对象是不同的。在方法区中，这个class的类型信息只有唯一的实例（所以是各个线程共享的内存区域），而在堆中可以有多个该class对象。可以通过堆中的class对象访问到方法区中类型信息。就像在java反射机制那样，通过class对象可以访问到该类的所有信息一样。</p>
+<p>【重点】 </p>
+<p>方法表是实现动态调用的核心。上面讲过方法表存放在方法区中的类型信息中。为了优化对象调用方法的速度，方法区的类型信息会增加一个指针，该指针指向一个记录该类方法的方法表，方法表中的每一个项都是对应方法的指针。<br>这些方法中包括从父类继承的所有方法以及自身重写（override）的方法。</p>
+<p>【拓展】</p>
+<p>方法区：方法区和JAVA堆一样，是各个线程共享的内存区域，用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。<br>运行时常量池：它是方法区的一部分，Class文件中除了有类的版本、方法、字段等描述信息外，还有一项信息是常量池，用于存放编译器生成的各种符号引用，这部分信息在类加载时进入方法区的运行时常量池中。<br>方法区的内存回收目标是针对常量池的回收及对类型的卸载。</p>
+<p><strong>3**</strong>．<strong>**Java</strong> <strong>的方法调用方式（拓展知识，可以不看）</strong></p>
+<p>Java 的方法调用有两类，动态方法调用与静态方法调用。</p>
+<p>静态方法调用是指对于类的静态方法的调用方式，是静态绑定的；而动态方法调用需要有方法调用所作用的对象，是动态绑定的。</p>
+<p>类调用 (invokestatic) 是在编译时就已经确定好具体调用方法的情况。</p>
+<p>实例调用 (invokevirtual)则是在调用的时候才确定具体的调用方法，这就是动态绑定，也是多态要解决的核心问题。</p>
+<p>JVM 的方法调用指令有四个，分别是 invokestatic，invokespecial，invokesvirtual 和 invokeinterface。前两个是静态绑定，后两个是动态绑定的。本文也可以说是对于JVM后两种调用实现的考察。</p>
+<p><strong>4．方法表与方法调用</strong></p>
+<p>如有类定义 Person, Girl, Boy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a person.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void eat()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Boy extends Person&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a boy&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void fight()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Girl extends Person&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return &quot;I&apos;m a girl&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void sing()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>当这三个类被载入到</p>
+<p> Java </p>
+<p>虚拟机之后，方法区中就包含了各自的类的信息。</p>
+<p>Girl </p>
+<p>和</p>
+<p> Boy </p>
+<p>在方法区中的方法表可表示如下：</p>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/d2" alt="img"></p>
+<p>可以看到，Girl 和 Boy 的方法表包含继承自 Object 的方法，继承自直接父类 Person 的方法及各自新定义的方法。注意方法表条目指向的具体的方法地址，如 Girl 继承自 Object 的方法中，只有 toString() 指向自己的实现（Girl 的方法代码），其余皆指向 Object 的方法代码；其继承自于 Person 的方法 eat() 和 speak() 分别指向 Person 的方法实现和本身的实现。</p>
+<p>如果子类改写了父类的方法，那么子类和父类的那些同名的方法共享一个方法表项。</p>
+<p>因此，方法表的偏移量总是固定的。所有继承父类的子类的方法表中，其父类所定义的方法的偏移量也总是一个定值。<br>Person 或 Object中的任意一个方法，在它们的方法表和其子类 Girl 和 Boy 的方法表中的位置 (index) 是一样的。这样 JVM 在调用实例方法其实只需要指定调用方法表中的第几个方法即可。</p>
+<p>如调用如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Party&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">void happyHour()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Person girl = new Girl();   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">girl.speak(); &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当编译 Party 类的时候，生成 girl.speak()的方法调用假设为：</p>
+<p>Invokevirtual #12</p>
+<p>设该调用代码对应着 girl.speak(); #12 是 Party 类的常量池的索引。JVM 执行该调用指令的过程如下所示：</p>
+<p> <img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/d3" alt="img"></p>
+<p>（1）</p>
+<p>在常量池（这里有个错误，上图为ClassReference常量池而非Party的常量池）中找到方法</p>
+<p>调用的符号引用</p>
+<p>。</p>
+<p>（2）查看</p>
+<p>Person的方法表，</p>
+<p>得到</p>
+<p>speak</p>
+<p>方法在该方法表的偏移量</p>
+<p>（假设为15），这样就得到该方法的直接引用。 </p>
+<p>（3）根据this指针得到</p>
+<p>具体的对象</p>
+<p>（即 girl 所指向的位于堆中的对象）。</p>
+<p>（4）</p>
+<p>根据对象得到该对象对应的方法表</p>
+<p>，根据偏移量15查看有无重写（override）该方法，</p>
+<p>如果重写，则可以直接调用（</p>
+<p>Girl</p>
+<p>的方法表的</p>
+<p>speak</p>
+<p>项指向自身的方法而非父类）；如果没有重写，则需要拿到按照继承关系从下往上的基类（这里是</p>
+<p>Person</p>
+<p>类）的方法表，同样按照这个偏移量</p>
+<p>15</p>
+<p>查看有无该方法。</p>
+<p><strong>5．接口调用</strong></p>
+<p>因为 Java 类是可以同时实现多个接口的，而当用接口引用调用某个方法的时候，情况就有所不同了。</p>
+<p>Java 允许一个类实现多个接口，从某种意义上来说相当于多继承，这样同样的方法在基类和派生类的方法表的位置就可能不一样了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">interface IDance&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   void dance();   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Person &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;I&apos;m a person.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void eat()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void speak()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Dancer extends Person   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> implements IDance &#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;I&apos;m a dancer.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void dance()&#123;&#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> class Snake implements IDance&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public String toString()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   return &quot;A snake.&quot;;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> public void dance()&#123;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> //snake dance   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &#125;   </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，由于接口的介入，继承自于接口 IDance 的方法 dance()在类 Dancer 和 Snake 的方法表中的位置已经不一样了，显然我们无法仅根据偏移量来进行方法的调用。</p>
+<p>Java 对于接口方法的调用是采用搜索方法表的方式，如，要在Dancer的方法表中找到dance()方法，必须搜索Dancer的整个方法表。</p>
+<p>因为每次接口调用都要搜索方法表，所以从效率上来说，接口方法的调用总是慢于类方法的调用的。</p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/05/equals与==的区别/">          
+
+            <span title="equals与==的区别">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/05/Java的四种引用，强弱软虚，用到的场景/">         
+
+           <span title="Java的四种引用，强弱软虚，用到的场景">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

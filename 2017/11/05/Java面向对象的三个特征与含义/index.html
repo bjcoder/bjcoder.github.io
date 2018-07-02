@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Java面向对象的三个特征与含义 |   Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        <article class="post">
+
+	  
+	<div class="post-header slideDownMin center">
+
+	<span class="post-title">	
+		Java面向对象的三个特征与含义
+	</span>
+
+	
+	<div class="post-info">
+
+		<time class="post-time"><span class="iconfont icon-date"></span>
+		2017/11/05 	
+		</time>
+		
+					
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		965
+		</span>		
+	
+	</div> 
+
+</div> 
+
+
+	  <div class="post-content slideDownMin">
+
+		
+
+
+	  <h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>属性的封装和方法的封装。把属性定义为私有的， get(),set()方法。 好处是信息隐藏和模块化，提高安全性。封装的主要作用在于对外隐藏内 部实现细节，增强程序的安全性。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>子类可以继承父类的成员变量和成员方法。继承可以提高代码的复用性。</p>
+<p>继承的特性： </p>
+<p>​        1.单一继承。 </p>
+<p>​        2.子类只能继承父类的非私有成员变量和方法。 </p>
+<p>​        3.成员变量的隐藏和方法的覆盖。 </p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>当同一个操作作用在不同对象时，会产生不同的结果。</p>
+<p>有 2 种方式来实现多态，一种是编译时多态，另外一种是运行时多态；编译时多态是通过方法的重载来实现的，运行时多态是通过方法的重写来实现的。 方法的重载，指的是同一个类中有多个同名的方法，但这些方法有着不同 的参数。在编译时就可以确定到底调用哪个方法。 方法的重写，子类重写父类中的方法。父类的引用变量不仅可以指向父类 的实例对象，还可以指向子类的实例对象。当父类的引用指向子类的对象时， 只有在运行时才能确定调用哪个方法。 特别注意：只有类中的方法才有多态的概念，类中成员变量没有多态的概念。</p>
+<p>Override（覆盖、重写）和 Overload（重载）的区别。 </p>
+<p>重载和覆盖是 java 多态性的不同表现方式。 重载是在一个类中多态性的一种表现，是指在一个类中定义了多个同名的 方法，但是他们有不同的参数个数或有不同的参数类型。 在使用重载时要注意以下几点： </p>
+<p>​        1.重载只能通过不同的方法参数来区分。例如不同的参数类型，不同的 参数个数，不同的参数顺序。 </p>
+<p>​        2.不能通过访问权限、返回类型、抛出的异常进行重载。 </p>
+<p>覆盖是指子类函数覆盖父类中的函数。 在覆盖时要注意以下几点（重点！！）： </p>
+<p>​        1.覆盖的方法的函数名和参数必须要和被覆盖的方法的函数名和参数完全匹配，才能达到覆盖的效果；</p>
+<p>​        2.覆盖的方法的返回值必须和被覆盖的方法的返回值类型一致； </p>
+<p>​        3.覆盖的方法所抛出的异常必须和被覆盖方法的所抛出的异常一致，或者 是其子类； </p>
+<p>​        4.被覆盖的方法不能为 private，否则在其子类中只是新定义了一个方法， 并没有对其进行覆盖。 </p>
+<p>​        5. 子类函数的访问修饰权限要大于等于父类的 （public&gt;protected&gt;default&gt;private） 。（重要！！！） </p>
+<p>​        特别注意：Java 中，子类无法覆盖父类的 static 方法或 private 方法。</p>
+  
+	  </div>     
+	  
+
+	<div class="post-footer">    
+
+   
+  
+
+
+   <nav class="post-nav">
+
+      
+       
+
+         
+
+      
+          <a href="/2017/11/05/HashMap和HashTable的区别/">          
+
+            <span title="HashMap和HashTable的区别">  上一篇 </span>
+
+          </a>
+    
+      
+    
+      
+
+         
+
+          <a href="/2017/11/05/Map、Set、List、Queue、Stack的特点与用法/">         
+
+           <span title="Map、Set、List、Queue、Stack的特点与用法">下一篇 </span>  
+
+          </a>
+
+      
+
+  </nav>  
+</div> 
+		
+
+</article>
+
+
+
+<div id="toc" >		
+
+	<div class="toc-container">	
+
+	<span class="toc-contents iconfont icon-open"" onclick="change()"> 
+	<span>目录</span>
+	</span>
+
+	<ul class="toc-list"></ul>
+
+	</div>
+
+</div>
+
+
+<script src="/js/toc.js"></script>
+<script src="/js/post.js"></script></section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>

@@ -1,0 +1,1461 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+  
+  
+  <title>  Min‘s blog</title>
+
+ 
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+
+
+  <!-- css -->
+  <link rel="stylesheet" href="/css/style.css">  
+  <!-- Jquery -->
+  <script src="//cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script> 
+  <!-- Add fancyBox -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script> 
+  <script src="/js/gallery.js"></script>
+  <!-- javascript --> 
+  <script src="/js/mobile.js"></script>  
+  <script src="/js/utils.js"></script>    
+  <script src="/js/script.js"></script>  
+</head> 
+  <body> 
+    <header class="header">
+	
+  <nav class="header-nav">       
+	
+  	<span class="iconfont icon-menu mobile-toggle"></span>  
+
+    <a class="header-logo" href="/"><span>Min&#39;s blog</a>  
+
+    <div class="header-menu">          
+              
+            
+
+              <a class="header-menu-link" id="header-menu-home" href="/">首页</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-archives" href="/archives">归档</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-categories" href="/categories">分类</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-tags" href="/tags">标签</a>     
+
+            
+            
+            
+
+              <a class="header-menu-link" id="header-menu-about" href="/about">关于</a>     
+
+            
+            
+            
+
+              <a class="iconfont icon-menu-search header-menu-link" id="header-menu-search"></a>
+
+            
+                
+    </div>  
+    
+  </nav>
+</header>
+
+    <div class="container">         
+      
+        
+
+          <section id="main">  
+
+        
+
+        
+
+
+<div class="profile sildeUpMin">
+
+		<img class="avatar no-gallery" src="/img/timg.jpeg"  alt="Lose">
+					
+		<p class="author">Rui Min</p>
+
+		
+			<p class="location"><span class="iconfont icon-location"></span>BeiJing CN</p>
+		
+	
+		<div class="social">
+   		    	
+		<a href="https://github.com/bjcoder" class="iconfont icon-github" target="_blank" title="github"></a>
+	        	
+		<a href="/" class="iconfont icon-others" target="_blank" title="others"></a>
+	    
+    	</div>		
+</div>
+
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/垃圾收集器/">；垃圾收集器</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<h2 id="1、垃圾收集器概述"><a href="#1、垃圾收集器概述" class="headerlink" title="1、垃圾收集器概述"></a><strong>1、垃圾收集器概述</strong></h2><blockquote>
+<p>​       垃圾收集器是垃圾回收算法（标记-清除算法、复制算法、标记-整理算法、火车算法）的具体实现，不同商家、不同版本的JVM所提供的垃圾收集器可能会有很在差别，本文主要介绍HotSpot虚拟机中的垃圾收集器。</p>
+</blockquote>
+<h3 id="1-1、垃圾收集器组合"><a href="#1-1、垃圾收集器组合" class="headerlink" title="1-1、垃圾收集器组合"></a><strong>1-1、垃圾收集器组合</strong></h3><blockquote>
+<p>​       JDK7/8后，HotSpot虚拟机所有收集器及组合（连线），如下图：</p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img1" alt="img"></p>
+<blockquote>
+<p>（A）、图中展示了<strong>7种</strong>不同分代的收集器：</p>
+<p>​       Serial、ParNew、Parallel Scavenge、Serial Old、Parallel Old、CMS、G1；</p>
+<p>（B）、而它们所处区域，则表明其是属于新生代收集器还是老年代收集器：</p>
+<p>​      <strong>新生代收集器</strong>：Serial、ParNew、Parallel Scavenge；</p>
+<p>​      <strong>老年代收集器</strong>：Serial Old、Parallel Old、CMS；</p>
+<p>​      <strong>整堆收集器</strong>：G1；</p>
+<p>（C）、两个收集器间有连线，表明它们<strong>可以搭配使用</strong>：</p>
+<p>​       Serial/Serial Old、Serial/CMS、ParNew/Serial Old、ParNew/CMS、Parallel Scavenge/Serial Old、Parallel Scavenge/Parallel Old、G1；</p>
+<p>（D）、其中Serial Old作为CMS出现<strong>“Concurrent Mode Failure”失败</strong>的后备预案（后面介绍）；</p>
+</blockquote>
+<h3 id="1-2、并发垃圾收集和并行垃圾收集的区别"><a href="#1-2、并发垃圾收集和并行垃圾收集的区别" class="headerlink" title="1-2、并发垃圾收集和并行垃圾收集的区别"></a><strong>1-2、并发垃圾收集和并行垃圾收集的区别</strong></h3><blockquote>
+<p><strong>（A）、并行（Parallel）</strong></p>
+<p>​       指多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态；</p>
+<p>​       如<strong>ParNew、Parallel Scavenge、Parallel Old</strong>；</p>
+<p><strong>（B）、并发（Concurrent）</strong></p>
+<p>​       指用户线程与垃圾收集线程同时执行（但不一定是并行的，可能会交替执行）；</p>
+<p>​      用户程序在继续运行，而垃圾收集程序线程运行于另一个CPU上；    </p>
+<p>​       如<strong>CMS、G1</strong>（也有并行）；</p>
+</blockquote>
+<h3 id="1-3、Minor-GC和Full-GC的区别"><a href="#1-3、Minor-GC和Full-GC的区别" class="headerlink" title="1-3、Minor GC和Full GC的区别"></a><strong>1-3、Minor GC和Full GC的区别</strong></h3><blockquote>
+<p><strong>（A）、Minor GC</strong></p>
+<p>​       又称<strong>新生代GC</strong>，指发生在新生代的垃圾收集动作；</p>
+<p>​       因为Java对象大多是朝生夕灭，所以Minor GC非常频繁，一般回收速度也比较快；</p>
+<p><strong>（B）、Full GC</strong></p>
+<p>​       又称<strong>Major GC或老年代GC</strong>，指发生在老年代的GC；</p>
+<p>​       出现Full GC经常会伴随至少一次的Minor GC（不是绝对，Parallel Sacvenge收集器就可以选择设置Major GC策略）；</p>
+<p>​      Major GC速度一般比Minor GC慢10倍以上；</p>
+</blockquote>
+<p>​        </p>
+<blockquote>
+<p>下面将介绍这些收集器的特性、基本原理和使用场景，并重点分析CMS和G1这两款相对复杂的收集器；但需要明确一个观点：</p>
+<p>​       没有最好的收集器，更没有万能的收集；</p>
+<p>​      选择的只能是适合具体应用场景的收集器。</p>
+</blockquote>
+<h2 id="2、Serial收集器"><a href="#2、Serial收集器" class="headerlink" title="2、Serial收集器"></a><strong>2、Serial收集器</strong></h2><blockquote>
+<p>​       Serial（串行）垃圾收集器是最基本、发展历史最悠久的收集器；</p>
+<p>​       JDK1.3.1前是HotSpot新生代收集的唯一选择；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对新生代；</p>
+<p>​      采用复制算法；</p>
+<p>​      单线程收集；</p>
+<p>​       进行垃圾收集时，必须暂停所有工作线程，直到完成；            </p>
+<p>​       即会”Stop The World”；</p>
+<p>​      <strong>Serial/Serial Old组合收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img2" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      依然是HotSpot在Client模式下默认的新生代收集器；</p>
+<p>​      也有优于其他收集器的地方：</p>
+<blockquote>
+<p>​      简单高效（与其他收集器的单线程相比）；</p>
+<p>​      对于限定单个CPU的环境来说，Serial收集器没有线程交互（切换）开销，可以获得最高的单线程收集效率；</p>
+<p>​      在用户的桌面应用场景中，可用内存一般不大（几十M至一两百M），可以在较短时间内完成垃圾收集（几十MS至一百多MS）,只要不频繁发生，这是可以接受的</p>
+</blockquote>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseSerialGC”</strong>：添加该参数来显式的使用串行垃圾收集器；</p>
+<p><strong>4、Stop TheWorld说明</strong></p>
+<p>​      JVM在后台自动发起和自动完成的，在用户不可见的情况下，把用户正常的工作线程全部停掉，即<strong>GC停顿</strong>；</p>
+<p>​      会带给用户不良的体验；</p>
+<blockquote>
+<p>​      从JDK1.3到现在，从Serial收集器-》Parallel收集器-》CMS-》G1，用户线程停顿时间不断缩短，但仍然无法完全消除；</p>
+</blockquote>
+<p>​      更多”Stop The World”信息请参考：<a href="http://blog.csdn.net/tjiyu/article/details/53982412" target="_blank" rel="noopener">《Java虚拟机垃圾回收(一) 基础》</a>“2-2、可达性分析算法”</p>
+<p>更多Serial收集器请参考：</p>
+<p>​      《Memory Management in the Java HotSpot™ Virtual Machine》 4.3节 Serial Collector（内存管理白皮书）：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+<p>​      《Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection Tuning Guide》 第5节 Available Collectors（官方的垃圾收集调优指南）：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref27" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/collectors.html#sthref27</a></p>
+</blockquote>
+<h2 id="3、ParNew收集器"><a href="#3、ParNew收集器" class="headerlink" title="3、ParNew收集器"></a><strong>3、ParNew收集器</strong></h2><blockquote>
+<p>​      ParNew垃圾收集器是<strong>Serial收集器的多线程版本</strong>。</p>
+<p><strong>1、特点</strong></p>
+<p>​      除了多线程外，其余的行为、特点和Serial收集器一样；</p>
+<p>​      如Serial收集器可用控制参数、收集算法、Stop The World、内存分配规则、回收策略等；</p>
+<p>​      两个收集器共用了不少代码；</p>
+<p>​      <strong>ParNew/Serial Old组合收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img3" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      在Server模式下，ParNew收集器是一个非常重要的收集器，因为除Serial外，目前只有它<strong>能与CMS收集器配合工作</strong>；</p>
+<p>​      但在单个CPU环境中，不会比Serail收集器有更好的效果，因为存在线程交互开销。</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseConcMarkSweepGC”</strong>：指定使用CMS后，会默认使用ParNew作为新生代收集器；</p>
+<p>​      <strong>“-XX:+UseParNewGC”</strong>：强制指定使用ParNew；    </p>
+<p>​      <strong>“-XX:ParallelGCThreads”</strong>：指定垃圾收集的线程数量，ParNew默认开启的收集线程与CPU的数量相同；</p>
+<p><strong>4、为什么只有ParNew能与CMS收集器配合</strong></p>
+<p>​      CMS是HotSpot在JDK1.5推出的第一款真正意义上的并发（Concurrent）收集器，第一次实现了让垃圾收集线程与用户线程（基本上）同时工作；</p>
+<p>​      CMS作为老年代收集器，但却无法与JDK1.4已经存在的新生代收集器Parallel Scavenge配合工作；</p>
+<p>​      因为Parallel Scavenge（以及G1）都没有使用传统的GC收集器代码框架，而另外独立实现；而其余几种收集器则共用了部分的框架代码；</p>
+<p>​      关于CMS收集器后面会详细介绍。</p>
+</blockquote>
+<h2 id="4、Parallel-Scavenge收集器"><a href="#4、Parallel-Scavenge收集器" class="headerlink" title="4、Parallel Scavenge收集器"></a><strong>4、Parallel Scavenge收集器</strong></h2><blockquote>
+<p>​      Parallel Scavenge垃圾收集器因为与吞吐量关系密切，也称为<strong>吞吐量收集器（Throughput Collector）</strong>。</p>
+<p><strong>1、特点</strong></p>
+<blockquote>
+<p><strong>（A）、</strong>有一些特点与<strong>ParNew收集器相似</strong></p>
+<p>​      新生代收集器；</p>
+<p>​      采用复制算法；</p>
+<p>​      多线程收集；</p>
+<p><strong>（B）、主要特点是：它的关注点与其他收集器不同</strong></p>
+<p>​      CMS等收集器的关注点是尽可能地缩短垃圾收集时用户线程的停顿时间；</p>
+<p>​      而Parallel Scavenge收集器的目标则是<strong>达一个可控制的吞吐量（Throughput）</strong>；</p>
+<p>​      <strong>关于吞吐量与收集器关注点说明详见本节后面；</strong></p>
+</blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      高吞吐量为目标，即减少垃圾收集时间，让用户代码获得更长的运行时间；</p>
+<p>​      当应用程序运行在具有多个CPU上，对暂停时间没有特别高的要求时，即程序主要在<strong>后台进行计算，而不需要与用户进行太多交互</strong>；</p>
+<p>​      例如，那些<strong>执行批量处理</strong>、订单处理、工资支付、科学计算的应用程序；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      Parallel Scavenge收集器提供两个参数用于精确控制吞吐量：</p>
+<blockquote>
+<p><strong>（A）、”-XX:MaxGCPauseMillis”</strong></p>
+<p>​      控制最大垃圾收集停顿时间，大于0的毫秒数；</p>
+<p>​      MaxGCPauseMillis设置得稍小，停顿时间可能会缩短，但也可能会使得吞吐量下降；</p>
+<p>​      因为可能导致垃圾收集发生得更频繁；</p>
+<p><strong>（B）、”-XX:GCTimeRatio”</strong></p>
+<p>​      设置垃圾收集时间占总时间的比率，0&lt;n&lt;100的整数；</p>
+<p>​      GCTimeRatio相当于设置吞吐量大小；</p>
+<p>​      垃圾收集执行时间占应用程序执行时间的比例的计算方法是：</p>
+<blockquote>
+<p>​      1 / (1 + n)</p>
+<p>​      例如，选项-XX:GCTimeRatio=19，设置了垃圾收集时间占总时间的5%–1/(1+19)；</p>
+</blockquote>
+<p>​      默认值是1%–1/(1+99)，即n=99；</p>
+<p>垃圾收集所花费的时间是年轻一代和老年代收集的总时间；</p>
+<p>如果没有满足吞吐量目标，则增加代的内存大小以尽量增加用户程序运行的时间；</p>
+</blockquote>
+<p>​      此外，还有一个值得关注的参数：</p>
+<blockquote>
+<p><strong>（C）、”-XX:+UseAdptiveSizePolicy”</strong></p>
+<p>​      开启这个参数后，就不用手工指定一些细节参数，如：</p>
+<blockquote>
+<p>​      新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRation）、晋升老年代的对象年龄（-XX:PretenureSizeThreshold）等；</p>
+</blockquote>
+<p>​      JVM会根据当前系统运行情况收集性能监控信息，动态调整这些参数，以提供最合适的停顿时间或最大的吞吐量，这种调节方式称为<strong>GC自适应的调节策略（GC Ergonomiscs）</strong>；    </p>
+<p>​      <strong>这是一种值得推荐的方式</strong>：</p>
+<blockquote>
+<p>​      (1)、只需设置好内存数据大小（如”-Xmx”设置最大堆）；</p>
+<p>​      (2)、然后使用”-XX:MaxGCPauseMillis”或”-XX:GCTimeRatio”给JVM设置一个优化目标；</p>
+<p>​      (3)、那些具体细节参数的调节就由JVM自适应完成；        </p>
+</blockquote>
+<p>​      这也是Parallel Scavenge收集器与ParNew收集器一个重要区别；    </p>
+</blockquote>
+<p>​      更多目标调优和GC自适应的调节策略说明请参考：            </p>
+<p>​      《Memory Management in the Java HotSpot™ Virtual Machine》 5节 Ergonomics – Automatic Selections and Behavior Tuning：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+<p>​      《Java Platform, Standard Edition HotSpot Virtual Machine Garbage Collection Tuning Guide》 第2节 Ergonomics：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html%23ergonomics" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/ergonomics.html#ergonomics</a></p>
+<p><strong>4、吞吐量与收集器关注点说明</strong></p>
+<blockquote>
+<p><strong>（A）、吞吐量（Throughput）</strong></p>
+<p>​      CPU用于运行用户代码的时间与CPU总消耗时间的比值；</p>
+<p>​      即<strong>吞吐量=运行用户代码时间/（运行用户代码时间+垃圾收集时间）；</strong>    </p>
+<p>​      高吞吐量即减少垃圾收集时间，让用户代码获得更长的运行时间；</p>
+<p><strong>（B）、垃圾收集器期望的目标（关注点）</strong></p>
+<blockquote>
+<p><strong>（1）、停顿时间</strong>    </p>
+<p>​      停顿时间越短就适合需要与用户交互的程序；</p>
+<p>​      良好的响应速度能提升用户体验；</p>
+<p><strong>（2）、吞吐量</strong></p>
+<p>​      高吞吐量则可以高效率地利用CPU时间，尽快完成运算的任务；</p>
+<p>​      主要适合在后台计算而不需要太多交互的任务；</p>
+<p><strong>（3）、覆盖区（Footprint）</strong></p>
+<p>​      在达到前面两个目标的情况下，尽量减少堆的内存空间；</p>
+<p>​      可以获得更好的空间局部性；</p>
+</blockquote>
+</blockquote>
+<p>更多Parallel Scavenge收集器的信息请参考：</p>
+<p>​      官方的垃圾收集调优指南 第6节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html#parallel_collector</a></p>
+<p><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">
+</a></p>
+<p><strong>上面介绍的都是新生代收集器，接下来开始介绍老年代收集器；</strong><a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/parallel.html%23parallel_collector" target="_blank" rel="noopener">
+</a></p>
+</blockquote>
+<h2 id="5、Serial-Old收集器"><a href="#5、Serial-Old收集器" class="headerlink" title="5、Serial Old收集器"></a><strong>5、Serial Old收集器</strong></h2><blockquote>
+<p>​      Serial Old是 <strong>Serial收集器的老年代版本</strong>；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      采用”标记-整理”算法（还有压缩，Mark-Sweep-Compact）；</p>
+<p>​      单线程收集；</p>
+<p>​      Serial/Serial Old收集器运行示意图如下：</p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img4" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      主要用于Client模式；</p>
+<p>​      而在Server模式有两大用途：</p>
+<blockquote>
+<p>​      （A）、在JDK1.5及之前，与Parallel Scavenge收集器搭配使用（JDK1.6有Parallel Old收集器可搭配）；</p>
+<p>​      （B）、作为CMS收集器的后备预案，在并发收集发生Concurrent Mode Failure时使用（后面详解）；</p>
+</blockquote>
+<p>更多Serial Old收集器信息请参考：</p>
+<p>​      内存管理白皮书 4.3.2节：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="6、Parallel-Old收集器"><a href="#6、Parallel-Old收集器" class="headerlink" title="6、Parallel Old收集器"></a><strong>6、Parallel Old收集器</strong></h2><blockquote>
+<p>​      Parallel Old垃圾收集器是Parallel Scavenge收集器的老年代版本；</p>
+<p>​      JDK1.6中才开始提供；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      采用”标记-整理”算法；</p>
+<p>​      多线程收集；</p>
+<p>​      <strong>Parallel Scavenge/Parallel Old收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img5" alt="img"></p>
+<blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      JDK1.6及之后用来代替老年代的Serial Old收集器；</p>
+<p>​      特别是在Server模式，多CPU的情况下；</p>
+<p>​      这样在注重吞吐量以及CPU资源敏感的场景，就有了Parallel Scavenge加Parallel Old收集器的”给力”应用组合；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseParallelOldGC”：指定使用Parallel Old收集器；</strong></p>
+<p>更多Parallel Old收集器收集过程介绍请参考：</p>
+<p>​      《内存管理白皮书》 4.5.2节：    <a href="https://blog.csdn.net/tjiyu/article/details/53983650" target="_blank" rel="noopener">    http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="7、CMS收集器"><a href="#7、CMS收集器" class="headerlink" title="7、CMS收集器"></a><strong>7、CMS收集器</strong></h2><blockquote>
+<p>​      并发标记清理（Concurrent Mark Sweep，CMS）收集器也称为并发低停顿收集器（Concurrent Low Pause Collector）或低延迟（low-latency）垃圾收集器；</p>
+<p>​      在前面ParNew收集器曾简单介绍过其特点；</p>
+<p><strong>1、特点</strong></p>
+<p>​      针对老年代；</p>
+<p>​      基于”标记-清除”算法(不进行压缩操作，产生内存碎片)；            </p>
+<p>​      以获取最短回收停顿时间为目标；</p>
+<p>​      并发收集、低停顿；</p>
+<p>​      需要更多的内存（看后面的缺点）；</p>
+<p>​            </p>
+<p>​      是HotSpot在JDK1.5推出的第一款真正意义上的并发（Concurrent）收集器；</p>
+<p>​      第一次实现了让垃圾收集线程与用户线程（基本上）同时工作；</p>
+<p><strong>2、应用场景</strong></p>
+<p>​      <strong>与用户交互较多的场景</strong>；        </p>
+<p>​      希望系统停顿时间最短，注重服务的响应速度；</p>
+<p>​      以给用户带来较好的体验；</p>
+<p>​      如<strong>常见WEB、B/S系统的服务器上的应用</strong>；</p>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseConcMarkSweepGC”：指定使用CMS收集器；</strong></p>
+<p><strong>4、CMS收集器运作过程</strong></p>
+<p>​      比前面几种收集器更复杂，可以分为4个步骤:</p>
+<blockquote>
+<p><strong>（A）、初始标记（CMS initial mark）</strong></p>
+<p>​      仅标记一下GC Roots能直接关联到的对象；</p>
+<p>​      速度很快；</p>
+<p>​      但需要”Stop The World”；</p>
+<p><strong>（B）、并发标记（CMS concurrent mark）</strong></p>
+<p>​      进行GC Roots Tracing的过程；</p>
+<p>​      刚才产生的集合中标记出存活对象；</p>
+<p>​      应用程序也在运行；</p>
+<p>​      并不能保证可以标记出所有的存活对象；</p>
+<p><strong>（C）、重新标记（CMS remark）</strong></p>
+<p>​      为了修正并发标记期间因用户程序继续运作而导致标记变动的那一部分对象的标记记录；</p>
+<p>​      需要”Stop The World”，且停顿时间比初始标记稍长，但远比并发标记短；</p>
+<p>​      采用多线程并行执行来提升效率；</p>
+<p><strong>（D）、并发清除（CMS concurrent sweep）</strong></p>
+<p>​      回收所有的垃圾对象；</p>
+</blockquote>
+<p>​      整个过程中耗时最长的并发标记和并发清除都可以与用户线程一起工作；</p>
+<p>​      所以总体上说，CMS收集器的内存回收过程与用户线程一起并发执行；</p>
+<p>​      <strong>CMS收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img6" alt="img1"></p>
+<p>​        <strong>5、CMS收集器3个明显的缺点</strong></p>
+<p>​                     <strong>（A）、对CPU资源非常敏感</strong></p>
+<blockquote>
+<blockquote>
+<p>​      并发收集虽然不会暂停用户线程，但因为占用一部分CPU资源，还是会导致应用程序变慢，总吞吐量降低。</p>
+<p>​      <strong>CMS的默认收集线程数量是=(CPU数量+3)/4；</strong></p>
+<p>​      当CPU数量多于4个，收集线程占用的CPU资源多于25%，对用户程序影响可能较大；不足4个时，影响更大，可能无法接受。</p>
+<p>​      <strong>增量式并发收集器：</strong></p>
+<blockquote>
+<p>​      针对这种情况，曾出现了”增量式并发收集器”（Incremental Concurrent Mark Sweep/i-CMS）；</p>
+<p>​      类似使用抢占式来模拟多任务机制的思想，让收集线程和用户线程交替运行，减少收集线程运行时间；</p>
+<p>​      但效果并不理想，<strong>JDK1.6后就官方不再提倡用户使用</strong>。</p>
+<p>更多请参考：</p>
+<p>​      官方的《垃圾收集调优指南》8.8节 Incremental Mode：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html%23CJAGIIEJ" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html#CJAGIIEJ</a></p>
+<p>​      《内存管理白皮书》 4.6.3节可以看到一些描述；</p>
+</blockquote>
+<p><strong>（B）、无法处理浮动垃圾,可能出现”Concurrent Mode Failure”失败</strong></p>
+<blockquote>
+<p><strong>（1）、浮动垃圾（Floating Garbage）</strong></p>
+<p>​      <strong>在并发清除时，用户线程新产生的垃圾</strong>，称为浮动垃圾；</p>
+<p>​      这使得并发清除时需要预留一定的内存空间，不能像其他收集器在老年代几乎填满再进行收集；</p>
+<p>​      也要可以认为CMS所需要的空间比其他垃圾收集器大；</p>
+<p>​      “-XX:CMSInitiatingOccupancyFraction”：设置CMS预留内存空间；</p>
+<p>​      JDK1.5默认值为68%；</p>
+<p>​      JDK1.6变为大约92%；               </p>
+<p><strong>（2）、”Concurrent Mode Failure”失败</strong></p>
+<p>​      如果CMS预留内存空间无法满足程序需要，就会出现一次”Concurrent Mode Failure”失败；</p>
+<p>​      这时JVM启用后备预案：临时启用Serail Old收集器，而导致另一次Full GC的产生；</p>
+<p>​      这样的代价是很大的，所以CMSInitiatingOccupancyFraction不能设置得太大。</p>
+</blockquote>
+<p><strong>（C）、产生大量内存碎片</strong></p>
+<p>​      由于<strong>CMS基于”标记-清除”算法，清除后不进行压缩操作</strong>；</p>
+<p>​      前面<a href="http://blog.csdn.net/tjiyu/article/details/53983064" target="_blank" rel="noopener">《Java虚拟机垃圾回收(二) 垃圾回收算法》</a>“标记-清除”算法介绍时曾说过：</p>
+<blockquote>
+<p>​      产生大量不连续的内存碎片会导致分配大内存对象时，无法找到足够的连续内存，从而需要提前触发另一次Full GC动作。</p>
+</blockquote>
+<p>​      解决方法：                </p>
+<blockquote>
+<p><strong>（1）、”-XX:+UseCMSCompactAtFullCollection”</strong></p>
+<p>​      使得CMS出现上面这种情况时不进行Full GC，而开启内存碎片的合并整理过程；</p>
+<p>​      但合并整理过程无法并发，停顿时间会变长；</p>
+<p>​      默认开启（但不会进行，结合下面的CMSFullGCsBeforeCompaction）；</p>
+<p><strong>（2）、”-XX:+CMSFullGCsBeforeCompaction”</strong></p>
+<p>​      设置执行多少次不压缩的Full GC后，来一次压缩整理；</p>
+<p>​      为减少合并整理过程的停顿时间；</p>
+<p>​      默认为0，也就是说每次都执行Full GC，不会进行压缩整理；</p>
+</blockquote>
+<p>​      由于空间不再连续，CMS需要使用可用”空闲列表”内存分配方式，这比简单实用”碰撞指针”分配内存消耗大；</p>
+<p>​      更多关于内存分配方式请参考：《<a href="http://blog.csdn.net/tjiyu/article/details/53923392" target="_blank" rel="noopener">Java对象在Java虚拟机中的创建过程</a>》</p>
+</blockquote>
+<p>​      <strong>总体来看，与Parallel Old垃圾收集器相比，CMS减少了执行老年代垃圾收集时应用暂停的时间；</strong></p>
+<p>​      <strong>但却增加了新生代垃圾收集时应用暂停的时间、降低了吞吐量而且需要占用更大的堆空间；</strong></p>
+<p>更多CMS收集器信息请参考：</p>
+<p>​      《垃圾收集调优指南》 8节 Concurrent Mark Sweep (CMS) Collector：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html%23concurrent_mark_sweep_cms_collector" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/cms.html#concurrent_mark_sweep_cms_collector</a></p>
+<p>​      《内存管理白皮书》 4.6节 Concurrent Mark-Sweep (CMS) Collector：<a href="http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/tech/memorymanagement-whitepaper-1-150020.pdf</a></p>
+</blockquote>
+<h2 id="8、G1收集器"><a href="#8、G1收集器" class="headerlink" title="8、G1收集器"></a><strong>8、G1收集器</strong></h2><blockquote>
+<p>​      G1（<strong>Garbage-First</strong>）是<strong>JDK7-u4</strong>才推出商用的收集器；</p>
+<p><strong>1、特点</strong></p>
+<blockquote>
+<p><strong>（A）、并行与并发</strong></p>
+<p>​      能充分利用多CPU、多核环境下的硬件优势；</p>
+<p>​      可以并行来缩短”Stop The World”停顿时间；</p>
+<p>​      也可以并发让垃圾收集与用户程序同时进行；</p>
+<p><strong>（B）、分代收集，收集范围包括新生代和老年代</strong>    </p>
+<p>​      能独立管理整个GC堆（新生代和老年代），而不需要与其他收集器搭配；</p>
+<p>​      能够采用不同方式处理不同时期的对象；</p>
+<p>​                </p>
+<p>​      虽然保留分代概念，但Java堆的内存布局有很大差别；</p>
+<p>​      将整个堆划分为多个大小相等的独立区域（Region）；</p>
+<p>​      新生代和老年代不再是物理隔离，它们都是一部分Region（不需要连续）的集合；</p>
+<p>​      更多G1内存布局信息请参考：</p>
+<blockquote>
+<p>​      《垃圾收集调优指南》 9节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html%23garbage_first_garbage_collection" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc.html#garbage_first_garbage_collection</a></p>
+</blockquote>
+<p><strong>（C）、结合多种垃圾收集算法，空间整合，不产生碎片</strong></p>
+<p>​      从整体看，是基于标记-整理算法；</p>
+<p>​      从局部（两个Region间）看，是基于复制算法；</p>
+<p>​      这是一种类似火车算法的实现；</p>
+<p>​      都不会产生内存碎片，有利于长时间运行；</p>
+<p><strong>（D）、可预测的停顿：低停顿的同时实现高吞吐量</strong></p>
+<p>​      G1除了追求低停顿处，还能建立可预测的停顿时间模型；</p>
+<p>​      可以明确指定M毫秒时间片内，垃圾收集消耗的时间不超过N毫秒；</p>
+</blockquote>
+<p><strong>2、应用场景</strong></p>
+<p>​      面向服务端应用，针对具有大内存、多处理器的机器；</p>
+<p>​      最主要的应用是为需要低GC延迟，并具有大堆的应用程序提供解决方案；</p>
+<p>​      如：在堆大小约6GB或更大时，可预测的暂停时间可以低于0.5秒；</p>
+<p>​            </p>
+<p>​      用来替换掉JDK1.5中的CMS收集器；</p>
+<p>​      <strong>在下面的情况时，使用G1可能比CMS好</strong>：</p>
+<blockquote>
+<p>​      （1）、超过50％的Java堆被活动数据占用；</p>
+<p>​      （2）、对象分配频率或年代提升频率变化很大；</p>
+<p>​      （3）、GC停顿时间过长（长于0.5至1秒）。</p>
+</blockquote>
+<p>​      <strong>是否一定采用G1呢？也未必：</strong></p>
+<blockquote>
+<p>​      如果现在采用的收集器没有出现问题，不用急着去选择G1；</p>
+<p>​      如果应用程序追求低停顿，可以尝试选择G1；</p>
+<p>​      是否代替CMS需要实际场景测试才知道。</p>
+</blockquote>
+<p><strong>3、设置参数</strong></p>
+<p>​      <strong>“-XX:+UseG1GC”：指定使用G1收集器；</strong></p>
+<p>​      <strong>“-XX:InitiatingHeapOccupancyPercent”：当整个Java堆的占用率达到参数值时，开始并发标记阶段；默认为45；</strong></p>
+<p>​      <strong>“-XX:MaxGCPauseMillis”：为G1设置暂停时间目标，默认值为200毫秒；</strong></p>
+<p>​      <strong>“-XX:G1HeapRegionSize”：设置每个Region大小，范围1MB到32MB；目标是在最小Java堆时可以拥有约2048个Region；</strong></p>
+<p>​      更多关于G1参数设置请参考：</p>
+<blockquote>
+<p>​      《垃圾收集调优指南》 10.5节：<a href="http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc_tuning.html%23important_defaults" target="_blank" rel="noopener">http://docs.oracle.com/javase/8/docs/technotes/guides/vm/gctuning/g1_gc_tuning.html#important_defaults</a></p>
+</blockquote>
+<p><strong>4、为什么G1收集器可以实现可预测的停顿</strong></p>
+<p>​      G1可以建立可预测的停顿时间模型，是因为：</p>
+<blockquote>
+<p>​      可以有计划地避免在Java堆的进行全区域的垃圾收集；</p>
+<p>​      G1跟踪各个Region获得其收集价值大小，在后台维护一个优先列表；</p>
+<p>​      每次根据允许的收集时间，优先回收价值最大的Region（名称Garbage-First的由来）；</p>
+<p>​      这就保证了在有限的时间内可以获取尽可能高的收集效率；</p>
+</blockquote>
+<p><strong>5、一个对象被不同区域引用的问题</strong></p>
+<p>​      一个Region不可能是孤立的，一个Region中的对象可能被其他任意Region中对象引用，判断对象存活时，是否需要扫描整个Java堆才能保证准确？</p>
+<p>​      在其他的分代收集器，也存在这样的问题（而G1更突出）：</p>
+<blockquote>
+<p>​      回收新生代也不得不同时扫描老年代？</p>
+</blockquote>
+<p>​      这样的话会降低Minor GC的效率；</p>
+<p>​      <strong>解决方法：</strong></p>
+<blockquote>
+<p>​      无论G1还是其他分代收集器，JVM都是使用Remembered Set来避免全局扫描：</p>
+<blockquote>
+<p>​      每个Region都有一个对应的Remembered Set；</p>
+<p>​      每次Reference类型数据写操作时，都会产生一个Write Barrier暂时中断操作；</p>
+<p>​      然后检查将要写入的引用指向的对象是否和该Reference类型数据在不同的Region（其他收集器：检查老年代对象是否引用了新生代对象）；</p>
+<p>​      如果不同，通过CardTable把相关引用信息记录到引用指向对象的所在Region对应的Remembered Set中；</p>
+<p>​                    </p>
+<p>​      当进行垃圾收集时，在GC根节点的枚举范围加入Remembered Set；</p>
+<p>​      就可以保证不进行全局扫描，也不会有遗漏。</p>
+</blockquote>
+</blockquote>
+<p><strong>6、G1收集器运作过程</strong></p>
+<p>​      不计算维护Remembered Set的操作，可以分为4个步骤（与CMS较为相似）。</p>
+<blockquote>
+<p><strong>（A）、初始标记（Initial Marking）</strong></p>
+<p>​      仅标记一下GC Roots能直接关联到的对象；</p>
+<p>​      且修改TAMS（Next Top at Mark Start）,让下一阶段并发运行时，用户程序能在正确可用的Region中创建新对象；</p>
+<p>​      需要”Stop The World”，但速度很快；</p>
+<p><strong>（B）、并发标记（Concurrent Marking）</strong></p>
+<p>​      进行GC Roots Tracing的过程；</p>
+<p>​      刚才产生的集合中标记出存活对象；</p>
+<p>​      耗时较长，但应用程序也在运行；</p>
+<p>​      并不能保证可以标记出所有的存活对象；</p>
+<p><strong>（C）、最终标记（Final Marking）</strong></p>
+<p>​      为了修正并发标记期间因用户程序继续运作而导致标记变动的那一部分对象的标记记录；</p>
+<p>​      上一阶段对象的变化记录在线程的Remembered Set Log；</p>
+<p>​      这里把Remembered Set Log合并到Remembered Set中；</p>
+<p>​                    </p>
+<p>​      需要”Stop The World”，且停顿时间比初始标记稍长，但远比并发标记短；</p>
+<p>​      采用多线程并行执行来提升效率；</p>
+<p><strong>（D）、筛选回收（Live Data Counting and Evacuation）</strong></p>
+<p>​      首先排序各个Region的回收价值和成本；</p>
+<p>​      然后根据用户期望的GC停顿时间来制定回收计划；</p>
+<p>​      最后按计划回收一些价值高的Region中垃圾对象；</p>
+<p>​                    </p>
+<p>​      回收时采用”复制”算法，从一个或多个Region复制存活对象到堆上的另一个空的Region，并且在此过程中压缩和释放内存；</p>
+<p>​      可以并发进行，降低停顿时间，并增加吞吐量；</p>
+</blockquote>
+<p>​      <strong>G1收集器运行示意图如下：</strong></p>
+</blockquote>
+<p><img src="https://mrblogimgs.oss-cn-qingdao.aliyuncs.com/img/java/img7" alt="img"></p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		11400
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/垃圾收集器/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/HashMap和HashTable的区别/">HashMap和HashTable的区别</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HashMap是Hashtable的轻量级实现(非线程安全的实现)，他们都完成了Map接口，主要区别在于HashMap允许空(null)键值(key),由于非线程安全，效率上可能高于Hashtable。</span><br><span class="line">HashMap允许将null作为一个entry的key或者value，而Hashtable不允许。</span><br><span class="line">HashMap把Hashtable的contains方法去掉了，改成containsvalue和containsKey。因为contains方法容易让人引起误解。</span><br><span class="line">Hashtable继承自Dictionary类，而HashMap是Java1.2引进的Map interface的一个实现。</span><br><span class="line">最大的不同是，Hashtable的方法是Synchronize的，而HashMap不是，在多个线程访问Hashtable时，不需要自己为它的方法实现同步，而HashMap 就必须为之提供外同步(如果是ArrayList：List lst = Collections.synchronizedList(new ArrayList());如果是HashMap：Map map = Collections.synchronizedMap(new HashMap());)。</span><br><span class="line">Hashtable和HashMap采用的hash/rehash算法都大概一样，所以性能不会有很大的差异</span><br></pre></td></tr></table></figure>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		574
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/HashMap和HashTable的区别/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/Java面向对象的三个特征与含义/">Java面向对象的三个特征与含义</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>属性的封装和方法的封装。把属性定义为私有的， get(),set()方法。 好处是信息隐藏和模块化，提高安全性。封装的主要作用在于对外隐藏内 部实现细节，增强程序的安全性。</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>子类可以继承父类的成员变量和成员方法。继承可以提高代码的复用性。</p>
+<p>继承的特性： </p>
+<p>​        1.单一继承。 </p>
+<p>​        2.子类只能继承父类的非私有成员变量和方法。 </p>
+<p>​        3.成员变量的隐藏和方法的覆盖。 </p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>当同一个操作作用在不同对象时，会产生不同的结果。</p>
+<p>有 2 种方式来实现多态，一种是编译时多态，另外一种是运行时多态；编译时多态是通过方法的重载来实现的，运行时多态是通过方法的重写来实现的。 方法的重载，指的是同一个类中有多个同名的方法，但这些方法有着不同 的参数。在编译时就可以确定到底调用哪个方法。 方法的重写，子类重写父类中的方法。父类的引用变量不仅可以指向父类 的实例对象，还可以指向子类的实例对象。当父类的引用指向子类的对象时， 只有在运行时才能确定调用哪个方法。 特别注意：只有类中的方法才有多态的概念，类中成员变量没有多态的概念。</p>
+<p>Override（覆盖、重写）和 Overload（重载）的区别。 </p>
+<p>重载和覆盖是 java 多态性的不同表现方式。 重载是在一个类中多态性的一种表现，是指在一个类中定义了多个同名的 方法，但是他们有不同的参数个数或有不同的参数类型。 在使用重载时要注意以下几点： </p>
+<p>​        1.重载只能通过不同的方法参数来区分。例如不同的参数类型，不同的 参数个数，不同的参数顺序。 </p>
+<p>​        2.不能通过访问权限、返回类型、抛出的异常进行重载。 </p>
+<p>覆盖是指子类函数覆盖父类中的函数。 在覆盖时要注意以下几点（重点！！）： </p>
+<p>​        1.覆盖的方法的函数名和参数必须要和被覆盖的方法的函数名和参数完全匹配，才能达到覆盖的效果；</p>
+<p>​        2.覆盖的方法的返回值必须和被覆盖的方法的返回值类型一致； </p>
+<p>​        3.覆盖的方法所抛出的异常必须和被覆盖方法的所抛出的异常一致，或者 是其子类； </p>
+<p>​        4.被覆盖的方法不能为 private，否则在其子类中只是新定义了一个方法， 并没有对其进行覆盖。 </p>
+<p>​        5. 子类函数的访问修饰权限要大于等于父类的 （public&gt;protected&gt;default&gt;private） 。（重要！！！） </p>
+<p>​        特别注意：Java 中，子类无法覆盖父类的 static 方法或 private 方法。</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		965
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/Java面向对象的三个特征与含义/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/Map、Set、List、Queue、Stack的特点与用法/">Map、Set、List、Queue、Stack的特点与用法</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<ul>
+<li>Map</li>
+</ul>
+<blockquote>
+<p>键映射到值的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值。</p>
+<p>某些映射实现可明确保证其顺序，如 TreeMap 类；另一些映射实现则不保证顺序，如 HashMap 类。</p>
+<p>Map中元素，可以将key序列、value序列单独抽取出来。<br>使用keySet()抽取key序列，将map中的所有keys生成一个Set。<br>使用values()抽取value序列，将map中的所有values生成一个Collection。<br>为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。</p>
+</blockquote>
+<ul>
+<li>Set</li>
+</ul>
+<blockquote>
+<p>一个不包含重复元素的 collection。更确切地讲，set 不包含满足 e1.equals(e2) 的元素对 e1 和 e2，并且最多包含一个 null 元素。</p>
+<p>不可随机访问包含的元素</p>
+<p>只能用Iterator实现单向遍历</p>
+<p>Set 没有同步方法</p>
+</blockquote>
+<ul>
+<li>List</li>
+</ul>
+<blockquote>
+<p>可随机访问包含的元素<br>元素是有序的<br>可在任意位置增、删元素<br>不管访问多少次，元素位置不变<br>允许重复元素<br>用Iterator实现单向遍历，也可用ListIterator实现双向遍历</p>
+</blockquote>
+<ul>
+<li>Queue</li>
+</ul>
+<blockquote>
+<p>先进先出</p>
+<p>Queue使用时要尽量避免Collection的add()和remove()方法，而是要使用offer()来加入元素，使用poll()来获取并移出元素。它们的优点是通过返回值可以判断成功与否，add()和remove()方法在失败的时候会抛出异常。 如果要使用前端而不移出该元素，使用element()或者peek()方法。<br>值得注意的是LinkedList类实现了Queue接口，因此我们可以把LinkedList当成Queue来用。</p>
+<p>Queue 实现通常不允许插入 null 元素，尽管某些实现（如 LinkedList）并不禁止插入 null。即使在允许 null 的实现中，也不应该将 null 插入到 Queue 中，因为 null 也用作 poll 方法的一个特殊返回值，表明队列不包含元素。</p>
+</blockquote>
+<ul>
+<li>Stack</li>
+</ul>
+<blockquote>
+<p>后进先出</p>
+<p>Stack继承自Vector（可增长的对象数组），也是同步的<br>它通过五个操作对类 Vector 进行了扩展 ，允许将向量视为堆栈。它提供了通常的 push 和 pop 操作，以及取堆栈顶点的 peek 方法、测试堆栈是否为空的 empty 方法、在堆栈中查找项并确定到<strong>堆栈顶</strong>距离的 search 方法。</p>
+</blockquote>
+<ul>
+<li>用法</li>
+</ul>
+<blockquote>
+<p>如果涉及到堆栈、队列等操作，应该考虑用List；</p>
+<p>对于需要快速插入，删除元素，应该使用LinkedList；</p>
+<p>如果需要快速随机访问元素，应该使用ArrayList。</p>
+<p>如果程序在单线程环境中，或者访问仅仅在一个线程中进行，考虑非同步的类，其效率较高</p>
+</blockquote>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		1116
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/Map、Set、List、Queue、Stack的特点与用法/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/Object有哪些公用方法/">Object有哪些公用方法</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<p>Object是所有类的父类，任何类都默认继承Object。</p>
+<h4 id="clone"><a href="#clone" class="headerlink" title="clone"></a><strong>clone</strong></h4><p>保护方法，实现对象的浅复制，只有实现了Cloneable接口才可以调用该方法，否则抛出CloneNotSupportedException异常</p>
+<h4 id="equals"><a href="#equals" class="headerlink" title="equals"></a><strong>equals</strong></h4><p>在Object中与==是一样的，子类一般需要重写该方法</p>
+<h4 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a><strong>hashCode</strong></h4><p>该方法用于哈希查找，重写了equals方法一般都要重写hashCode方法。这个方法在一些具有哈希功能的Collection中用到</p>
+<h4 id="getClass"><a href="#getClass" class="headerlink" title="getClass"></a><strong>getClass</strong></h4><p>final方法，获得运行时类型</p>
+<h4 id="wait"><a href="#wait" class="headerlink" title="wait"></a><strong>wait</strong></h4><p>使当前线程等待该对象的锁，当前线程必须是该对象的拥有者，也就是具有该对象的锁。wait()方法一直等待，直到获得锁或者被中断。wait(long timeout)设定一个超时间隔，如果在规定时间内没有获得锁就返回。<br>调用该方法后当前线程进入睡眠状态，直到以下事件发生：<br>\1. 其他线程调用了该对象的notify方法<br>\2. 其他线程调用了该对象的notifyAll方法<br>\3. 其他线程调用了interrupt中断该线程<br>\4. 时间间隔到了<br>此时该线程就可以被调度了，如果是被中断的话就抛出一个InterruptedException异常</p>
+<h4 id="notify"><a href="#notify" class="headerlink" title="notify"></a><strong>notify</strong></h4><p>唤醒在该对象上等待的某个线程</p>
+<h4 id="notifyAll"><a href="#notifyAll" class="headerlink" title="notifyAll"></a><strong>notifyAll</strong></h4><p>唤醒在该对象上等待的所有线程</p>
+<h4 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a><strong>toString</strong></h4><p>转换成字符串，一般子类都有重写，否则打印句柄</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		580
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/Object有哪些公用方法/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/try catch finally，try里有return，finally还执行么/">try catch finally，try里有return，finally还执行么</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<p><strong>肯定会执行。finally{}块的代码只有在try{}块中包含遇到System.exit(0);之类的导致Java虚拟机直接退出的语句才会不执行。</strong></p>
+<p><em>*当程序执行try{}遇到return时，程序会先执行return语句，但并不会立即返回——也就是把return语句要做的一切事情都准备好，也就是在将要返回、但并未返回的时候，程序把执行流程转去执行finally块，当finally块执行完成后就直接返回刚才return语句已经准备好的结果。</em></p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		221
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/try catch finally，try里有return，finally还执行么/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/HashMap和ConcurrentHashMap的区别，HashMap的底层源码/">HashMap和ConcurrentHashMap的区别，HashMap的底层源码</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<ol>
+<li>Hashmap本质是数组加链表。根据key取得hash值，然后计算出数组下标，如果多个key对应到同一个下标，就用链表串起来，新插入的在前面。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">　　ConcurrentHashMap：在hashMap的基础上，ConcurrentHashMap将数据分为多个segment，默认16个（concurrency level），然后每次操作对一个segment加锁，避免多线程锁的几率，提高并发效率。</span><br><span class="line"></span><br><span class="line">#  </span><br><span class="line"></span><br><span class="line">**一、HashMap概述**</span><br><span class="line"></span><br><span class="line">#  </span><br><span class="line"></span><br><span class="line">　　HashMap基于哈希表的 `Map` 接口的实现。此实现提供所有可选的映射操作，并允许使用 `null` 值和 `null` 键。（除了不同步和允许使用 null 之外，`HashMap` 类与 `Hashtable` 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</span><br><span class="line"></span><br><span class="line">#  </span><br><span class="line"></span><br><span class="line">　　值得注意的是HashMap不是线程安全的，如果想要线程安全的HashMap，可以通过Collections类的静态方法synchronizedMap获得线程安全的HashMap。</span><br><span class="line"></span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<p>1  Map map = Collections.synchronizedMap(new HashMap());<br>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><strong>二、HashMap的数据结构</strong></p>
+<p>　HashMap的底层主要是基于数组和链表来实现的，它之所以有相当快的查询速度主要是因为它是通过计算散列码来决定存储的位置，能够很快的计算出对象所存储的位置。HashMap中主要是通过key的hashCode来计算hash值的，只要hashCode相同，计算出来的hash值就一样。如果存储的对象对多了，就有可能不同的对象所算出来的hash值是相同的，这就出现了所谓的hash冲突。学过数据结构的同学都知道，解决hash冲突的方法有很多，HashMap底层是通过链表来解决hash冲突的。</p>
+<p>​                                      <strong><img src="https://images2015.cnblogs.com/blog/679904/201510/679904-20151025192734520-1277367181.png" alt="技术分享"></strong></p>
+<p>从上图中可以看出，HashMap底层就是一个数组结构，数组中存放的是一个Entry对象，如果产生的hash冲突，也就是说要存储的那个位置上面已经存储了对象了，这时候该位置存储的就是一个链表了。我们看看HashMap中Entry类的代码：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> 1 static class Entry&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; &#123;</span><br><span class="line"> 2         final K key;</span><br><span class="line"> 3         V value;</span><br><span class="line"> 4         Entry&lt;K,V&gt; next;</span><br><span class="line"> 5         final int hash;</span><br><span class="line"> 6 </span><br><span class="line"> 7         /**</span><br><span class="line"> 8          * Creates new entry.</span><br><span class="line"> 9          */</span><br><span class="line">10         Entry(int h, K k, V v, Entry&lt;K,V&gt; n) &#123;</span><br><span class="line">11             value = v;</span><br><span class="line">12             next = n; //hash值冲突后存放在链表的下一个</span><br><span class="line">13             key = k;</span><br><span class="line">14             hash = h;</span><br><span class="line">15         &#125;</span><br><span class="line">16 </span><br><span class="line">17         .........</span><br><span class="line">18     &#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>HashMap其实就是一个Entry数组，Entry对象中包含了键和值，其中next也是一个Entry对象，它就是用来处理hash冲突的，形成一个链表。</p>
+<p><strong>三、HashMap源码分析</strong></p>
+<p>　　先看看HashMap类中的一些关键属性：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1 transient Entry[] table;//存储元素的实体数组</span><br><span class="line">2 </span><br><span class="line">3 transient int size;//存放元素的个数</span><br><span class="line">4 </span><br><span class="line">5 int threshold; //临界值   当实际大小超过临界值时，会进行扩容threshold = 加载因子*容量</span><br><span class="line">6 </span><br><span class="line">7 final float loadFactor; //加载因子</span><br><span class="line">8 </span><br><span class="line">9 transient int modCount;//被修改的次数</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>　   其中加载因子是表示Hash表中元素的填满的程度.若:加载因子越大,填满的元素越多,好处是,空间利用率高了,但:冲突的机会加大了.反之,加载因子越小,填满的元素越少,<br>好处是:冲突的机会减小了,但:空间浪费多了.冲突的机会越大,则查找的成本越高.反之,查找的成本越小.因而,查找时间就越小.因此,必须在 “冲突的机会”与”空间利用率”之间寻找一种平衡与折衷. 这种平衡与折衷本质上是数据结构中有名的”时-空”矛盾的平衡与折衷.</p>
+<p>　　如果机器内存足够，并且想要提高查询速度的话可以将加载因子设置小一点；相反如果机器内存紧张，并且对查询速度没有什么要求的话可以将加载因子设置大一点。不过一般我们都不用去设置它，让它取默认值0.75就好了。</p>
+<p>　　下面看看HashMap的几个构造方法：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> 1 public HashMap(int initialCapacity, float loadFactor) &#123;</span><br><span class="line"> 2         //确保数字合法</span><br><span class="line"> 3         if (initialCapacity &lt; 0)</span><br><span class="line"> 4             throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +</span><br><span class="line"> 5                                                initialCapacity);</span><br><span class="line"> 6         if (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line"> 7             initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line"> 8         if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))</span><br><span class="line"> 9             throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +</span><br><span class="line">10                                                loadFactor);</span><br><span class="line">11 </span><br><span class="line">12         // Find a power of 2 &gt;= initialCapacity</span><br><span class="line">13         int capacity = 1;   //初始容量</span><br><span class="line">14         while (capacity &lt; initialCapacity)   //确保容量为2的n次幂，使capacity为大于initialCapacity的最小的2的n次幂</span><br><span class="line">15             capacity &lt;&lt;= 1;</span><br><span class="line">16 </span><br><span class="line">17         this.loadFactor = loadFactor;</span><br><span class="line">18         threshold = (int)(capacity * loadFactor);</span><br><span class="line">19         table = new Entry[capacity];</span><br><span class="line">20         init();</span><br><span class="line">21     &#125;</span><br><span class="line">22 </span><br><span class="line">23     public HashMap(int initialCapacity) &#123;</span><br><span class="line">24         this(initialCapacity, DEFAULT_LOAD_FACTOR);</span><br><span class="line">25     &#125;</span><br><span class="line">26 </span><br><span class="line">27     public HashMap() &#123;</span><br><span class="line">28         this.loadFactor = DEFAULT_LOAD_FACTOR;</span><br><span class="line">29         threshold = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);</span><br><span class="line">30         table = new Entry[DEFAULT_INITIAL_CAPACITY];</span><br><span class="line">31         init();</span><br><span class="line">32     &#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>　　我们可以看到在构造HashMap的时候如果我们指定了加载因子和初始容量的话就调用第一个构造方法，否则的话就是用默认的。默认初始容量为16，默认加载因子为0.75。我们可以看到上面代码中13-15行，这段代码的作用是确保容量为2的n次幂，使capacity为大于initialCapacity的最小的2的n次幂，至于为什么要把容量设置为2的n次幂，我们等下再看。</p>
+<p>　　下面看看HashMap存储数据的过程是怎样的，首先看看HashMap的put方法：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> 1 public V put(K key, V value) &#123;</span><br><span class="line"> 2         if (key == null) //如果键为null的话，调用putForNullKey(value)</span><br><span class="line"> 3             return putForNullKey(value);</span><br><span class="line"> 4         int hash = hash(key.hashCode());//根据键的hashCode计算hash码</span><br><span class="line"> 5         int i = indexFor(hash, table.length);</span><br><span class="line"> 6         for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) &#123; //处理冲突的，如果hash值相同，则在该位置用链表存储</span><br><span class="line"> 7             Object k;</span><br><span class="line"> 8             if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123; //如果key相同则覆盖并返回旧值</span><br><span class="line"> 9                 V oldValue = e.value;</span><br><span class="line">10                 e.value = value;</span><br><span class="line">11                 e.recordAccess(this);</span><br><span class="line">12                 return oldValue;</span><br><span class="line">13             &#125;</span><br><span class="line">14         &#125;</span><br><span class="line">15 </span><br><span class="line">16         modCount++;</span><br><span class="line">17         addEntry(hash, key, value, i);</span><br><span class="line">18         return null;</span><br><span class="line">19     &#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>当我们往hashmap中put元素的时候，先根据key的hash值得到这个元素在数组中的位置（即下标），然后就可以把这个元素放到对应的位置中了。如果这个元素所在的位子上已经存放有其他元素了，那么在同一个位子上的元素将以链表的形式存放，新加入的放在链头，最先加入的放在链尾。从hashmap中get元素时，首先计算key的hashcode，找到数组中对应位置的某一元素，然后通过key的equals方法在对应位置的链表中找到需要的元素。</p>
+<p>具体的实现是：</p>
+<p>当你的key为null时，会调用<strong>putForNullKey,HashMap允许key为null,这样的对像是放在table[0]中。</strong></p>
+<p>如果不为空，则调用int hash = hash(key.hashCode());这是hashmap的一个自定义的hash,在key.hashCode()基础上进行二次hash</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1 static int hash(int h) &#123;  </span><br><span class="line">2         h ^= (h &gt;&gt;&gt; 20) ^ (h &gt;&gt;&gt; 12);  </span><br><span class="line">3         return h ^ (h &gt;&gt;&gt; 7) ^ (h &gt;&gt;&gt; 4);  </span><br><span class="line">4   &#125;  </span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p>得到hash码之后就会通过hash码去计算出应该存储在数组中的索引，计算索引的函数如下：</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 static int indexFor(int h, int length) &#123;  </span><br><span class="line">2        return h &amp; (length-1);  </span><br><span class="line">3    &#125;  </span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p>　这个方法非常巧妙，它通过 h &amp; (table.length -1) 来得到该对象的保存位，而HashMap底层数组的长度总是 2 的n 次方，这是HashMap在速度上的优化。当length总是 2 的n次方时，h&amp; (length-1)运算等价于对length取模，也就是h%length，但是&amp;比%具有更高的效率。当数组长度为2的n次幂的时候，不同的key算得得index相同的几率较小，那么数据在数组上分布就比较均匀，也就是说碰撞的几率小，相对的，查询的时候就不用遍历某个位置上的链表，这样查询效率也就较高了。</p>
+<p>下面我们继续回到put方法里面，前面已经计算出索引的值了，看到第6到14行，如果数组中该索引的位置的链表已经存在key相同的对象，则将其覆盖掉并返回原先的值。如果没有与key相同的键，则调用addEntry方法创建一个Entry对象，addEntry方法如下：</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 void addEntry(int hash, K key, V value, int bucketIndex) &#123;</span><br><span class="line">2         Entry&lt;K,V&gt; e = table[bucketIndex]; //如果要加入的位置有值，将该位置原先的值设置为新entry的next,也就是新entry链表的下一个节点</span><br><span class="line">3         table[bucketIndex] = new Entry&lt;&gt;(hash, key, value, e);</span><br><span class="line">4         if (size++ &gt;= threshold) //如果大于临界值就扩容</span><br><span class="line">5             resize(2 * table.length); //以2的倍数扩容</span><br><span class="line">6     &#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p>参数bucketIndex就是indexFor函数计算出来的索引值，第2行代码是取得数组中索引为bucketIndex的Entry对象，第3行就是用hash、key、value构建一个新的Entry对象放到索引为bucketIndex的位置，并且将该位置原先的对象设置为新对象的next构成链表。</p>
+<p>　　第4行和第5行就是判断put后size是否达到了临界值threshold，如果达到了临界值就要进行扩容，HashMap扩容是扩为原来的两倍。resize()方法如下：</p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> 1 void resize(int newCapacity) &#123;</span><br><span class="line"> 2         Entry[] oldTable = table;</span><br><span class="line"> 3         int oldCapacity = oldTable.length;</span><br><span class="line"> 4         if (oldCapacity == MAXIMUM_CAPACITY) &#123;</span><br><span class="line"> 5             threshold = Integer.MAX_VALUE;</span><br><span class="line"> 6             return;</span><br><span class="line"> 7         &#125;</span><br><span class="line"> 8 </span><br><span class="line"> 9         Entry[] newTable = new Entry[newCapacity];</span><br><span class="line">10         transfer(newTable);//用来将原先table的元素全部移到newTable里面</span><br><span class="line">11         table = newTable;  //再将newTable赋值给table</span><br><span class="line">12         threshold = (int)(newCapacity * loadFactor);//重新计算临界值</span><br><span class="line">13     &#125;</span><br><span class="line">​</span><br></pre></td></tr></table></figure></p>
+<p><a href="javascript:void(0" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a>;)</p>
+<p>扩容是需要进行数组复制的，上面代码中第10行为复制数组，复制数组是非常消耗性能的操作，所以如果我们已经预知HashMap中元素的个数，那么预设元素的个数能够有效的提高HashMap的性能。<br>```</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		5682
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/HashMap和ConcurrentHashMap的区别，HashMap的底层源码/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/九种基本数据类型的大小，以及他们的封装类/">九种基本数据类型的大小，以及他们的封装类</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<table>
+<thead>
+<tr>
+<th>基本类型</th>
+<th>大小(字节)</th>
+<th>默认值</th>
+<th>封装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte</td>
+<td>1</td>
+<td>(byte)0</td>
+<td>Byte</td>
+</tr>
+<tr>
+<td>short</td>
+<td>2</td>
+<td>(short)0</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4</td>
+<td>0</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>8</td>
+<td>0L</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4</td>
+<td>0.0f</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+<td>0.0d</td>
+<td>Double</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>-</td>
+<td>false</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>char</td>
+<td>2</td>
+<td>\u0000(null)</td>
+<td></td>
+</tr>
+<tr>
+<td>void</td>
+<td>-</td>
+<td>-</td>
+<td>Void</td>
+</tr>
+</tbody>
+</table>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		219
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/九种基本数据类型的大小，以及他们的封装类/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/Excption与Error包结构。OOM你遇到过哪些情况，SOF你遇到过哪些情况/">Excption与Error包结构。OOM你遇到过哪些情况，SOF你遇到过哪些情况</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<p>Java异常架构图</p>
+<p><img src="http://image.mamicode.com/info/201510/20180110170633684739.jpg" alt="技术分享"></p>
+<p><strong>1. Throwable</strong><br>Throwable是 Java 语言中所有错误或异常的超类。<br>Throwable包含两个子类: <strong>Error</strong> 和 <strong>Exception</strong> 。它们通常用于指示发生了异常情况。<br>Throwable包含了其线程创建时线程执行堆栈的快照，它提供了printStackTrace()等接口用于获取堆栈跟踪数据等信息。</p>
+<p><strong>2. Exception</strong><br>Exception及其子类是 Throwable 的一种形式，它指出了合理的应用程序想要捕获的条件。</p>
+<p><strong>3. RuntimeException</strong><br>RuntimeException是那些可能在 Java 虚拟机正常运行期间抛出的异常的超类。<br>编译器不会检查RuntimeException异常。 例如，除数为零时，抛出ArithmeticException异常。RuntimeException是ArithmeticException的超类。当代码发生除数为零的情况时，倘若既”没有通过throws声明抛出ArithmeticException异常”，也”没有通过try…catch…处理该异常”，也能通过编译。这就是我们所说的”编译器不会检查RuntimeException异常”！<br>如果代码会产生RuntimeException异常，则需要通过修改代码进行避免。 例如，若会发生除数为零的情况，则需要通过代码避免该情况的发生！</p>
+<p><strong>4. Error</strong><br>和Exception一样， Error也是Throwable的子类。 它用于指示合理的应用程序不应该试图捕获的严重问题，大多数这样的错误都是异常条件。<br>和RuntimeException一样， 编译器也不会检查Error。</p>
+<p>Java将可抛出(Throwable)的结构分为三种类型： <strong>被检查的异常(Checked Exception)，运行时异常(RuntimeException)和错误(Error)。</strong></p>
+<p><strong>(01) 运行时异常</strong><br><strong>定义</strong> : RuntimeException及其子类都被称为运行时异常。<br><strong>特点</strong> : Java编译器不会检查它。 也就是说，当程序中可能出现这类异常时，倘若既”没有通过throws声明抛出它”，也”没有用try-catch语句捕获它”，还是会编译通过。例如，除数为零时产生的ArithmeticException异常，数组越界时产生的IndexOutOfBoundsException异常，fail-fail机制产生的ConcurrentModificationException异常等，都属于运行时异常。<br>虽然Java编译器不会检查运行时异常，但是我们也可以通过throws进行声明抛出，也可以通过try-catch对它进行捕获处理。<br>如果产生运行时异常，则需要通过修改代码来进行避免。 例如，若会发生除数为零的情况，则需要通过代码避免该情况的发生！</p>
+<p><strong>(02) 被检查的异常</strong><br><strong>定义</strong> :  Exception类本身，以及Exception的子类中除了”运行时异常”之外的其它子类都属于被检查异常。<br><strong>特点</strong> : Java编译器会检查它。 此类异常，要么通过throws进行声明抛出，要么通过try-catch进行捕获处理，否则不能通过编译。例如，CloneNotSupportedException就属于被检查异常。当通过clone()接口去克隆一个对象，而该对象对应的类没有实现Cloneable接口，就会抛出CloneNotSupportedException异常。<br>被检查异常通常都是可以恢复的。</p>
+<p><strong>(03) 错误</strong><br><strong>定义</strong> : Error类及其子类。<br><strong>特点</strong> : 和运行时异常一样，编译器也不会对错误进行检查。<br>当资源不足、约束失败、或是其它程序无法继续运行的条件发生时，就产生错误。程序本身无法修复这些错误的。例如，VirtualMachineError就属于错误。<br>按照Java惯例，我们是不应该是实现任何新的Error子类的！</p>
+<p>对于上面的3种结构，我们在抛出异常或错误时，到底该哪一种？《Effective Java》中给出的建议是： 对于可以恢复的条件使用被检查异常，对于程序错误使用运行时异常。</p>
+<p>OOM：</p>
+<p>1，   OutOfMemoryError异常</p>
+<p>除了程序计数器外，虚拟机内存的其他几个运行时区域都有发生OutOfMemoryError(OOM)异常的可能，</p>
+<p>Java Heap 溢出</p>
+<p>一般的异常信息：java.lang.OutOfMemoryError:Java heap spacess</p>
+<p>java堆用于存储对象实例，我们只要不断的创建对象，并且保证GC Roots到对象之间有可达路径来避免垃圾回收机制清除这些对象，就会在对象数量达到最大堆容量限制后产生内存溢出异常。</p>
+<p>出现这种异常，一般手段是先通过内存映像分析工具(如Eclipse Memory Analyzer)对dump出来的堆转存快照进行分析，重点是确认内存中的对象是否是必要的，先分清是因为内存泄漏(Memory Leak)还是内存溢出(Memory Overflow)。</p>
+<p>如果是内存泄漏，可进一步通过工具查看泄漏对象到GC Roots的引用链。于是就能找到泄漏对象时通过怎样的路径与GC Roots相关联并导致垃圾收集器无法自动回收。</p>
+<p>如果不存在泄漏，那就应该检查虚拟机的参数(-Xmx与-Xms)的设置是否适当。</p>
+<p>2，   虚拟机栈和本地方法栈溢出</p>
+<p>如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。</p>
+<p>如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常</p>
+<p>这里需要注意当栈的大小越大可分配的线程数就越少。</p>
+<p>3，   运行时常量池溢出</p>
+<p>异常信息：java.lang.OutOfMemoryError:PermGen space</p>
+<p>如果要向运行时常量池中添加内容，最简单的做法就是使用String.intern()这个Native方法。该方法的作用是：如果池中已经包含一个等于此String的字符串，则返回代表池中这个字符串的String对象；否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。由于常量池分配在方法区内，我们可以通过-XX:PermSize和-XX:MaxPermSize限制方法区的大小，从而间接限制其中常量池的容量。</p>
+<p>4，   方法区溢出</p>
+<p>方法区用于存放Class的相关信息，如类名、访问修饰符、常量池、字段描述、方法描述等。</p>
+<p>异常信息：java.lang.OutOfMemoryError:PermGen space</p>
+<p>方法区溢出也是一种常见的内存溢出异常，一个类如果要被垃圾收集器回收，判定条件是很苛刻的。在经常动态生成大量Class的应用中，要特别注意这点。</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		2725
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/Excption与Error包结构。OOM你遇到过哪些情况，SOF你遇到过哪些情况/">阅读更多</a> 
+    	
+</article>     
+     	
+      	  	
+
+  		
+    	<article class="article">		
+	   
+	<div class="article-header">
+	    
+	     <a class="article-title"  href="/2017/11/05/Override和Overload的含义去区别/">Override和Overload的含义去区别</a>  
+	       
+		 
+
+		 <time>2017-11-05 </time>    
+	</div>
+
+
+    <div class="article-excerpt">	
+	
+  	
+
+	  
+
+	  	<p>重写(Override)也称覆盖，它是父类与子类之间多态性的一种表现，而重载(Overload)是一个类中多态性的一种表现。 override从字面就可以知道，它是覆盖了一个方法并且对其重写，以求达到不同的作用。overload它是指我们可以定义一些名称相同的方法，通过定义不同的输入参数来区分这些方法，然后再调用时，VM就会根据不同的参数样式，来选择合适的方法执行。</p>
+<p>2、override（重写，覆盖）<br>（1）方法名、参数、返回值相同。<br>（2）子类方法不能缩小父类方法的访问权限。<br>（3）子类方法不能抛出比父类方法更多的异常(但子类方法可以不抛出异常)。<br>（4）存在于父类和子类之间。<br>（5）方法被定义为final不能被重写。<br>（6）被覆盖的方法不能为private，否则在其子类中只是新定义了一个方法，并没有对其进行覆盖。</p>
+<p>3、overload（重载，过载）<br>（1）参数类型、个数、顺序至少有一个不相同。<br>（2）不能重载只有返回值不同的方法名。<br>（3）针对于一个类而言。<br>（4）不能通过访问权限、返回类型、抛出的异常进行重载；<br>（5）方法的异常类型和数目不会对重载造成影响；</p>
+<p>4、override应用：<br>（1）最熟悉的覆盖就是对接口方法的实现，在接口中一般只是对方法进行了声明，而我们在实现时，就需要实现接口声明的所有方法。<br>（2）除了这个典型的用法以外，我们在继承中也可能会在子类覆盖父类中的方法。</p>
+<p>5、总结<br>　　override是在不同类之间的行为，overload是在同一个类中的行为。</p>
+ 
+
+	    
+</div>
+
+<div class="center">
+			
+
+				<span class="post-meta">		
+				<span class="iconfont icon-category"></span>
+				<a class="category-link" href="/categories/java/">java</a>
+				</span>
+		
+			
+
+		
+				
+				<span class="post-meta">
+				<span class="iconfont icon-tag"></span>
+				<a class="tag-link" href="/tags/java/">java</a> <a class="tag-link" href="/tags/复习/">复习</a>
+				</span>			
+			
+
+
+		
+
+		<span class="post-words"><span class="iconfont icon-words"></span>
+		634
+		</span>		
+</div>		
+
+		
+    <a class="article-readmore" href="/2017/11/05/Override和Overload的含义去区别/">阅读更多</a> 
+    	
+</article>     
+     	
+  
+
+ 
+
+  <nav class="paginator">
+    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+  </nav>
+  
+
+</section> 
+
+    </div>        
+
+    
+    <div class="mask"> </div>
+    <div class="back-to-top iconfont icon-backtotop fadeIn"></div> 
+
+    
+
+
+<script src="/js/search.js"></script>     
+          
+          <div class="search-container sildeUpMin">
+            <input type="text" placeholder="输入你想搜索的" id="search-input" class="search-input">  
+              <span class="search-cancel iconfont icon-cancel"></span>
+              <div id="search-result" class="search-result"></div>
+          </div>
+ 
+
+     <div class="mobile-menu">      
+
+      
+      <img class="mobile-menu-icon no-gallery" src= /img/favicon.png >   
+      
+
+         
+            
+
+            <a class="mobile-menu-link" href="/">首页
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/archives">归档
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/categories">分类
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/tags">标签
+            </a>
+            
+         
+            
+
+            <a class="mobile-menu-link" href="/about">关于
+            </a>
+            
+         
+                          
+
+            <a class="mobile-menu-link mobile-menu-search" href="#">搜索 </a>                 
+            
+         
+</div>     
+    
+
+<footer id="footer">
+	   
+   	 <div>	
+	   	    	
+   	 </div>
+   
+   	 
+	 <div>
+	 	&copy;
+		2018
+		Rui Min	 
+
+	 </div>
+
+
+   
+   	 <div>
+	
+	 <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+	 Theme
+
+	 <a href="https://github.com/Lemonreds/hexo-theme-Nayo" target="_blank">Nayo</a> 
+
+	 </div>	
+
+
+	
+	
+</footer> 
+    
+
+<!-- Baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?636802045446222199ae541e32c8133e"; 
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+ 
+  </body>   
+  <script src="/js/animation.js"></script>   
+</html>
